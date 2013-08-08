@@ -1,5 +1,5 @@
 doctype 5
-html
+html(ng-app="Torrent")
   head
     title = PiTorrent
     meta(charset='utf-8')
@@ -12,10 +12,12 @@ html
     link(rel="stylesheet", href="/stylesheets/bootstrap-responsive.css")
 
     // js imports
-    script(src="/javascripts/rtorrentapi.js")
     script(src="/javascripts/jquery.js")
     script(src="/javascripts/jquery-ui-1.10.2.custom.min.js")
     script(src="/javascripts/bootstrap.js")
+    script(src="https://ajax.googleapis.com/ajax/libs/angularjs/1.0.7/angular.min.js")
+    script(src="/javascripts/gettorrents.js")
+    script(src="/javascripts/angular-resource.min.js")
 
   body
     block content

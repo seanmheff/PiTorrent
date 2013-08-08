@@ -10,7 +10,7 @@ module.exports = {
     getTorrents : getTorrents,
     getStandardData : getStandardData
 
-}
+};
 
 var rtorrentapi = require("../code/rtorrent/rtorrentapi");
 var rtorrentconstants = require("../code/rtorrent/rtorrentconstants.js");
@@ -28,7 +28,7 @@ function getTorrents(callback) {
         }
 
         // Remove the header
-        response = parseresponse.removeResponseHeader(response)
+        response = parseresponse.removeResponseHeader(response);
 
         var data = new xmldoc.XmlDocument(response)
             .childNamed("params")
@@ -57,42 +57,43 @@ function getStandardData(callback) {
         if (response.toString().indexOf("error") == 0) {
             callback("There was a problem connecting to rtorrent");
         }
+        else {
+            // Remove the header
+            response = parseresponse.removeResponseHeader(response);
 
-        // Remove the header
-        response = parseresponse.removeResponseHeader(response);
+            // Traverse the XML document until we get to the data
+            var data = new xmldoc.XmlDocument(response)
+                .childNamed("params")
+                .childNamed("param")
+                .childNamed("value")
+                .childNamed("array")
+                .childNamed("data");
 
-        // Traverse the XML document until we get to the data
-        var data = new xmldoc.XmlDocument(response)
-            .childNamed("params")
-            .childNamed("param")
-            .childNamed("value")
-            .childNamed("array")
-            .childNamed("data");
+            var dataToReturn = {torrents:[]};
 
-        var dataToReturn = {torrents:[]};
+            // For each torrent
+            data.eachChild(function(value) {
+                var innerData = value.childNamed("array").childNamed("data");
+                var torrentData = [];
 
-        // For each torrent
-        data.eachChild(function(value) {
-            var innerData = value.childNamed("array").childNamed("data");
-            var torrentData = [];
+                // For each parameter - push into temp array
+                // Always push the child at index 0, this allows us to ignore types (<int>, <boolean>, etc)
+                innerData.eachChild(function(innerValue) {
+                    torrentData.push(innerValue.children[0].val);
+                });
 
-            // For each parameter - push into temp array
-            // Always push the child at index 0, this allows us to ignore types (<int>, <boolean>, etc)
-            innerData.eachChild(function(innerValue) {
-                torrentData.push(innerValue.children[0].val);
+                var tmp = { };
+                tmp["hash"] = torrentData[0];
+                tmp["name"] = torrentData[1];
+                tmp["size"] = torrentData[2];
+                tmp["uploadRate"] = torrentData[3];
+                tmp["downloadRate"] = torrentData[4];
+                tmp["downloaded"] = torrentData[5];
+                tmp["ratio"] = torrentData[6];
+                dataToReturn.torrents.push(tmp);
             });
 
-            var tmp = { };
-            tmp["hash"] = torrentData[0];
-            tmp["name"] = torrentData[1];
-            tmp["size"] = torrentData[2];
-            tmp["uploadRate"] = torrentData[3];
-            tmp["downloadRate"] = torrentData[4];
-            tmp["downloaded"] = torrentData[5];
-            tmp["ratio"] = torrentData[6];
-            dataToReturn.torrents.push(tmp);
-        });
-
-        callback(JSON.stringify(dataToReturn));
+            callback(dataToReturn);
+        }
     });
 }

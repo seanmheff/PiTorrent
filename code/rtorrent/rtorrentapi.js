@@ -18,11 +18,11 @@ function send(request, callback) {
     var socket = new net.Socket().connect("/tmp/rpc.socket");
 
     socket.on("connect", function() {
-        console.log("Successfully connected to socket");
+        //console.log("Successfully connected to socket");
         socket.write(request);
 
         socket.on("data", function(data) {
-            console.log("Got data from socket");
+            //console.log("Got data from socket");
             callback(data);
         });
     });
@@ -43,4 +43,4 @@ module.exports = {
         });
     }
 
-}
+};

@@ -11,7 +11,7 @@ var xmlbuilder = require('xmlbuilder');
 
 module.exports = {
     createRequest : createRequest
-}
+};
 
 
 /**
@@ -47,7 +47,7 @@ function formatRequest(xml){
  */
 function createXml(args) {
 
-    console.log("args " + args )
+    //console.log("args " + args )
     var xml = xmlbuilder.create("methodCall");
     xml.ele("methodName", args[0]);
 

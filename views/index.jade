@@ -5,4 +5,10 @@ block content
 
     h1= title
     p Welcome to #{title}
-    p Welcome to #{torrents}
+
+    #container(ng-controller="TorrentCtrl")
+        ul.list
+            li(ng-repeat="torrent in torrentResults.torrents")
+            | Name: {{torrent.name}} Download Rate: {{torrent.downloadRate}}
+
+
