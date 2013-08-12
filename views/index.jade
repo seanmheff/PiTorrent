@@ -8,7 +8,6 @@ block content
 
     #container(ng-controller="TorrentCtrl")
         ul.list
-            li(ng-repeat="torrent in torrentResults.torrents")
-            | Name: {{torrent.name}} Download Rate: {{torrent.downloadRate}}
+            li(ng-repeat="torrent in torrentResults.torrents") Name: {{torrent.name}} Download Rate: {{torrent.downloadRate}} Downloaded: {{torrent.downloaded}}
 
 

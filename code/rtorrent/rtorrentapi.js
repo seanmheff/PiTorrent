@@ -38,7 +38,6 @@ module.exports = {
 
     execute : function (request, callback) {
         send(request, function(response) {
-            //console.log("response: " + response);
             callback(response);
         });
     }

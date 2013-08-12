@@ -6,11 +6,35 @@
  * To change this template use File | Settings | File Templates.
  */
 
-angular.module("Torrent", ["ngResource"]);
-
-function TorrentCtrl($scope, $resource) {
+function TorrentCtrl($scope, $http) {
     setInterval(function(){
-        $scope.torrents = $resource("http://localhost\\:3000/torrents");
-        $scope.torrentResults = $scope.torrents.get();
-    }, 2000);
+        $http.get('http://localhost:3000/torrents').success(function(torrents) {
+
+            for (var x in torrents.torrents) {
+                torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
+                torrents.torrents[x]['uploadRate'] = convert(torrents.torrents[x]['uploadRate']);
+                torrents.torrents[x]['downloadRate'] = convert(torrents.torrents[x]['downloadRate']);
+                torrents.torrents[x]['downloaded'] = convert(torrents.torrents[x]['downloaded']);
+            }
+            $scope.torrentResults = torrents;
+        });
+
+    },2000);
+}
+
+
+function convert(fileSizeInBytes) {
+
+    if (fileSizeInBytes == 0) {
+        return "0.0 kB";
+    }
+
+    var i = -1;
+    var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+    do {
+        fileSizeInBytes = fileSizeInBytes / 1024;
+        i++;
+    } while (fileSizeInBytes > 1024);
+
+    return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
 }
