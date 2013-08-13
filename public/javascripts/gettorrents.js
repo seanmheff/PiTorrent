@@ -7,19 +7,25 @@
  */
 
 function TorrentCtrl($scope, $http) {
+    getTorrents($scope, $http);
+
     setInterval(function(){
-        $http.get('http://localhost:3000/torrents').success(function(torrents) {
-
-            for (var x in torrents.torrents) {
-                torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
-                torrents.torrents[x]['uploadRate'] = convert(torrents.torrents[x]['uploadRate']);
-                torrents.torrents[x]['downloadRate'] = convert(torrents.torrents[x]['downloadRate']);
-                torrents.torrents[x]['downloaded'] = convert(torrents.torrents[x]['downloaded']);
-            }
-            $scope.torrentResults = torrents;
-        });
-
+        getTorrents($scope, $http);
     },2000);
+}
+
+function getTorrents($scope, $http) {
+    $http.get('http://localhost:3000/torrents').success(function(torrents) {
+
+        for (var x in torrents.torrents) {
+            torrents.torrents[x]['percentDone'] = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
+            torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
+            torrents.torrents[x]['uploadRate'] = convert(torrents.torrents[x]['uploadRate']);
+            torrents.torrents[x]['downloadRate'] = convert(torrents.torrents[x]['downloadRate']);
+            torrents.torrents[x]['downloaded'] = convert(torrents.torrents[x]['downloaded']);
+        }
+        $scope.torrentResults = torrents;
+    });
 }
 
 

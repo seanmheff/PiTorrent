@@ -90,6 +90,7 @@ function getStandardData(callback) {
                 tmp["downloadRate"] = torrentData[4];
                 tmp["downloaded"] = torrentData[5];
                 tmp["ratio"] = torrentData[6];
+                tmp["complete"] = torrentData[7];
                 dataToReturn.torrents.push(tmp);
             });
 
