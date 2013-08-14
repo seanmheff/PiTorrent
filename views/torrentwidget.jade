@@ -1,0 +1,31 @@
+.span12(ng-controller="TorrentCtrl")
+    .widget.wred
+        // Widget title
+        .widget-head
+            .pull-left Torrents
+            .widget-icons.pull-right
+                a.wminimize(href='#')
+                    i.icon-chevron-up
+                a.wclose(href='#')
+                    i.icon-remove
+            .clearfix
+        .widget-content
+            // Widget content
+            // Task list starts
+            ul.project
+                li(ng-repeat="torrent in torrentResults.torrents")
+                    p
+                        // Checkbox
+                        input(value='check1', type='checkbox')
+                        // Name
+                        | {{torrent.name}}
+                    p.p-meta
+                        // Due date & % Completed
+                        span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
+                    .progress.progress-striped
+                        // Progress bar
+                        //{{torrent.percentDone}}
+                        //.bar.bar-danger(style='width: {{torrent.percentDone}}%;')
+                        .bar(ng-class="{'1':'bar-success', '0':'bar-danger'}[torrent.complete]", style='width: {{torrent.percentDone}}%;')
+            .clearfix
+

@@ -16,6 +16,9 @@ function TorrentCtrl($scope, $http) {
 
 function getTorrents($scope, $http) {
     $http.get('http://localhost:3000/torrents').success(function(torrents) {
+	//if (torrents.toString().indexOf("There was a problem connecting to rtorrent") == 0) {
+	//    $scope.torrentResults = null;
+	//}
 
         for (var x in torrents.torrents) {
             torrents.torrents[x]['percentDone'] = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
