@@ -1,11 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/gettorrents.js" afterPath="$PROJECT_DIR$/public/javascripts/gettorrents.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/layout.jade" afterPath="$PROJECT_DIR$/views/layout.jade" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" name="Default" comment="" />
     <ignored path="Pi-node.iws" />
     <ignored path=".idea/workspace.xml" />
     <file path="/rtorrent.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1375549278647" ignored="false" />
@@ -112,7 +108,7 @@
       <file leaf-file-name="layout.jade" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/views/layout.jade">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="30" column="26" selection-start="1146" selection-end="1146" vertical-scroll-proportion="0.7637795">
+            <state line="17" column="31" selection-start="641" selection-end="641" vertical-scroll-proportion="0.6692913">
               <folding />
             </state>
           </provider>
@@ -592,7 +588,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/views/layout.jade">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="30" column="26" selection-start="1146" selection-end="1146" vertical-scroll-proportion="0.7637795">
+        <state line="17" column="31" selection-start="641" selection-end="641" vertical-scroll-proportion="0.6692913">
           <folding />
         </state>
       </provider>
