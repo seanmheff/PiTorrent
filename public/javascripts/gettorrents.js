@@ -6,6 +6,9 @@
  * To change this template use File | Settings | File Templates.
  */
 
+var myAppModule = angular.module('myApp', ['ui.bootstrap']);
+
+
 function TorrentCtrl($scope, $http) {
     getTorrents($scope, $http);
 
@@ -23,6 +26,10 @@ function getTorrents($scope, $http) {
             torrents.torrents[x]['uploadRate'] = convert(torrents.torrents[x]['uploadRate']);
             torrents.torrents[x]['downloadRate'] = convert(torrents.torrents[x]['downloadRate']);
             torrents.torrents[x]['downloaded'] = convert(torrents.torrents[x]['downloaded']);
+
+//            if (torrents.torrents[x]['complete'] == '1') {
+//                scope.progress.progress-striped =
+//            }
         }
         $scope.torrentResults = torrents;
     });
@@ -36,7 +43,7 @@ function convert(fileSizeInBytes) {
     }
 
     var i = -1;
-    var byteUnits = [' kB', ' MB', ' GB', ' TB', 'PB', 'EB', 'ZB', 'YB'];
+    var byteUnits = [' kB', ' MB', ' GB', ' TB'];
     do {
         fileSizeInBytes = fileSizeInBytes / 1024;
         i++;
