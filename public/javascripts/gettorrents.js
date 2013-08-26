@@ -6,32 +6,68 @@
  * To change this template use File | Settings | File Templates.
  */
 
-var myAppModule = angular.module('myApp', ['ui.bootstrap']);
+var app = angular.module('myApp', ['ui.bootstrap']);
 
 
-function TorrentCtrl($scope, $http) {
-    getTorrents($scope, $http);
+app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
+    populateTorrents($scope, $http);
 
     setInterval(function(){
         getTorrents($scope, $http);
     },2000);
+});
+
+function populateTorrents($scope, $http) {
+    $http.get('http://localhost:3000/torrents').success(function(torrents) {
+
+        for (var x in torrents.torrents) {
+            torrents.torrents[x].percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
+            torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
+            torrents.torrents[x]['uploadRate'] = convert(torrents.torrents[x]['uploadRate']);
+            torrents.torrents[x]['downloadRate'] = convert(torrents.torrents[x]['downloadRate']);
+            torrents.torrents[x]['downloaded'] = convert(torrents.torrents[x]['downloaded']);
+        }
+        $scope.torrentResults = torrents;
+    });
 }
 
 function getTorrents($scope, $http) {
     $http.get('http://localhost:3000/torrents').success(function(torrents) {
 
-        for (var x in torrents.torrents) {
-            torrents.torrents[x]['percentDone'] = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
-            torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
-            torrents.torrents[x]['uploadRate'] = convert(torrents.torrents[x]['uploadRate']);
-            torrents.torrents[x]['downloadRate'] = convert(torrents.torrents[x]['downloadRate']);
-            torrents.torrents[x]['downloaded'] = convert(torrents.torrents[x]['downloaded']);
-
-//            if (torrents.torrents[x]['complete'] == '1') {
-//                scope.progress.progress-striped =
-//            }
+        // Check to see if any torrents have been added or removed
+        if (torrents.torrents.length !== $scope.torrentResults.torrents.length) {
+            populateTorrents($scope, $http);
+            return;
         }
-        $scope.torrentResults = torrents;
+
+        for (var x in torrents.torrents) {
+
+            var percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
+            var uploadRate = convert(torrents.torrents[x]['uploadRate']);
+            var downloadRate = convert(torrents.torrents[x]['downloadRate']);
+            var downloaded = convert(torrents.torrents[x]['downloaded']);
+            var complete = torrents.torrents[x]['complete'];
+
+            if ($scope.torrentResults.torrents[x].percentDone !== percentDone ) {
+                $scope.torrentResults.torrents[x].percentDone = percentDone;
+            }
+
+            if ($scope.torrentResults.torrents[x].uploadRate !== uploadRate ) {
+                $scope.torrentResults.torrents[x].uploadRate = uploadRate;
+            }
+
+            if ($scope.torrentResults.torrents[x].downloadRate !== downloadRate ) {
+                $scope.torrentResults.torrents[x].downloadRate = downloadRate;
+            }
+
+            if ($scope.torrentResults.torrents[x].downloaded !== downloaded ) {
+                $scope.torrentResults.torrents[x].downloaded = downloaded;
+            }
+
+            if ($scope.torrentResults.torrents[x].complete !== complete ) {
+                $scope.torrentResults.torrents[x].complete = complete;
+            }
+        }
     });
 }
 
