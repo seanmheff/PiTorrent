@@ -25,7 +25,7 @@
                 p.p-meta
                   span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
                   |  Upload Speed: {{torrent.uploadRate}} Download Speed: {{torrent.downloadRate}}
-                .progress.progress-striped(ng-class="{'1':'', '0':'active'}[torrent.complete]")
+                .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
                   // Progress bar
                   .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;')
             .clearfix

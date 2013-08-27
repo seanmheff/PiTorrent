@@ -18,8 +18,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
 });
 
 function populateTorrents($scope, $http) {
-    $http.get('http://localhost:3000/torrents').success(function(torrents) {
-
+    $http.get(document.location.href + 'torrents').success(function(torrents) {
         for (var x in torrents.torrents) {
             torrents.torrents[x].percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
             torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
@@ -32,8 +31,7 @@ function populateTorrents($scope, $http) {
 }
 
 function getTorrents($scope, $http) {
-    $http.get('http://localhost:3000/torrents').success(function(torrents) {
-
+    $http.get(document.location.href + 'torrents').success(function(torrents) {
         // Check to see if any torrents have been added or removed
         if (torrents.torrents.length !== $scope.torrentResults.torrents.length) {
             populateTorrents($scope, $http);
@@ -41,7 +39,6 @@ function getTorrents($scope, $http) {
         }
 
         for (var x in torrents.torrents) {
-
             var percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
             var uploadRate = convert(torrents.torrents[x]['uploadRate']);
             var downloadRate = convert(torrents.torrents[x]['downloadRate']);
@@ -73,7 +70,6 @@ function getTorrents($scope, $http) {
 
 
 function convert(fileSizeInBytes) {
-
     if (fileSizeInBytes == 0) {
         return "0.0 kB";
     }
