@@ -8,30 +8,76 @@
 
 var app = angular.module('myApp', ['ui.bootstrap']);
 
+seeding = function (torrent) {
+    if (torrent.complete == 1) {
+        return true;
+    }
+    return false;
+};
+
+leeching = function (torrent) {
+    if (torrent.complete == 0) {
+        return true;
+    }
+    return false;
+};
+
+uploadingFilter = function (torrent) {
+    if (torrent.uploadRate > 0) {
+        return true;
+    }
+    return false;
+};
+
+
+downloadingFilter = function (torrent) {
+    if (torrent.downloadRate > 0) {
+        return true;
+    }
+    return false;
+};
+
 
 app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
-    populateTorrents($scope, $http);
+    var view = "main";
+
+    $scope.tabs = [
+        { title:"All", orderBy:"name", filter:"" },
+        { title:"Seeding", orderBy:"name", filter:seeding },
+        { title:"Leeching", orderBy:"name", filter:leeching },
+        { title:"Currently seeding", orderBy:"uploadRate", filter:"uploadingFilter" },
+        { title:"Currently leeching", orderBy:"uploadRate", filter:downloadingFilter }
+    ];
+
+    $scope.updateView = function(newView) {
+        console.log("newView = " + newView);
+        view = newView;
+    };
+
+    populateTorrents($scope, $http, view);
 
     setInterval(function(){
-        getTorrents($scope, $http);
+        getTorrents($scope, $http, view);
     },2000);
 });
 
-function populateTorrents($scope, $http) {
-    $http.get(document.location.href + 'torrents').success(function(torrents) {
+
+function populateTorrents($scope, $http, view) {
+    $http.get(document.location.href + 'torrents' + view).success(function(torrents) {
         for (var x in torrents.torrents) {
             torrents.torrents[x].percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
             torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
-            torrents.torrents[x]['uploadRate'] = convert(torrents.torrents[x]['uploadRate']);
-            torrents.torrents[x]['downloadRate'] = convert(torrents.torrents[x]['downloadRate']);
+            torrents.torrents[x]['uploadRateAdjusted'] = convert(torrents.torrents[x]['uploadRate']);
+            torrents.torrents[x]['downloadRateAdjusted'] = convert(torrents.torrents[x]['downloadRate']);
             torrents.torrents[x]['downloaded'] = convert(torrents.torrents[x]['downloaded']);
         }
         $scope.torrentResults = torrents;
     });
 }
 
-function getTorrents($scope, $http) {
-    $http.get(document.location.href + 'torrents').success(function(torrents) {
+
+function getTorrents($scope, $http, view) {
+    $http.get(document.location.href + 'torrents' + view).success(function(torrents) {
         // Check to see if any torrents have been added or removed
         if (torrents.torrents.length !== $scope.torrentResults.torrents.length) {
             populateTorrents($scope, $http);
@@ -40,8 +86,8 @@ function getTorrents($scope, $http) {
 
         for (var x in torrents.torrents) {
             var percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
-            var uploadRate = convert(torrents.torrents[x]['uploadRate']);
-            var downloadRate = convert(torrents.torrents[x]['downloadRate']);
+            var uploadRateAdjusted = convert(torrents.torrents[x]['uploadRate']);
+            var downloadRateAdjusted = convert(torrents.torrents[x]['downloadRate']);
             var downloaded = convert(torrents.torrents[x]['downloaded']);
             var complete = torrents.torrents[x]['complete'];
 
@@ -49,12 +95,14 @@ function getTorrents($scope, $http) {
                 $scope.torrentResults.torrents[x].percentDone = percentDone;
             }
 
-            if ($scope.torrentResults.torrents[x].uploadRate !== uploadRate ) {
-                $scope.torrentResults.torrents[x].uploadRate = uploadRate;
+            if ($scope.torrentResults.torrents[x].uploadRateAdjusted !== uploadRateAdjusted ) {
+                $scope.torrentResults.torrents[x].uploadRate = torrents.torrents[x]['uploadRate'];
+                $scope.torrentResults.torrents[x].uploadRateAdjusted = uploadRateAdjusted;
             }
 
-            if ($scope.torrentResults.torrents[x].downloadRate !== downloadRate ) {
-                $scope.torrentResults.torrents[x].downloadRate = downloadRate;
+            if ($scope.torrentResults.torrents[x].downloadRateAdjusted !== downloadRateAdjusted ) {
+                $scope.torrentResults.torrents[x].downloadRate = torrents.torrents[x]['downloadRate'];
+                $scope.torrentResults.torrents[x].downloadRateAdjusted = downloadRateAdjusted;
             }
 
             if ($scope.torrentResults.torrents[x].downloaded !== downloaded ) {

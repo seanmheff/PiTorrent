@@ -46,8 +46,6 @@ function formatRequest(xml){
  * @return Returns an XML formatted string containing the parameter(s)
  */
 function createXml(args) {
-
-    //console.log("args " + args )
     var xml = xmlbuilder.create("methodCall");
     xml.ele("methodName", args[0]);
 
@@ -59,7 +57,6 @@ function createXml(args) {
             params.ele("param").ele("value").ele("string", args[i]);
         }
     }
-    //console.log(xml.toString());
     return xml.toString();
 }
 

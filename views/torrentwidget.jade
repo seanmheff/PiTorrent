@@ -1,32 +1,34 @@
-.matter
-  .container-fluid
-    .row-fluid
-      .span12(ng-controller="TorrentCtrl")
-        .widget.wred
-          // Widget title
-          .widget-head
-            .pull-left Torrents
-            .widget-icons.pull-right
-              a.wminimize(href='#')
-                i.icon-chevron-up
-              a.wclose(href='#')
-                i.icon-remove
-            .clearfix
-          .widget-content
-            // Widget content
-            // Task list starts
-            ul.project
-              li(ng-repeat="torrent in torrentResults.torrents")
-                p
-                  // Checkbox
-                  input(value='check1', type='checkbox')
-                  // Name
-                  | <strong>{{torrent.name}}</strong>
-                p.p-meta
-                  span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
-                  |  Upload Speed: {{torrent.uploadRate}} Download Speed: {{torrent.downloadRate}}
-                .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
-                  // Progress bar
-                  .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;')
-            .clearfix
+.torrents(ng-controller="TorrentCtrl")
+  tabset
+    tab(ng-repeat='tab in tabs', heading='{{tab.title}}', active='tab.active')
+      .container-fluid
+        .row-fluid
+          .span12
+            .widget.wred
+              // Widget title
+              .widget-head
+                .pull-left Torrents
+                .widget-icons.pull-right
+                  a.wminimize(href='#')
+                    i.icon-chevron-up
+                  a.wclose(href='#')
+                    i.icon-remove
+                .clearfix
+              .widget-content
+                // Widget content
+                // Task list starts
+                ul.project
+                  li(ng-repeat="torrent in torrentResults.torrents | orderBy:tab.orderBy | filter:tab.filter")
+                    p
+                      // Checkbox
+                      input(value='check1', type='checkbox')
+                      // Name
+                      | <strong>{{torrent.name}}</strong>
+                    p.p-meta
+                      span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
+                      |  Upload Speed: {{torrent.uploadRateAdjusted}} Download Speed: {{torrent.downloadRateAdjusted}}
+                    .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
+                      // Progress bar
+                      .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;')
+                .clearfix
 

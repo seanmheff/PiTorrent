@@ -34,13 +34,12 @@ VIEW_HASHING = "hashing";
 VIEW_SEEDING = "seeding";
 VIEW_LEECHING = "leeching";
 
-
 /*
  * List of helpful multicall commands
  */
 MULTICALL_STANDARD_INFO = [
     DOWNLOAD_MULTICALL,
-    VIEW_MAIN,
+    "main",
     DOWNLOAD_GET_TORRENT_HASH + "= ",
     DOWNLOAD_GET_TORRENT_NAME + "= ",
     DOWNLOAD_GET_TORRENT_SIZE + "= ",
@@ -52,6 +51,7 @@ MULTICALL_STANDARD_INFO = [
 ];
 
 module.exports = {
+
 
     /*
      * Download related
