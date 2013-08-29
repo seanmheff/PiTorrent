@@ -1,6 +1,6 @@
 .torrents(ng-controller="TorrentCtrl")
   tabset
-    tab(ng-repeat='tab in tabs', heading='{{tab.title}}', active='tab.active')
+    tab(ng-repeat='view in tabs', heading='{{view.title}}', active='view.active')
       .container-fluid
         .row-fluid
           .span12
@@ -18,7 +18,7 @@
                 // Widget content
                 // Task list starts
                 ul.project
-                  li(ng-repeat="torrent in torrentResults.torrents | orderBy:tab.orderBy | filter:tab.filter")
+                  li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:view.filter")
                     p
                       // Checkbox
                       input(value='check1', type='checkbox')
@@ -26,7 +26,7 @@
                       | <strong>{{torrent.name}}</strong>
                     p.p-meta
                       span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
-                      |  Upload Speed: {{torrent.uploadRateAdjusted}} Download Speed: {{torrent.downloadRateAdjusted}}
+                      |  Upload Speed: {{torrent.uploadRateHumanReadable}} Download Speed: {{torrent.downloadRateHumanReadable}}
                     .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
                       // Progress bar
                       .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;')

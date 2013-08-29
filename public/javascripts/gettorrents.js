@@ -8,62 +8,82 @@
 
 var app = angular.module('myApp', ['ui.bootstrap']);
 
+
+/**
+ * An Angular filter function to determine if a torrent is seeding
+ * @param torrent The torrent to evaluate
+ * @returns {boolean} Returns a boolean to denote if the torrent is seeding
+ */
 seeding = function (torrent) {
-    if (torrent.complete == 1) {
-        return true;
-    }
-    return false;
+    return torrent.complete == 1
 };
 
+
+/**
+ * An Angular filter function to determine if a torrent is leeching
+ * @param torrent The torrent to evaluate
+ * @returns {boolean} Returns a boolean to denote if the torrent is leeching
+ */
 leeching = function (torrent) {
-    if (torrent.complete == 0) {
-        return true;
-    }
-    return false;
+    return torrent.complete == 0
 };
 
+
+/**
+ * An Angular filter function to determine if a torrent is currently currently uploading
+ * @param torrent The torrent to evaluate
+ * @returns {boolean} Returns a boolean to denote if the torrent is currently uploading
+ */
 uploadingFilter = function (torrent) {
-    if (torrent.uploadRate > 0) {
-        return true;
-    }
-    return false;
+    return torrent.uploadRate > 0
 };
 
 
+/**
+ * An Angular filter function to determine if a torrent is currently currently downloading
+ * @param torrent The torrent to evaluate
+ * @returns {boolean} Returns a boolean to denote if the torrent is currently downloading
+ */
 downloadingFilter = function (torrent) {
-    if (torrent.downloadRate > 0) {
-        return true;
-    }
-    return false;
+    return torrent.downloadRate > 0
 };
 
 
+/**
+ * This is the controller for the torrents
+ */
 app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
     var view = "main";
 
     $scope.tabs = [
-        { title:"All", orderBy:"name", filter:"" },
+        { title:"All", orderBy:"name", filter:null },
         { title:"Seeding", orderBy:"name", filter:seeding },
         { title:"Leeching", orderBy:"name", filter:leeching },
-        { title:"Currently seeding", orderBy:"uploadRate", filter:"uploadingFilter" },
-        { title:"Currently leeching", orderBy:"uploadRate", filter:downloadingFilter }
+        { title:"Currently uploading", orderBy:"uploadRate", filter:"uploadingFilter" },
+        { title:"Currently downloading", orderBy:"uploadRate", filter:downloadingFilter }
     ];
 
     populateTorrents($scope, $http, view);
 
     setInterval(function(){
-        getTorrents($scope, $http, view);
+        updateTorrents($scope, $http, view);
     },2000);
 });
 
 
+/**
+ * This function populates the torrent array. It is called on init and when a torrent is added or removed
+ * It resets all variables in the array
+ * @param $scope The controller scope
+ * @param $http The http service that is needed to make ajax requests
+ */
 function populateTorrents($scope, $http) {
     $http.get(document.location.href + 'torrents').success(function(torrents) {
         for (var x in torrents.torrents) {
             torrents.torrents[x].percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
             torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
-            torrents.torrents[x]['uploadRateAdjusted'] = convert(torrents.torrents[x]['uploadRate']);
-            torrents.torrents[x]['downloadRateAdjusted'] = convert(torrents.torrents[x]['downloadRate']);
+            torrents.torrents[x]['uploadRateHumanReadable'] = convert(torrents.torrents[x]['uploadRate']);
+            torrents.torrents[x]['downloadRateHumanReadable'] = convert(torrents.torrents[x]['downloadRate']);
             torrents.torrents[x]['downloaded'] = convert(torrents.torrents[x]['downloaded']);
         }
         $scope.torrentResults = torrents;
@@ -71,7 +91,14 @@ function populateTorrents($scope, $http) {
 }
 
 
-function getTorrents($scope, $http) {
+/**
+ * This function updates the torrent array. It is called at a set interval
+ * It only updates variables in the view that may change over time (download rate, etc).
+ * If it detects that any torrent have been added or removed, it calls "populateTorrents"
+ * @param $scope The controller scope
+ * @param $http The http service that is needed to make ajax requests
+ */
+function updateTorrents($scope, $http) {
     $http.get(document.location.href + 'torrents').success(function(torrents) {
         // Check to see if any torrents have been added or removed
         if (torrents.torrents.length !== $scope.torrentResults.torrents.length) {
@@ -79,25 +106,29 @@ function getTorrents($scope, $http) {
             return;
         }
 
+        // Update our torrent data
         for (var x in torrents.torrents) {
             var percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
-            var uploadRateAdjusted = convert(torrents.torrents[x]['uploadRate']);
-            var downloadRateAdjusted = convert(torrents.torrents[x]['downloadRate']);
+            var uploadRateHumanReadable = convert(torrents.torrents[x]['uploadRate']);
+            var downloadRateHumanReadable = convert(torrents.torrents[x]['downloadRate']);
             var downloaded = convert(torrents.torrents[x]['downloaded']);
             var complete = torrents.torrents[x]['complete'];
 
+            // Only update view if the variable has changed
             if ($scope.torrentResults.torrents[x].percentDone !== percentDone ) {
                 $scope.torrentResults.torrents[x].percentDone = percentDone;
             }
 
-            if ($scope.torrentResults.torrents[x].uploadRateAdjusted !== uploadRateAdjusted ) {
+            if ($scope.torrentResults.torrents[x].uploadRateHumanReadable !== uploadRateHumanReadable ) {
+                // Need to update non human readable upload rate for view filter checking
                 $scope.torrentResults.torrents[x].uploadRate = torrents.torrents[x]['uploadRate'];
-                $scope.torrentResults.torrents[x].uploadRateAdjusted = uploadRateAdjusted;
+                $scope.torrentResults.torrents[x].uploadRateHumanReadable = uploadRateHumanReadable;
             }
 
-            if ($scope.torrentResults.torrents[x].downloadRateAdjusted !== downloadRateAdjusted ) {
+            if ($scope.torrentResults.torrents[x].downloadRateHumanReadable !== downloadRateHumanReadable ) {
+                // Need to update non human readable download rate for view filter checking
                 $scope.torrentResults.torrents[x].downloadRate = torrents.torrents[x]['downloadRate'];
-                $scope.torrentResults.torrents[x].downloadRateAdjusted = downloadRateAdjusted;
+                $scope.torrentResults.torrents[x].downloadRateHumanReadable = downloadRateHumanReadable;
             }
 
             if ($scope.torrentResults.torrents[x].downloaded !== downloaded ) {
@@ -111,7 +142,11 @@ function getTorrents($scope, $http) {
     });
 }
 
-
+/**
+ * A helper function to convert bytes to a more human readable format
+ * @param fileSizeInBytes A string that contains the size in bytes
+ * @returns {string} Returns a human readable size
+ */
 function convert(fileSizeInBytes) {
     if (fileSizeInBytes == 0) {
         return "0.0 kB";
