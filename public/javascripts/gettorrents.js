@@ -49,11 +49,6 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
         { title:"Currently leeching", orderBy:"uploadRate", filter:downloadingFilter }
     ];
 
-    $scope.updateView = function(newView) {
-        console.log("newView = " + newView);
-        view = newView;
-    };
-
     populateTorrents($scope, $http, view);
 
     setInterval(function(){
@@ -62,8 +57,8 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
 });
 
 
-function populateTorrents($scope, $http, view) {
-    $http.get(document.location.href + 'torrents' + view).success(function(torrents) {
+function populateTorrents($scope, $http) {
+    $http.get(document.location.href + 'torrents').success(function(torrents) {
         for (var x in torrents.torrents) {
             torrents.torrents[x].percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
             torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
@@ -76,8 +71,8 @@ function populateTorrents($scope, $http, view) {
 }
 
 
-function getTorrents($scope, $http, view) {
-    $http.get(document.location.href + 'torrents' + view).success(function(torrents) {
+function getTorrents($scope, $http) {
+    $http.get(document.location.href + 'torrents').success(function(torrents) {
         // Check to see if any torrents have been added or removed
         if (torrents.torrents.length !== $scope.torrentResults.torrents.length) {
             populateTorrents($scope, $http);
