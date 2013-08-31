@@ -1,0 +1,24 @@
+.widget.worange
+  .widget-head
+    .pull-left Leeching
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    // Widget content
+    // Task list starts
+    ul.project
+      li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:leeching")
+        p
+          // Name
+          | <strong>{{torrent.name}}</strong>
+        p.p-meta
+          span Downloaded : {{torrent.downloaded}}
+          |  Download Speed: {{torrent.downloadRateHumanReadable}}
+        .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
+          // Progress bar
+          .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+    .clearfix

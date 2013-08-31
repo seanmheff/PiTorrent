@@ -14,7 +14,7 @@ var app = angular.module('myApp', ['ui.bootstrap']);
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is seeding
  */
-seeding = function (torrent) {
+var seedingFilter = function (torrent) {
     return torrent.complete == 1
 };
 
@@ -24,7 +24,7 @@ seeding = function (torrent) {
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is leeching
  */
-leeching = function (torrent) {
+var leechingFilter = function (torrent) {
     return torrent.complete == 0
 };
 
@@ -34,7 +34,7 @@ leeching = function (torrent) {
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is currently uploading
  */
-uploadingFilter = function (torrent) {
+var uploadingFilter = function (torrent) {
     return torrent.uploadRate > 0
 };
 
@@ -44,7 +44,7 @@ uploadingFilter = function (torrent) {
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is currently downloading
  */
-downloadingFilter = function (torrent) {
+var downloadingFilter = function (torrent) {
     return torrent.downloadRate > 0
 };
 
@@ -53,21 +53,24 @@ downloadingFilter = function (torrent) {
  * This is the controller for the torrents
  */
 app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
-    var view = "main";
+    $scope.seeding = seedingFilter;
+    $scope.leeching = leechingFilter;
+    $scope.uploading = uploadingFilter;
+    $scope.downloading = downloadingFilter;
 
     $scope.tabs = [
         { title:"All", orderBy:"name", filter:null },
-        { title:"Seeding", orderBy:"name", filter:seeding },
-        { title:"Leeching", orderBy:"name", filter:leeching },
-        { title:"Currently uploading", orderBy:"uploadRate", filter:"uploadingFilter" },
-        { title:"Currently downloading", orderBy:"uploadRate", filter:downloadingFilter }
+        { title:"Seeding", orderBy:"name", filter:seedingFilter },
+        { title:"Leeching", orderBy:"name", filter:leechingFilter },
+        { title:"Currently uploading", orderBy:"uploadRate", filter:uploadingFilter },
+        { title:"Currently downloading", orderBy:"downloadRate", filter:downloadingFilter }
     ];
 
-    populateTorrents($scope, $http, view);
+    populateTorrents($scope, $http);
 
-    setInterval(function(){
-        updateTorrents($scope, $http, view);
-    },2000);
+    setInterval(function() {
+        updateTorrents($scope, $http);
+    }, 2000);
 });
 
 
@@ -141,6 +144,7 @@ function updateTorrents($scope, $http) {
         }
     });
 }
+
 
 /**
  * A helper function to convert bytes to a more human readable format

@@ -2,8 +2,15 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" name="Default" comment="">
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/torrentdownloadingwidget.jade" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/torrentleechingwidget.jade" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/torrentseedingwidget.jade" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/views/torrentuploadingwidget.jade" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/index.html" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/javascripts/gettorrents.js" afterPath="$PROJECT_DIR$/public/javascripts/gettorrents.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/torrentwidget.jade" afterPath="$PROJECT_DIR$/views/torrentwidget.jade" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/stylesheets/widgets.css" afterPath="$PROJECT_DIR$/public/stylesheets/widgets.css" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="Pi-node.iws" />
@@ -13,7 +20,7 @@
     <file path="/index.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1375712808175" ignored="false" />
     <file path="/index.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1376507552662" ignored="false" />
     <file path="/app.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1375988705003" ignored="false" />
-    <file path="/gettorrents.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377778935774" ignored="false" />
+    <file path="/gettorrents.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377958410124" ignored="false" />
     <file path="/rtorrentconstants.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377726211209" ignored="false" />
     <file path="/createrequest.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1375714464038" ignored="false" />
     <file path="/rtorrentapi.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1375556968441" ignored="false" />
@@ -22,13 +29,17 @@
     <file path="/index.html" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1375817360337" ignored="false" />
     <file path="/header.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1375818938943" ignored="false" />
     <file path="/navbar.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1376419427425" ignored="false" />
-    <file path="/Dummy.txt" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377777461609" ignored="false" />
+    <file path="/Dummy.txt" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377945208092" ignored="false" />
     <file path="/websocket.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1375907242794" ignored="false" />
     <file path="/torrentrestapi.js" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377641716665" ignored="false" />
-    <file path="/torrentwidget.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377779067137" ignored="false" />
+    <file path="/torrentwidget.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377958712266" ignored="false" />
     <file path="/sidebar.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1376509470094" ignored="false" />
     <file path="/content.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1376508370529" ignored="false" />
     <file path="/heading.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1376509313285" ignored="false" />
+    <file path="/torrentleechingwidget.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377959136443" ignored="false" />
+    <file path="/torrentseedingwidget.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377966311783" ignored="false" />
+    <file path="/torrentdownloadingwidget.jade" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377958694325" ignored="false" />
+    <file path="/widgets.css" changelist="b908b0e5-ae49-4c1b-9a0a-b398b56b81ef" time="1377966702624" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -92,46 +103,52 @@
       <file leaf-file-name="layout.jade" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/layout.jade">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="20" column="0" selection-start="770" selection-end="770" vertical-scroll-proportion="0.0">
-              <folding>
-                <marker date="1376662361975" expanded="true" signature="14:1125" placeholder="..." />
-                <marker date="1376662361975" expanded="true" signature="37:59" placeholder="..." />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="rtorrentcontroller.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/controllers/rtorrentcontroller.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="55" column="4" selection-start="1554" selection-end="1554" vertical-scroll-proportion="0.0">
+            <state line="9" column="72" selection-start="291" selection-end="291" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="rtorrentconstants.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/code/rtorrent/rtorrentconstants.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="36" column="0" selection-start="886" selection-end="886" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="torrentrestapi.js" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/routes/torrentrestapi.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="11" column="39" selection-start="302" selection-end="302" vertical-scroll-proportion="0.0">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="torrentwidget.jade" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="torrentwidget.jade" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/torrentwidget.jade">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="12" column="83" selection-start="426" selection-end="426" vertical-scroll-proportion="0.27231467">
+            <state line="9" column="8" selection-start="243" selection-end="243" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="torrentseedingwidget.jade" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/torrentseedingwidget.jade">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="36" selection-start="563" selection-end="563" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="torrentleechingwidget.jade" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/torrentleechingwidget.jade">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="15" selection-start="15" selection-end="15" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="torrentuploadingwidget.jade" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/torrentuploadingwidget.jade">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="24" column="0" selection-start="858" selection-end="858" vertical-scroll-proportion="0.0">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="torrentdownloadingwidget.jade" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/torrentdownloadingwidget.jade">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="19" column="47" selection-start="578" selection-end="578" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -140,10 +157,19 @@
       <file leaf-file-name="gettorrents.js" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/javascripts/gettorrents.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="51" column="63" selection-start="1355" selection-end="1355" vertical-scroll-proportion="0.0">
+            <state line="58" column="42" selection-start="1655" selection-end="1655" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="e#0#150#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="app.js" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/app.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="32" column="10" selection-start="769" selection-end="769" vertical-scroll-proportion="0.7239819">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -177,22 +203,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/routes/index.js" />
-        <option value="$PROJECT_DIR$/code/rtorrent/rtorrentapi.js" />
-        <option value="$PROJECT_DIR$/views/navbar.jade" />
-        <option value="$PROJECT_DIR$/views/mainbar.jade" />
-        <option value="$PROJECT_DIR$/views/content.jade" />
         <option value="$PROJECT_DIR$/views/heading.jade" />
         <option value="$PROJECT_DIR$/views/sidebar.jade" />
         <option value="$PROJECT_DIR$/views/index.jade" />
         <option value="$PROJECT_DIR$/views/layout.jade" />
-        <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/code/xml/createrequest.js" />
         <option value="$PROJECT_DIR$/code/rtorrent/rtorrentconstants.js" />
         <option value="$PROJECT_DIR$/controllers/rtorrentcontroller.js" />
         <option value="$PROJECT_DIR$/routes/torrentrestapi.js" />
         <option value="$PROJECT_DIR$/public/javascripts/gettorrents.js" />
+        <option value="$PROJECT_DIR$/views/torrentuploadingwidget.jade" />
+        <option value="$PROJECT_DIR$/views/torrentdownloadingwidget.jade" />
         <option value="$PROJECT_DIR$/views/torrentwidget.jade" />
+        <option value="$PROJECT_DIR$/views/torrentleechingwidget.jade" />
+        <option value="$PROJECT_DIR$/views/torrentseedingwidget.jade" />
+        <option value="$PROJECT_DIR$/public/stylesheets/widgets.css" />
+        <option value="$PROJECT_DIR$/app.js" />
       </list>
     </option>
   </component>
@@ -249,10 +275,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane />
-      </pane>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -309,31 +331,65 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
+              <option name="myItemId" value="public" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pi-node" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Pi-node" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
               <option name="myItemId" value="controllers" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane">
+        <subPane />
+      </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="project.structure.last.edited" value="Modules" />
-    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth0" value="265" />
     <property name="project.structure.proportion" value="0.0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth1" value="267" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="MemberChooser.sorted" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth0" value="265" />
     <property name="recentsLimit" value="5" />
-    <property name="options.lastSelected" value="preferences.sourceCode.General" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder0" value="0" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth2" value="270" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth3" value="1065" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatWidth3" value="1065" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth2" value="270" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeWidth1" value="267" />
     <property name="GoToClass.includeJavaFiles" value="false" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder2" value="2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_flatOrder3" value="3" />
     <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="options.searchVisible" value="true" />
     <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder0" value="0" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder3" value="3" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder1" value="1" />
+    <property name="FileHistory.git4idea.history.GitHistoryProvider_treeOrder2" value="2" />
+    <property name="options.lastSelected" value="preferences.sourceCode.General" />
+    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -351,9 +407,6 @@
       <option name="PORT" value="5005" />
       <method />
     </configuration>
-    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="$PROJECT_DIR$">
-      <method />
-    </configuration>
     <configuration default="true" type="Applet" factoryName="Applet">
       <module name="" />
       <option name="MAIN_CLASS_NAME" />
@@ -365,6 +418,9 @@
       <option name="VM_PARAMETERS" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
       <option name="ALTERNATIVE_JRE_PATH" />
+      <method />
+    </configuration>
+    <configuration default="true" type="NodeJSConfigurationType" factoryName="Node.js" working-dir="$PROJECT_DIR$">
       <method />
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -434,23 +490,23 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-3" y="0" width="1926" height="1082" extended-state="6" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.330033" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32838285" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24881391" sideWeight="0.73397434" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.24881391" sideWeight="0.7345416" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.26567656" sideWeight="0.5003978" order="9" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26602563" sideWeight="0.49960223" order="3" side_tool="false" content_ui="tabs" x="11" y="301" width="1257" height="200" />
-      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32894737" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.26545843" sideWeight="0.49960223" order="3" side_tool="false" content_ui="tabs" x="11" y="301" width="1257" height="200" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3283582" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32730263" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.330033" sideWeight="0.5" order="11" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -498,7 +554,7 @@
     <option name="WRAP_WHEN_TYPING_REACHES_RIGHT_MARGIN" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
-    <option name="LAST_COMMIT_MESSAGE" value="Removed sending of view to server (not needed anymore - filtering done on client)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Added some comments and refactored some variables" />
     <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
     <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
     <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
@@ -520,6 +576,7 @@
     <MESSAGE value="Changed torrent progress bar to only be striped if torrent is incomplete" />
     <MESSAGE value="Added torrent tabs with ordering and filters" />
     <MESSAGE value="Removed sending of view to server (not needed anymore - filtering done on client)" />
+    <MESSAGE value="Added some comments and refactored some variables" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -527,109 +584,112 @@
     </breakpoint-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/routes/user.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/rtorrent/rtorrentapi.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="40" column="0" selection-start="1054" selection-end="1054" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/navbar.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="10" column="12" selection-start="329" selection-end="329" vertical-scroll-proportion="0.35971224" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/javascripts/torrents.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/content.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="5" column="8" selection-start="97" selection-end="97" vertical-scroll-proportion="0.12931034" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/heading.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="13" column="40" selection-start="286" selection-end="286" vertical-scroll-proportion="0.46539378">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="32" column="11" selection-start="770" selection-end="770" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/code/xml/createrequest.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="59" column="0" selection-start="1398" selection-end="1398" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/views/layout.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="20" column="0" selection-start="770" selection-end="770" vertical-scroll-proportion="0.0">
-          <folding>
-            <marker date="1376662361975" expanded="true" signature="14:1125" placeholder="..." />
-            <marker date="1376662361975" expanded="true" signature="37:59" placeholder="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/index.jade">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="4" column="4" selection-start="53" selection-end="53" vertical-scroll-proportion="0.090771556">
-          <folding />
-        </state>
+        <state line="4" column="4" selection-start="53" selection-end="53" vertical-scroll-proportion="0.090771556" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/views/sidebar.jade">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="2" column="39" selection-start="39" selection-end="39" vertical-scroll-proportion="0.037821483">
+        <state line="2" column="39" selection-start="39" selection-end="39" vertical-scroll-proportion="0.037821483" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/heading.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="13" column="40" selection-start="286" selection-end="286" vertical-scroll-proportion="0.29411766">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/content.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="22" selection-start="111" selection-end="111" vertical-scroll-proportion="0.11312217">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/controllers/rtorrentcontroller.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="55" column="4" selection-start="1554" selection-end="1554" vertical-scroll-proportion="0.0">
+        <state line="55" column="4" selection-start="1554" selection-end="1554" vertical-scroll-proportion="0.022624435">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/code/rtorrent/rtorrentconstants.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="36" column="0" selection-start="886" selection-end="886" vertical-scroll-proportion="0.0">
+        <state line="36" column="0" selection-start="886" selection-end="886" vertical-scroll-proportion="0.022624435">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/routes/torrentrestapi.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="11" column="39" selection-start="302" selection-end="302" vertical-scroll-proportion="0.0">
+        <state line="11" column="39" selection-start="302" selection-end="302" vertical-scroll-proportion="0.24886878">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/torrentuploadingwidget.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="24" column="0" selection-start="858" selection-end="858" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/torrentdownloadingwidget.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="47" selection-start="578" selection-end="578" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/torrentwidget.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="8" selection-start="243" selection-end="243" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/torrentleechingwidget.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="15" selection-start="15" selection-end="15" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/layout.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="9" column="72" selection-start="291" selection-end="291" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/stylesheets/widgets.css">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="264" column="95" selection-start="3808" selection-end="3808" vertical-scroll-proportion="0.08597285">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/torrentseedingwidget.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="36" selection-start="563" selection-end="563" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/javascripts/gettorrents.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="51" column="63" selection-start="1355" selection-end="1355" vertical-scroll-proportion="0.0">
+        <state line="58" column="42" selection-start="1655" selection-end="1655" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="e#0#150#0" expanded="false" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/torrentwidget.jade">
+    <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="12" column="83" selection-start="426" selection-end="426" vertical-scroll-proportion="0.27231467">
+        <state line="32" column="10" selection-start="769" selection-end="769" vertical-scroll-proportion="0.7239819">
           <folding />
         </state>
       </provider>

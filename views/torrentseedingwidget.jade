@@ -1,0 +1,23 @@
+.widget.wgreen
+  .widget-head
+    .pull-left Seeding
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    // Widget content
+    // Task list starts
+    ul.project
+      li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:seeding")
+        strong
+          {{torrent.name}}
+        p.p-meta
+          span Downloaded : {{torrent.downloaded}}
+          |  Upload Speed: {{torrent.uploadRateHumanReadable}}
+        .progress
+          // Progress bar
+          .bar.bar-success(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+    .clearfix

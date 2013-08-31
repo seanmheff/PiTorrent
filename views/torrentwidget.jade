@@ -1,5 +1,18 @@
 .torrents(ng-controller="TorrentCtrl")
   tabset
+    tab(heading="Overview")
+      .container-fluid
+        .row-fluid
+          .span6
+            include torrentseedingwidget
+          .span6
+            include torrentleechingwidget
+        .row-fluid
+          .span6
+            include torrentdownloadingwidget
+          .span6
+            include torrentuploadingwidget
+
     tab(ng-repeat='view in tabs', heading='{{view.title}}', active='view.active')
       .container-fluid
         .row-fluid
@@ -29,6 +42,6 @@
                       |  Upload Speed: {{torrent.uploadRateHumanReadable}} Download Speed: {{torrent.downloadRateHumanReadable}}
                     .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
                       // Progress bar
-                      .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;')
+                      .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
                 .clearfix
 
