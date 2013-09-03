@@ -19,6 +19,11 @@ var parseresponse = require("../code/xml/parseresponse.js");
 var xmldoc = require('xmldoc');
 
 
+/**
+ * This function gets the hash of all the rtorrent torrents
+ * (Each torrent has a unique hash)
+ * @param callback The callback to execute when the data has returned from the rtorrent API
+ */
 function getTorrents(callback) {
     var request = createrequest.createRequest([rtorrentconstants.DOWNLOAD_DOWNLOAD_LIST]);
 
@@ -50,6 +55,11 @@ function getTorrents(callback) {
 }
 
 
+/**
+ * This function gets the standard data that we would expect to see in an overview of a torrent
+ * (e.g. name, upload speed, download speed, ratio, etc.)
+ * @param callback The callback to execute when the data has returned from the rtorrent API
+ */
 function getStandardData(callback) {
     var request = createrequest.createRequest(rtorrentconstants.MULTICALL_STANDARD_INFO);
 
