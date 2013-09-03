@@ -18,7 +18,7 @@
         p.p-meta
           span Downloaded : {{torrent.downloaded}} of {{torrent.size}}
           |  Download Speed: {{torrent.downloadRateHumanReadable}}
-        .progress(ng-class="{'1':'', '0':'progress-striped active'}[downloadingFilter]")
+        .progress(ng-class="{'progress-striped active': (torrent.downloadRate > 0)}")
           // Progress bar
           .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
       li(ng-show='(torrentResults.torrents | filter:leeching).length > 5')
