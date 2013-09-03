@@ -21,4 +21,6 @@
         .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
           // Progress bar
           .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+      // This list item only shows when the array is empty
+      li(ng-show='(torrentResults.torrents | filter:uploading).length == 0') No torrents
     .clearfix

@@ -16,9 +16,11 @@
           // Name
           | <strong>{{torrent.name}}</strong>
         p.p-meta
-          span Downloaded : {{torrent.downloaded}}
+          span Downloaded : {{torrent.downloaded}} of {{torrent.size}}
           |  Download Speed: {{torrent.downloadRateHumanReadable}}
-        .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
+        .progress(ng-class="{'1':'', '0':'progress-striped active'}[downloadingFilter]")
           // Progress bar
           .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+      li(ng-show='(torrentResults.torrents | filter:seeding).length > 5')
+        .text-center And {{(torrentResults.torrents | filter:leeching).length - 5}} more
     .clearfix

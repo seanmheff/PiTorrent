@@ -33,9 +33,6 @@
                 ul.project
                   li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:view.filter")
                     p
-                      // Checkbox
-                      input(value='check1', type='checkbox')
-                      // Name
                       | <strong>{{torrent.name}}</strong>
                     p.p-meta
                       span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
@@ -43,5 +40,14 @@
                     .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
                       // Progress bar
                       .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+
+                    .file-upload
+                      .btn-grou1p
+                        button.btn.btn-mini.btn-success
+                          i.icon-play
+                        button.btn.btn-mini.btn-primary
+                          i.icon-pause
+                        button.btn.btn-mini.btn-danger.pull-right
+                          i.icon-remove
                 .clearfix
 

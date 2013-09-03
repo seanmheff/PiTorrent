@@ -11,7 +11,7 @@
     // Widget content
     // Task list starts
     ul.project
-      li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:seeding")
+      li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:seeding | limitTo:5")
         strong
           {{torrent.name}}
         p.p-meta
@@ -20,4 +20,6 @@
         .progress
           // Progress bar
           .bar.bar-success(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+      li(ng-show='(torrentResults.torrents | filter:seeding).length > 5')
+        .text-center And {{(torrentResults.torrents | filter:seeding).length - 5}} more
     .clearfix
