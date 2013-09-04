@@ -10,6 +10,12 @@ var rtorrentcontroller = require('../controllers/rtorrentcontroller.js');
 
 exports.get = function (req, res) {
     rtorrentcontroller.getStandardData(function(data) {
-        res.json(data);
+        // Send the response as JSON or text, depending on the data
+        if (data === "There was a problem connecting to rtorrent") {
+            res.send(data);
+        }
+        else {
+            res.json(data);
+        }
     });
 };

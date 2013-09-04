@@ -1,4 +1,11 @@
 .torrents(ng-controller="TorrentCtrl")
+
+  // This alert is shown when the server cannot communicate with rtorrent
+  .text-center
+    .alert.alert-error(ng-show='cantConnectToRtorrent')
+      h5 There was a problem connecting to rtorrent
+      p Is rtorrent up and running?
+
   tabset
     tab(heading="Overview")
       .container-fluid
@@ -51,4 +58,3 @@
                       .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
 
                 .clearfix
-

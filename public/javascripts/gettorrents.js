@@ -82,6 +82,16 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
  */
 function populateTorrents($scope, $http) {
     $http.get(document.location.href + 'torrents').success(function(torrents) {
+
+        // Check to see if the server can communicate with rtorrent
+        if (torrents == "There was a problem connecting to rtorrent") {
+            $scope.cantConnectToRtorrent = true;
+            return;
+        }
+        else {
+            $scope.cantConnectToRtorrent = false;
+        }
+
         for (var x in torrents.torrents) {
             torrents.torrents[x].percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
             torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
@@ -103,8 +113,25 @@ function populateTorrents($scope, $http) {
  */
 function updateTorrents($scope, $http) {
     $http.get(document.location.href + 'torrents').success(function(torrents) {
+
+        // Check to see if the server can communicate with rtorrent
+        if (torrents == "There was a problem connecting to rtorrent") {
+            $scope.cantConnectToRtorrent = true;
+            return;
+        }
+        else {
+            $scope.cantConnectToRtorrent = false;
+        }
+
         // Check to see if any torrents have been added or removed
-        if (torrents.torrents.length !== $scope.torrentResults.torrents.length) {
+        // Must wrap in a try catch block, as $scope.torrentResults.torrents may not exist if populateTorrents
+        // did not run successfully
+        try {
+            if (torrents.torrents.length !== $scope.torrentResults.torrents.length) {
+                populateTorrents($scope, $http);
+                return;
+            }
+        } catch (e) {
             populateTorrents($scope, $http);
             return;
         }
