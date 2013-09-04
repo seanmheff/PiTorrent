@@ -4,23 +4,26 @@
     .widget-icons.pull-right
       a.wminimize(href='#')
         i.icon-chevron-up
-      a.wclose(href='#')
+      a.wclose(href='#')                          s
         i.icon-remove
     .clearfix
   .widget-content
     // Widget content
     // Task list starts
     ul.project
-      li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:leeching")
+      // Only show the leeching torrents
+      li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:leeching | limitTo:5")
         p
           // Name
           | <strong>{{torrent.name}}</strong>
         p.p-meta
           span Downloaded : {{torrent.downloaded}} of {{torrent.size}}
           |  Download Speed: {{torrent.downloadRateHumanReadable}}
+        // If the torrent is currently downloading - show an 'active' progress bar (with stripes)
         .progress(ng-class="{'progress-striped active': (torrent.downloadRate > 0)}")
           // Progress bar
-          .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+          .bar(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+      // If there is more than 5 torrents leeching - show this list item
       li(ng-show='(torrentResults.torrents | filter:leeching).length > 5')
         .text-center And {{(torrentResults.torrents | filter:leeching).length - 5}} more
     .clearfix
