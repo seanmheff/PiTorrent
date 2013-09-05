@@ -28,7 +28,6 @@ function send(request, callback) {
     });
 
     socket.on("error", function(err) {
-        console.log("Error: " + err);
         callback("error");
     });
 }

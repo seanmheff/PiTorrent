@@ -1,60 +1,55 @@
 .torrents(ng-controller="TorrentCtrl")
 
   // This alert is shown when the server cannot communicate with rtorrent
-  .text-center
-    .alert.alert-error(ng-show='cantConnectToRtorrent')
-      h5 There was a problem connecting to rtorrent
-      p Is rtorrent up and running?
+  .container-fluid(ng-show='cantConnectToRtorrent')
+    .row-fluid
+      .span12
+        .text-center
+          .alert.alert-error
+            h5 There was a problem connecting to rtorrent
+            p Is rtorrent up and running?
 
   tabset
     tab(heading="Overview")
       .container-fluid
         .row-fluid
           .span6
-            include torrentseedingwidget
+            include torrent_summary_widgets/seeding
           .span6
-            include torrentleechingwidget
+            include torrent_summary_widgets/leeching
         .row-fluid
           .span6
-            include torrentdownloadingwidget
+            include torrent_summary_widgets/currently-downloading
           .span6
-            include torrentuploadingwidget
+            include torrent_summary_widgets/currently-uploading
 
-    tab(ng-repeat='view in tabs', heading='{{view.title}}', active='view.active')
+    tab(heading="All")
       .container-fluid
         .row-fluid
           .span12
-            .widget.wred
-              // Widget title
-              .widget-head
-                .pull-left {{view.title}}
-                .widget-icons.pull-right
-                  a.wminimize(href='#')
-                    i.icon-chevron-up
-                  a.wclose(href='#')
-                    i.icon-remove
-                .clearfix
-              .widget-content
-                // Widget content
-                // Task list starts
-                ul.project
-                  li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:view.filter")
-                    p
-                      | <strong>{{torrent.name}}</strong>
-                    .file-upload
-                      .pull-right
-                        .btn-grou1p
-                          button.btn.btn-mini.btn-success
-                            i.icon-play
-                          button.btn.btn-mini.btn-primary
-                            i.icon-pause
-                          button.btn.btn-mini.btn-danger
-                            i.icon-remove.progress
-                      p.p-meta
-                        span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
-                        |  Upload Speed: {{torrent.uploadRateHumanReadable}} Download Speed: {{torrent.downloadRateHumanReadable}}
-                    .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
-                      // Progress bar
-                      .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+            include torrent_widgets/all
 
-                .clearfix
+    tab(heading="Seeding")
+      .container-fluid
+        .row-fluid
+          .span12
+            include torrent_widgets/seeding
+
+    tab(heading="Leeching")
+      .container-fluid
+        .row-fluid
+          .span12
+            include torrent_widgets/leeching
+
+    tab(heading="Currently uploading")
+      .container-fluid
+        .row-fluid
+          .span12
+            include torrent_widgets/currently-uploading
+
+    tab(heading="Currently downloading")
+      .container-fluid
+        .row-fluid
+          .span12
+            include torrent_widgets/currently-downloading
+

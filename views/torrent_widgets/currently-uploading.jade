@@ -1,0 +1,21 @@
+.widget.wred
+  .widget-head
+    .pull-left Currently Uploading
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    ul.project
+      li(ng-repeat="torrent in torrentResults.torrents | filter:uploading | orderBy:'uploadRate'")
+        p
+          | <strong>{{torrent.name}}</strong>
+        p.p-meta
+          span Downloaded : {{torrent.downloaded}}
+          |  Upload Speed: {{torrent.uploadRateHumanReadable}}
+        .progress(ng-class="{'progress-success progress-striped active': (torrent.complete == 1)}")
+          .bar(ng-class="{'bar-success': (torrent.complete == 1)}", style='width: {{torrent.percentDone}}%')
+            | {{torrent.percentDone}}%
+    .clearfix

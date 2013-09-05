@@ -58,14 +58,6 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
     $scope.uploading = uploadingFilter;
     $scope.downloading = downloadingFilter;
 
-    $scope.tabs = [
-        { title:"All", orderBy:"name", filter:null },
-        { title:"Seeding", orderBy:"name", filter:seedingFilter },
-        { title:"Leeching", orderBy:"name", filter:leechingFilter },
-        { title:"Currently uploading", orderBy:"uploadRate", filter:uploadingFilter },
-        { title:"Currently downloading", orderBy:"downloadRate", filter:downloadingFilter }
-    ];
-
     populateTorrents($scope, $http);
 
     setInterval(function() {

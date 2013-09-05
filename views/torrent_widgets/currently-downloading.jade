@@ -1,0 +1,20 @@
+.widget.wred
+  .widget-head
+    .pull-left Currently Downloading
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    ul.project
+      li(ng-repeat="torrent in torrentResults.torrents | filter:downloading | orderBy:'downloadRate'")
+        p
+          | <strong>{{torrent.name}}</strong>
+        p.p-meta
+          span Downloaded : {{torrent.downloaded}}
+          |  Download Speed: {{torrent.downloadRateHumanReadable}}
+        .progress.progress-striped.active
+          .bar(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+    .clearfix
