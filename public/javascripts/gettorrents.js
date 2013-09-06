@@ -58,6 +58,12 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
     $scope.uploading = uploadingFilter;
     $scope.downloading = downloadingFilter;
 
+    // This is needed for selecting tabs from the overview widget
+    $scope.tab = {
+        seedingTab:false,
+        leechingTab:false
+    }
+
     populateTorrents($scope, $http);
 
     setInterval(function() {

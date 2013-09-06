@@ -17,4 +17,6 @@
           |  Download Speed: {{torrent.downloadRateHumanReadable}}
         .progress.progress-striped.active
           .bar(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+      // This list item only shows when the array is empty
+      li(ng-show='(torrentResults.torrents | filter:downloading).length == 0') No torrents
     .clearfix

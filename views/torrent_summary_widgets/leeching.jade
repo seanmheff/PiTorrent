@@ -12,7 +12,7 @@
     // Task list starts
     ul.project
       // Only show the leeching torrents
-      li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:leeching | limitTo:5")
+      li(ng-repeat="torrent in torrentResults.torrents | filter:leeching | orderBy:'name' | limitTo:5")
         p
           // Name
           | <strong>{{torrent.name}}</strong>
@@ -25,5 +25,7 @@
           .bar(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
       // If there is more than 5 torrents leeching - show this list item
       li(ng-show='(torrentResults.torrents | filter:leeching).length > 5')
-        .text-center And {{(torrentResults.torrents | filter:leeching).length - 5}} more
+        .text-center
+          .button.btn.btn-primary(ng-click="tab.leechingTab = true")
+            | And {{(torrentResults.torrents | filter:leeching).length - 5}} more
     .clearfix

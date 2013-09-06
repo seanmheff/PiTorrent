@@ -11,7 +11,7 @@
     // Widget content
     // Task list starts
     ul.project
-      li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:downloading")
+      li(ng-repeat="torrent in torrentResults.torrents | filter:downloading | orderBy:'downloadRate'")
         p
           // Name
           | <strong>{{torrent.name}}</strong>
@@ -23,5 +23,4 @@
           .bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
       // This list item only shows when the array is empty
       li(ng-show='(torrentResults.torrents | filter:downloading).length == 0') No torrents
-
     .clearfix

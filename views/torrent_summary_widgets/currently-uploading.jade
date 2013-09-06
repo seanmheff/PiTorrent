@@ -11,7 +11,7 @@
     // Widget content
     // Task list starts
     ul.project
-      li(ng-repeat="torrent in torrentResults.torrents | orderBy:view.orderBy | filter:uploading")
+      li(ng-repeat="torrent in torrentResults.torrents | filter:uploading | orderBy:'uploadRate'")
         p
           // Name
           | <strong>{{torrent.name}}</strong>
