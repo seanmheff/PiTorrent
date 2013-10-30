@@ -28,4 +28,6 @@
         .text-center
           .button.btn.btn-primary(ng-click="tab.leechingTab = true")
             | And {{(torrentResults.torrents | filter:leeching).length - 5}} more
+      // This list item only shows when the array is empty
+      li(ng-show='(torrentResults.torrents | filter:leeching).length == 0') No torrents
     .clearfix

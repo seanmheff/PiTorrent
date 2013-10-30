@@ -23,4 +23,6 @@
         .text-center
           .button.btn.btn-primary(ng-click="tab.seedingTab = true")
             | And {{(torrentResults.torrents | filter:seeding).length - 5}} more
+      // This list item only shows when the array is empty
+      li(ng-show='(torrentResults.torrents | filter:seeding).length == 0') No torrents
     .clearfix
