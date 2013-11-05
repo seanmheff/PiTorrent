@@ -10,7 +10,8 @@ var xmlbuilder = require('xmlbuilder');
 
 
 module.exports = {
-    createRequest : createRequest
+    createRequest : createRequest,
+    createMulticallRequest : createMulticallRequest
 };
 
 
@@ -43,7 +44,7 @@ function formatRequest(xml){
 /**
  * A method to create a XML-RPC string based on some input parameters
  * @param args The parameter(s) you want to give to the request
- * @return Returns an XML formatted string containing the parameter(s)
+ * @return {string} Returns an XML formatted string containing the parameter(s)
  */
 function createXml(args) {
     var xml = xmlbuilder.create("methodCall");
@@ -61,6 +62,26 @@ function createXml(args) {
 }
 
 
+function createMulticallXml(args) {
+    var xml = xmlbuilder.create("methodCall");
+    xml.ele("methodName", "system.multicall");
+    var data = xml.ele("params").ele("param").ele("value").ele("array").ele("data");
+
+    for (var i = 1; i < args.length; i++) {
+        var struct = data.ele("value").ele("struct");
+
+        var member1 = struct.ele("member");
+        member1.ele("name", "methodName")
+        member1.ele("value").ele("string", args[i]);
+
+        var member2 = struct.ele("member");
+        member2.ele("name", "params")
+        member2.ele("value").ele("array").ele("data").ele("value").ele("string");
+    }
+    return xml.toString();
+}
+
+
 /**
  * This function is the only function that needs to be exported to the module.
  * It calls the private functions
@@ -69,4 +90,9 @@ function createXml(args) {
  */
 function createRequest(args) {
     return formatRequest(createXml(args));
+}
+
+
+function createMulticallRequest(args) {
+    return formatRequest(createMulticallXml(args));
 }

@@ -88,7 +88,8 @@ if ('development' == app.get('env')) {
 app.get('/', ensureAuthenticated, function(req, res) {
     routes.index(req, res), { user: req.user }
 });
-app.get('/torrents', ensureAuthenticated, torrents.get);
+app.get('/torrents', ensureAuthenticated, torrents.getTorrents);
+app.get('/stats', ensureAuthenticated, torrents.getStats);
 app.get('/login', auth.login);
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res) {
     res.redirect('/');
