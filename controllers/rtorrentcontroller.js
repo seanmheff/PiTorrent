@@ -7,8 +7,9 @@
  */
 
 module.exports = {
-    getTorrents : getTorrents,
-    getStandardData : getStandardData
+    getTorrents: getTorrents,
+    getStandardData: getStandardData,
+    getGlobalStats: getGlobalStats
 
 };
 
@@ -102,6 +103,47 @@ function getStandardData(callback) {
                 tmp["ratio"] = torrentData[6];
                 tmp["complete"] = torrentData[7];
                 dataToReturn.torrents.push(tmp);
+            });
+
+            callback(dataToReturn);
+        }
+    });
+}
+
+
+function getGlobalStats(callback) {
+    var request = createrequest.createMulticallRequest(["system.multicall", "get_down_rate", "get_up_rate"]);
+
+    rtorrentapi.execute(request, function(response) {
+        if (response.toString().indexOf("error") == 0) {
+            callback("There was a problem connecting to rtorrent");
+        }
+        else {
+            // Remove the header
+            response = parseresponse.removeResponseHeader(response);
+
+            // Traverse the XML document until we get to the data
+            var data = new xmldoc.XmlDocument(response)
+                .childNamed("params")
+                .childNamed("param")
+                .childNamed("value")
+                .childNamed("array")
+                .childNamed("data");
+
+            var dataToReturn = {};
+            var fff = ["downSpeed", "upSpeed"];
+            var counter = 0;
+
+            // For each torrent
+            data.eachChild(function(value) {
+                var innerData = value.childNamed("array").childNamed("data");
+
+                // For each parameter - push into temp array
+                // Always push the child at index 0, this allows us to ignore types (<int>, <boolean>, etc)
+                innerData.eachChild(function(innerValue) {
+                    dataToReturn[fff[counter]] = innerValue.children[0].val;
+                    counter += 1;
+                });
             });
 
             callback(dataToReturn);

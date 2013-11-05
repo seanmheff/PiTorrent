@@ -62,12 +62,18 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
     $scope.tab = {
         seedingTab:false,
         leechingTab:false
+    };
+
+    $scope.data = [[]];
+    for (var i=0; i<40; i++) {
+        $scope.data[0].push([i,0]);
     }
 
     populateTorrents($scope, $http);
 
     setInterval(function() {
         updateTorrents($scope, $http);
+        getGlobalStats($scope, $http);
     }, 2000);
 });
 
@@ -189,4 +195,70 @@ function convert(fileSizeInBytes) {
     } while (fileSizeInBytes > 1024);
 
     return Math.max(fileSizeInBytes, 0.1).toFixed(1) + byteUnits[i];
+}
+
+
+/**
+ *
+ * @param $scope
+ * @param $http
+ */
+function getGlobalStats($scope, $http) {
+    $http.get(document.location.href + 'stats').success(function(stats) {
+
+        // Check to see if the server can communicate with rtorrent
+        if (stats == "There was a problem connecting to rtorrent") {
+            $scope.cantConnectToRtorrent = true;
+            return;
+        }
+        else {
+            $scope.cantConnectToRtorrent = false;
+        }
+
+        pushDownloadSpeed($scope, stats.downSpeed);
+    });
+}
+
+
+/**
+ * An Angular directive that plots a 'flot' chart
+ */
+app.directive('chart', function() {
+    return {
+        restrict: 'E',
+        template: '<div style="height:300px;"></div>',
+        replace: true,
+        link: function(scope, elem, attrs) {
+
+            var chart = null,
+                opts  = {
+                    series: { shadowSize: 0 }, // drawing is faster without shadows
+                    lines: {fill: true},
+                    grid: {borderWidth:0 },
+                    //yaxis: { min: 0, max: 100 },
+                    colors: ["#ff2424"]
+                };
+
+            scope.$watch(attrs.ngModel, function(v) {
+                if (!chart) {
+                    chart = $.plot(elem, v , opts);
+                    elem.show();
+                }
+                else {
+                    chart.setData(v);
+                    chart.setupGrid();
+                    chart.draw();
+                }
+            }, true);
+        }
+    };
+});
+
+
+var counter = 40;
+
+function pushDownloadSpeed($scope, speed) {
+    $scope.data[0] = $scope.data[0].slice(1);
+    $scope.data[0].push([counter++, speed]);
+
 }

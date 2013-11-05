@@ -22,12 +22,17 @@
             include torrent_summary_widgets/currently-downloading
           .span6
             include torrent_summary_widgets/currently-uploading
+        .row-fluid
+          .span6
+            include realtime_chart
 
     tab(heading="All")
       .container-fluid
         .row-fluid
-          .span12
+          .span6
             include torrent_widgets/all
+          .span6
+            include realtime_chart
 
     tab(heading="Seeding", active="tab.seedingTab")
       .container-fluid
