@@ -111,8 +111,13 @@ function getStandardData(callback) {
 }
 
 
+/**
+ * This function gets the global stats we would expect to see for a torrent client
+ * (e.g. global download speed, global upload speed, throttle limits, etc)
+ * @param callback The callback to execute when the data has returned from the rtorrent API
+ */
 function getGlobalStats(callback) {
-    var request = createrequest.createMulticallRequest(["system.multicall", "get_down_rate", "get_up_rate"]);
+    var request = createrequest.createMulticallRequest(rtorrentconstants.MULTICALL_GLOBAL_STATS);
 
     rtorrentapi.execute(request, function(response) {
         if (response.toString().indexOf("error") == 0) {
@@ -134,14 +139,16 @@ function getGlobalStats(callback) {
             var stats = ["downSpeed", "upSpeed"];
             var counter = 0;
 
-            // For each torrent
+            // For each separate multicall function
             data.eachChild(function(value) {
-                var innerData = value.childNamed("array").childNamed("data");
+                var value2 = value.childNamed("array").childNamed("data").childNamed("value");
 
-                // For each parameter - push into temp array
-                // Always push the child at index 0, this allows us to ignore types (<int>, <boolean>, etc)
-                innerData.eachChild(function(innerValue) {
-                    dataToReturn[stats[counter++]] = innerValue.children[0].val;
+                // Add the returned value to the "dataToReturn" array
+                // Use the "eachChild" function as this allows us to ignore types (<int>, <boolean>, etc)
+                // e.g. node could be <i8>data</i8> or <boolean>data</boolean>
+                // There should only ever be one child... So doing this is safe enough... I hope!
+                value2.eachChild(function(innerValue) {
+                    dataToReturn[stats[counter++]] = innerValue.val;
                 });
             });
 

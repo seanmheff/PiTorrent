@@ -1,10 +1,15 @@
-/**
- * Created with IntelliJ IDEA.
- * User: sean
- * Date: 03/08/13
- * Time: 18:11
- * To change this template use File | Settings | File Templates.
+/*
+ * System commands
  */
+SYSTEM_MULTICALL = "system.multicall";
+
+
+/*
+ * Global commands
+ */
+GLOBAL_DOWNLOAD_SPEED = "get_down_rate";
+GLOBAL_UPLOAD_SPEED = "get_up_rate";
+
 
 /*
  * Download related
@@ -50,8 +55,15 @@ MULTICALL_STANDARD_INFO = [
     DOWNLOAD_GET_COMPLETE + "= "
 ];
 
-module.exports = {
+MULTICALL_GLOBAL_STATS = [
+    SYSTEM_MULTICALL,
+    GLOBAL_DOWNLOAD_SPEED,
+    GLOBAL_UPLOAD_SPEED
+];
 
+
+
+module.exports = {
 
     /*
      * Download related
@@ -85,7 +97,8 @@ module.exports = {
     /*
      * List of helpful multicall commands
      */
-    MULTICALL_STANDARD_INFO : MULTICALL_STANDARD_INFO
+    MULTICALL_STANDARD_INFO : MULTICALL_STANDARD_INFO,
+    MULTICALL_GLOBAL_STATS  : MULTICALL_GLOBAL_STATS
 
 }
 

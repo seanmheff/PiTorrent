@@ -7,7 +7,7 @@
  */
 
 var app = angular.module('myApp', ['ui.bootstrap']);
-var counter = 40; // Counter needed for flot chart
+var counter = 150; // Counter needed for flot chart
 
 
 
@@ -67,9 +67,12 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
     };
 
     // Set up our chart data
-    $scope.data = [[]];
-    for (var i=0; i<40; i++) {
-        $scope.data[0].push([i,0]);
+    $scope.downloadData = [[]];
+    $scope.uploadData = [[]];
+
+    for (var i=0; i<counter; i++) {
+        $scope.downloadData[0].push([i,0]);
+        $scope.uploadData[0].push([i,0]);
     }
 
     populateTorrents($scope, $http);
@@ -219,6 +222,7 @@ function getGlobalStats($scope, $http) {
         }
 
         pushDownloadSpeed($scope, stats.downSpeed);
+        pushUploadSpeed($scope, stats.upSpeed);
     });
 }
 
@@ -269,9 +273,36 @@ function pushDownloadSpeed($scope, speed) {
     // Convert speed to kB
     speed = speed/1024;
 
+    // Ignore tiny speed amounts - keeps graph standardised
+    if (speed < 1) {
+        speed = 0;
+    }
+
     // Remove first entry in array - oldest data
-    $scope.data[0] = $scope.data[0].slice(1);
+    $scope.downloadData[0] = $scope.downloadData[0].slice(1);
 
     // Add new speed to array
-    $scope.data[0].push([counter++, speed]);
+    $scope.downloadData[0].push([counter++, speed]);
+}
+
+
+/**
+ *
+ * @param $scope
+ * @param speed
+ */
+function pushUploadSpeed($scope, speed) {
+    // Convert speed to kB
+    speed = speed/1024;
+
+    // Ignore tiny speed amounts - keeps graph standardised
+    if (speed < 1) {
+        speed = 0;
+    }
+
+    // Remove first entry in array - oldest data
+    $scope.uploadData[0] = $scope.uploadData[0].slice(1);
+
+    // Add new speed to array
+    $scope.uploadData[0].push([counter++, speed]);
 }
