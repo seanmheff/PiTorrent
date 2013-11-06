@@ -136,7 +136,7 @@ function getGlobalStats(callback) {
                 .childNamed("data");
 
             var dataToReturn = {};
-            var stats = ["downSpeed", "upSpeed"];
+            var stats = ["downSpeed", "upSpeed", "downLimit", "upLimit"];
             var counter = 0;
 
             // For each separate multicall function

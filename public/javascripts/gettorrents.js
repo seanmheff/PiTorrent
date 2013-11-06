@@ -205,9 +205,10 @@ function convert(fileSizeInBytes) {
 
 
 /**
- *
- * @param $scope
- * @param $http
+ * A function that gets and updates the global rTorrent stats.
+ * This function is called at a set interval.
+ * @param $scope The controller scope
+ * @param $http The http service that is needed to make ajax requests
  */
 function getGlobalStats($scope, $http) {
     $http.get(document.location.href + 'stats').success(function(stats) {
@@ -223,6 +224,15 @@ function getGlobalStats($scope, $http) {
 
         pushDownloadSpeed($scope, stats.downSpeed);
         pushUploadSpeed($scope, stats.upSpeed);
+
+        // Convert bytes to human readable format
+        stats.downSpeed = convert(stats.downSpeed);
+        stats.upSpeed = convert(stats.upSpeed);
+        stats.downLimit = convert(stats.downLimit);
+        stats.upLimit = convert(stats.upLimit);
+
+        // Add stats to scope
+        $scope.stats = stats;
     });
 }
 
