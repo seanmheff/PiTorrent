@@ -262,16 +262,16 @@ app.directive('chart', function() {
 
 /**
  *
- * @param $scope
+ * @param speedArray
  * @param speed
  */
-function pushSpeed(array, speed) {
+function pushSpeed(speedArray, speed) {
     // Convert speed to kB
     speed = speed/1024;
 
-    // Remove first entry in array - oldest data
-    array = array.slice(1);
+    // Remove first entry in speedArray - oldest data
+    speedArray = speedArray.slice(1);
 
-    // Add new speed to array
-    array.push([counter++, speed]);
+    // Add new speed to speedArray
+    speedArray.push([counter++, speed]);
 }
