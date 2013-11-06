@@ -1,6 +1,6 @@
 .widget.wred
   .widget-head
-    .pull-left Download Speed
+    .pull-left Upload Speed
     .widget-icons.pull-right
       a.wminimize(href='#')
         i.icon-chevron-up
@@ -9,6 +9,6 @@
     .clearfix
   .widget-content
     .padd
-      chart(ng-model='downloadData', style='width:100%;')
+      chart(ng-model='uploadData', style='width:100%;')
       .text-center
         p Speeds over the last 5 minutes (kB/s)

@@ -1,14 +1,6 @@
-/**
- * Created with IntelliJ IDEA.
- * User: sean
- * Date: 03/08/13
- * Time: 18:24
- * To change this template use File | Settings | File Templates.
- */
-
 var xmlbuilder = require('xmlbuilder');
 
-
+/* Our module exports */
 module.exports = {
     createRequest : createRequest,
     createMulticallRequest : createMulticallRequest
@@ -62,6 +54,12 @@ function createXml(args) {
 }
 
 
+/**
+ * A method to create a multicall XML-RPC string based on some input parameters
+ * Multicalls are useful as they allow us to execute multiple functions in parallel
+ * @param args The parameter(s) you want to give to the request
+ * @returns {string} Returns an XML formatted string containing the parameter(s)
+ */
 function createMulticallXml(args) {
     var xml = xmlbuilder.create("methodCall");
     xml.ele("methodName", "system.multicall");
@@ -83,7 +81,7 @@ function createMulticallXml(args) {
 
 
 /**
- * This function is the only function that needs to be exported to the module.
+ * Function that needs to be exported to the module.
  * It calls the private functions
  * @param args The arguments to give to the request builder
  * @returns {string} Returns a valid XML-RPC formatted string containing the arguments
@@ -93,6 +91,12 @@ function createRequest(args) {
 }
 
 
+/**
+ * Function that needs to be exported to the module.
+ * It calls the private functions
+ * @param args The arguments to give to the request builder
+ * @returns {string} Returns a valid XML-RPC formatted string containing the arguments
+ */
 function createMulticallRequest(args) {
     return formatRequest(createMulticallXml(args));
 }
