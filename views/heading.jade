@@ -6,14 +6,17 @@
     span.page-meta rtorrent downloads
   // Breadcrumb
   .bread-crumb.pull-right
-    p
-      strong  {{stats.downSpeed}}
-      |  up /
-      strong  {{stats.upSpeed}}
-      |  down (Speed)
-    p
-      strong  {{stats.downLimit}}
-      |  up /
-      strong  {{stats.upLimit}}
-      |  down (Throttle)
+    .well.blightblue
+      p
+        strong  {{stats.upLimit}}
+        |  up /
+        strong  {{stats.downLimit}}
+        |  down (Throttle)
+  .bread-crumb.pull-right
+    .well.blightblue
+      p
+        strong  {{stats.upSpeed}}
+        |  up /
+        strong  {{stats.downSpeed}}
+        |  down (Speed)
   .clearfix
