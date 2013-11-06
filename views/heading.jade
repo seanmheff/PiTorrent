@@ -6,10 +6,14 @@
     span.page-meta rtorrent downloads
   // Breadcrumb
   .bread-crumb.pull-right
-    a(href='index.html')
-      i.icon-home
-      | Home
-    // Divider
-    span.divider /
-      a.bread-current(href='#') Torrents
+    p
+      strong  {{stats.downSpeed}}
+      |  up /
+      strong  {{stats.upSpeed}}
+      |  down (Speed)
+    p
+      strong  {{stats.downLimit}}
+      |  up /
+      strong  {{stats.upLimit}}
+      |  down (Throttle)
   .clearfix
