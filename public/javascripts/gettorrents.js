@@ -7,6 +7,8 @@
  */
 
 var app = angular.module('myApp', ['ui.bootstrap']);
+var counter = 40; // Counter needed for flot chart
+
 
 
 /**
@@ -64,6 +66,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
         leechingTab:false
     };
 
+    // Set up our chart data
     $scope.data = [[]];
     for (var i=0; i<40; i++) {
         $scope.data[0].push([i,0]);
@@ -215,7 +218,7 @@ function getGlobalStats($scope, $http) {
             $scope.cantConnectToRtorrent = false;
         }
 
-        pushDownloadSpeed($scope, stats.downSpeed);
+        pushSpeed($scope.data[0], stats.downSpeed);
     });
 }
 
@@ -236,7 +239,9 @@ app.directive('chart', function() {
                     lines: {fill: true},
                     grid: {borderWidth:0 },
                     //yaxis: { min: 0, max: 100 },
-                    colors: ["#ff2424"]
+                    colors: ["#ff2424"],
+                    xaxis: {show: false},
+                    yaxis: {min: 0, show: true}
                 };
 
             scope.$watch(attrs.ngModel, function(v) {
@@ -255,10 +260,18 @@ app.directive('chart', function() {
 });
 
 
-var counter = 40;
+/**
+ *
+ * @param $scope
+ * @param speed
+ */
+function pushSpeed(array, speed) {
+    // Convert speed to kB
+    speed = speed/1024;
 
-function pushDownloadSpeed($scope, speed) {
-    $scope.data[0] = $scope.data[0].slice(1);
-    $scope.data[0].push([counter++, speed]);
+    // Remove first entry in array - oldest data
+    array = array.slice(1);
 
+    // Add new speed to array
+    array.push([counter++, speed]);
 }

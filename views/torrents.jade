@@ -24,7 +24,7 @@
             include torrent_summary_widgets/currently-uploading
         .row-fluid
           .span6
-            include realtime_chart
+            include download_chart
 
     tab(heading="All")
       .container-fluid
@@ -32,7 +32,7 @@
           .span6
             include torrent_widgets/all
           .span6
-            include realtime_chart
+            include download_chart
 
     tab(heading="Seeding", active="tab.seedingTab")
       .container-fluid

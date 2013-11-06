@@ -131,7 +131,7 @@ function getGlobalStats(callback) {
                 .childNamed("data");
 
             var dataToReturn = {};
-            var fff = ["downSpeed", "upSpeed"];
+            var stats = ["downSpeed", "upSpeed"];
             var counter = 0;
 
             // For each torrent
@@ -141,8 +141,7 @@ function getGlobalStats(callback) {
                 // For each parameter - push into temp array
                 // Always push the child at index 0, this allows us to ignore types (<int>, <boolean>, etc)
                 innerData.eachChild(function(innerValue) {
-                    dataToReturn[fff[counter]] = innerValue.children[0].val;
-                    counter += 1;
+                    dataToReturn[stats[counter++]] = innerValue.children[0].val;
                 });
             });
 
