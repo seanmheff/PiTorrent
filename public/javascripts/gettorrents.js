@@ -218,7 +218,7 @@ function getGlobalStats($scope, $http) {
             $scope.cantConnectToRtorrent = false;
         }
 
-        pushSpeed($scope.data[0], stats.downSpeed);
+        pushDownloadSpeed($scope, stats.downSpeed);
     });
 }
 
@@ -262,16 +262,16 @@ app.directive('chart', function() {
 
 /**
  *
- * @param speedArray
+ * @param $scope
  * @param speed
  */
-function pushSpeed(speedArray, speed) {
+function pushDownloadSpeed($scope, speed) {
     // Convert speed to kB
     speed = speed/1024;
 
-    // Remove first entry in speedArray - oldest data
-    speedArray = speedArray.slice(1);
+    // Remove first entry in array - oldest data
+    $scope.data[0] = $scope.data[0].slice(1);
 
-    // Add new speed to speedArray
-    speedArray.push([counter++, speed]);
+    // Add new speed to array
+    $scope.data[0].push([counter++, speed]);
 }
