@@ -1,0 +1,23 @@
+.widget.wblue
+  .widget-head
+    .pull-left Statistics
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    ul.project
+      li
+        strong Download Speed
+        |  {{stats.downSpeed}}
+      li
+        strong Upload Speed
+        |  {{stats.upSpeed}}
+      li
+        strong Download Throttle
+        |  {{stats.downLimit}}
+      li
+        strong Upload Throttle
+        |  {{stats.upLimit}}
