@@ -26,7 +26,7 @@
           .span6
             include global_stats
 
-    tab(heading="All")
+    tab(heading="All ({{torrentResults.torrents.length}})")
       .container-fluid
         .row-fluid
           .span6
@@ -34,25 +34,25 @@
           .span6
             include download_chart
 
-    tab(heading="Seeding", active="tab.seedingTab")
+    tab(heading="Seeding ({{(torrentResults.torrents | filter:seeding).length }})", active="tab.seedingTab")
       .container-fluid
         .row-fluid
           .span12
             include torrent_widgets/seeding
 
-    tab(heading="Leeching", active="tab.leechingTab")
+    tab(heading="Leeching ({{(torrentResults.torrents | filter:leeching).length }})", active="tab.leechingTab")
       .container-fluid
         .row-fluid
           .span12
             include torrent_widgets/leeching
 
-    tab(heading="Currently uploading")
+    tab(heading="Currently uploading ({{(torrentResults.torrents | filter:uploading).length }})")
       .container-fluid
         .row-fluid
           .span12
             include torrent_widgets/currently-uploading
 
-    tab(heading="Currently downloading")
+    tab(heading="Currently downloading ({{(torrentResults.torrents | filter:downloading).length }})")
       .container-fluid
         .row-fluid
           .span12
