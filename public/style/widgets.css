@@ -147,6 +147,7 @@
 
 .file-upload .btn{
 	font-size: 8px !important;
+    margin: 1px;
 }
 
 .file-upload li{
