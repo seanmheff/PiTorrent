@@ -29,10 +29,8 @@
     tab(heading="All ({{torrentResults.torrents.length}})")
       .container
         .row
-          .col-md-6
+          .col-md-12
             include torrent_widgets/all
-          .col-md-6
-            include download_chart
 
     tab(heading="Seeding ({{(torrentResults.torrents | filter:seeding).length }})", active="tab.seedingTab")
       .container
