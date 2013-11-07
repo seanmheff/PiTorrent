@@ -8,8 +8,6 @@
         i.icon-remove
     .clearfix
   .widget-content
-    // Widget content
-    // Task list starts
     ul.project
       li(ng-repeat="torrent in torrentResults.torrents | filter:seeding | orderBy:'name' | limitTo:5")
         strong {{torrent.name}}
@@ -17,8 +15,7 @@
           span Downloaded : {{torrent.downloaded}}
             |  Upload Speed: {{torrent.uploadRateHumanReadable}}
         .progress
-          // Progress bar
-          .bar.bar-success(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+          .progress-bar.bar-success(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
       li(ng-show='(torrentResults.torrents | filter:seeding).length > 5')
         .text-center
           .button.btn.btn-primary(ng-click="tab.seedingTab = true")

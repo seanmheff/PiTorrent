@@ -1,60 +1,60 @@
 .torrents
 
   // This alert is shown when the server cannot communicate with rtorrent
-  .container-fluid(ng-show='cantConnectToRtorrent')
-    .row-fluid
-      .span12
+  .container(ng-show='cantConnectToRtorrent')
+    .row
+      .col-md-12
         .text-center
-          .alert.alert-error
+          .alert.alert-danger
             h5 There was a problem connecting to rtorrent
             p Is rtorrent up and running?
 
   tabset
     tab(heading="Overview")
-      .container-fluid
-        .row-fluid
-          .span6
+      .container
+        .row
+          .col-md-6
             include torrent_summary_widgets/currently-uploading
-          .span6
+          .col-md-6
             include torrent_summary_widgets/currently-downloading
-        .row-fluid
-          .span6
+        .row
+          .col-md-6
             include upload_chart
-          .span6
+          .col-md-6
             include download_chart
-        .row-fluid
-          .span6
+        .row
+          .col-md-6
             include global_stats
 
     tab(heading="All ({{torrentResults.torrents.length}})")
-      .container-fluid
-        .row-fluid
-          .span6
+      .container
+        .row
+          .col-md-6
             include torrent_widgets/all
-          .span6
+          .col-md-6
             include download_chart
 
     tab(heading="Seeding ({{(torrentResults.torrents | filter:seeding).length }})", active="tab.seedingTab")
-      .container-fluid
-        .row-fluid
-          .span12
+      .container
+        .row
+          .col-md-12
             include torrent_widgets/seeding
 
     tab(heading="Leeching ({{(torrentResults.torrents | filter:leeching).length }})", active="tab.leechingTab")
-      .container-fluid
-        .row-fluid
-          .span12
+      .container
+        .row
+          .col-md-12
             include torrent_widgets/leeching
 
     tab(heading="Currently uploading ({{(torrentResults.torrents | filter:uploading).length }})")
-      .container-fluid
-        .row-fluid
-          .span12
+      .container
+        .row
+          .col-md-12
             include torrent_widgets/currently-uploading
 
     tab(heading="Currently downloading ({{(torrentResults.torrents | filter:downloading).length }})")
-      .container-fluid
-        .row-fluid
-          .span12
+      .container
+        .row
+          .col-md-12
             include torrent_widgets/currently-downloading
 
