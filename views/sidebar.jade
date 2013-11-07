@@ -1,33 +1,23 @@
-// Sidebar
 .sidebar
   .sidebar-dropdown
     a(href='#') Navigation
   .sidebar-inner
-    // Search form
     .sidebar-widget
-      form.form-inline
-        .input-append.row-fluid
-          input.span8(type='text', placeholder='Search')
-          button.btn.btn-info(type='submit') Search
-    // - Sidebar navigation
-    // If the main navigation has sub navigation, then add the class "has_submenu" to "li" of main navigation.
+      form
+        input.form-control(type='text', placeholder='Search')
     ul.navi
-      // Use the class nred, ngreen, nblue, nlightblue, nviolet or norange to add background color. You need to use this in <li> tag.
-      li.nred.current.open
-        a(href='/')
+      li.nred.current
+        a(href='#')
           i.icon-desktop
           | Torrents
-      // Menu with sub menu
       li.has_submenu.nlightblue
         a(href='#')
-          // Menu name with icon
           i.icon-th
           | Widgets
-          // Icon for dropdown
           span.pull-right
             i.icon-angle-right
         ul
-          li.active
+          li
             a(href='widgets1.html') Widgets #1
           li
             a(href='widgets2.html') Widgets #2
@@ -87,3 +77,5 @@
         a(href='tables.html')
           i.icon-table
           | Tables
+    .sidebar-widget
+      #todaydate

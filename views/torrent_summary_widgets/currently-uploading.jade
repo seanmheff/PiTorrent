@@ -19,7 +19,7 @@
           span Downloaded : {{torrent.downloaded}}
           |  Upload Speed: {{torrent.uploadRateHumanReadable}}
         .progress(ng-class="{'progress-success progress-striped active': (torrent.complete == 1)}")
-          .bar(ng-class="{'bar-success': (torrent.complete == 1)}", style='width: {{torrent.percentDone}}%')
+          .progress-bar(ng-class="{'bar-success': (torrent.complete == 1)}", style='width: {{torrent.percentDone}}%')
             | {{torrent.percentDone}}%
       // This list item only shows when the array is empty
       li(ng-show='(torrentResults.torrents | filter:uploading).length == 0') No torrents

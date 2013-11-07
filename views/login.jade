@@ -1,29 +1,48 @@
-extends layout
+!!! 5
+html(lang='en')
+  head
+    meta(http-equiv='Content-Type', content='text/html; charset=UTF-8')
+    meta(charset='utf-8')
 
-block content
-  .admin-form
-    .container-fluid
-      .row-fluid
-        .span12
-          .widget.worange
-            .widget-head
-              i.icon-lock
-              | Login
-            .widget-content
-              .padd
-                form.form-horizontal(action='/login',method='post')
-                  .control-group
-                    label.control-label(for='user') Username
-                    .controls
-                      input#user(name="username", type='text', placeholder='Username')
-                  .control-group
-                    label.control-label(for='pass') Password
-                    .controls
-                      input#pass(name="password", type='password', placeholder='Password')
-                  .control-group
-                    .controls
-                      label.checkbox
-                        input(type='checkbox')
-                        | Remember me
-                      br
+    title Login
+    meta(name='viewport', content='width=device-width, initial-scale=1.0')
+    meta(name='description', content='')
+    meta(name='keywords', content='')
+    meta(name='author', content='')
+
+    link(href='style/bootstrap.css', rel='stylesheet')
+    link(rel='stylesheet', href='style/font-awesome.css')
+    link(href='style/style.css', rel='stylesheet')
+    link(rel='shortcut icon', href='img/favicon/favicon.png')
+
+  body
+    .admin-form
+      .container
+        .row
+          .col-md-12
+            .widget.worange
+              .widget-head
+                i.icon-lock
+                | Login
+              .widget-content
+                .padd
+                  form.form-horizontal(action='/login',method='post')
+                    .form-group
+                      label.control-label.col-lg-3(for='user') Username
+                      .col-lg-9
+                        input#user.form-control(name="username", type='text', placeholder='Username')
+                    .form-group
+                      label.control-label.col-lg-3(for='pass') Password
+                      .col-lg-9
+                        input#pass.form-control(name="password", type='password', placeholder='Password')
+                    .form-group
+                      .col-lg-9.col-lg-offset-3
+                        .checkbox
+                          label
+                            input(type='checkbox')
+                            | Remember me
+                    .col-lg-9.col-lg-offset-3
                       button.btn.btn-danger(type='submit') Sign in
+                      button.btn.btn-default(type='reset') Reset
+                    br
+    script(src='js/jquery.js')
