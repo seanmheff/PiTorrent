@@ -98,6 +98,10 @@ app.get('/logout', function(req, res){
     req.logout();
     res.redirect('/');
 });
+app.get('/partials/:name', ensureAuthenticated, function (req, res) {
+    var name = req.params.name;
+    res.render('../public/partials/' + name);
+});
 
 http.createServer(app).listen(app.get('port'), function(){
   console.log('Express server listening on port ' + app.get('port'));

@@ -1,0 +1,41 @@
+tabset
+  tab(heading="Overview")
+    .container
+      .row
+        .col-md-6
+          include torrent_summary_widgets/currently-uploading
+        .col-md-6
+          include torrent_summary_widgets/currently-downloading
+      .row
+        .col-md-6
+          include upload_chart
+        .col-md-6
+          include download_chart
+      .row
+        .col-md-6
+          include global_stats
+  tab(heading="All ({{torrentResults.torrents.length}})")
+    .container
+      .row
+        .col-md-12
+          include torrent_widgets/all
+  tab(heading="Seeding ({{(torrentResults.torrents | filter:seeding).length }})", active="tab.seedingTab")
+    .container
+      .row
+        .col-md-12
+          include torrent_widgets/seeding
+  tab(heading="Leeching ({{(torrentResults.torrents | filter:leeching).length }})", active="tab.leechingTab")
+    .container
+      .row
+        .col-md-12
+          include torrent_widgets/leeching
+  tab(heading="Currently uploading ({{(torrentResults.torrents | filter:uploading).length }})")
+    .container
+      .row
+        .col-md-12
+          include torrent_widgets/currently-uploading
+  tab(heading="Currently downloading ({{(torrentResults.torrents | filter:downloading).length }})")
+    .container
+      .row
+        .col-md-12
+          include torrent_widgets/currently-downloading
