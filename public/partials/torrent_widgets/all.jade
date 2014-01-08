@@ -1,0 +1,31 @@
+.widget.wred
+  .widget-head
+    .pull-left All
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    ul.project
+      li(ng-repeat="torrent in torrentResults.torrents | orderBy:'name'")
+        a(href="#/main/{{torrent.hash}}")
+          p
+            | <strong>{{torrent.name}}</strong>
+          .file-upload
+            .pull-right
+              .btn-groulp
+                button.btn.btn-sm.btn-success
+                  i.icon-play
+                button.btn.btn-sm.btn-primary
+                  i.icon-pause
+                button.btn.btn-sm.btn-danger
+                  i.icon-remove
+            p.p-meta
+              span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
+              | Upload Speed: {{torrent.uploadRateHumanReadable}} Download Speed: {{torrent.downloadRateHumanReadable}}
+          .progress(ng-class="{'progress-striped active': (torrent.downloadRate > 0)}")
+            .progress-bar(ng-class="{'progress-bar-success': (torrent.complete == 1)}", style='width: {{torrent.percentDone}}%;')
+              | {{torrent.percentDone}}%
+      .clearfix

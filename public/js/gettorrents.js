@@ -1,14 +1,19 @@
-/**
- * Created with IntelliJ IDEA.
- * User: sean
- * Date: 08/08/13
- * Time: 20:16
- * To change this template use File | Settings | File Templates.
- */
-
-var app = angular.module('myApp', ['ui.bootstrap']);
+var app = angular.module('myApp', ['ui.bootstrap', 'ngRoute']);
 var counter = 150; // Counter needed for flot chart
 
+
+app.config(['$routeProvider', function($routeProvider) {
+    $routeProvider.
+        when('/main/:torrentHash', {
+            templateUrl: 'partials/detailedInfo'
+        }).
+        when('/main', {
+            templateUrl: 'partials/torrents'
+        }).
+        otherwise({
+            redirectTo: '/main'
+        });
+}]);
 
 
 /**
@@ -91,7 +96,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
  * @param $http The http service that is needed to make ajax requests
  */
 function populateTorrents($scope, $http) {
-    $http.get(document.location.href + 'torrents').success(function(torrents) {
+    $http.get(document.location.origin + '/torrents').success(function(torrents) {
 
         // Check to see if the server can communicate with rtorrent
         if (torrents == "There was a problem connecting to rtorrent") {
@@ -122,7 +127,7 @@ function populateTorrents($scope, $http) {
  * @param $http The http service that is needed to make ajax requests
  */
 function updateTorrents($scope, $http) {
-    $http.get(document.location.href + 'torrents').success(function(torrents) {
+    $http.get(document.location.origin + '/torrents').success(function(torrents) {
 
         // Check to see if the server can communicate with rtorrent
         if (torrents == "There was a problem connecting to rtorrent") {
@@ -211,7 +216,7 @@ function convert(fileSizeInBytes) {
  * @param $http The http service that is needed to make ajax requests
  */
 function getGlobalStats($scope, $http) {
-    $http.get(document.location.href + 'stats').success(function(stats) {
+    $http.get(document.location.origin + '/stats').success(function(stats) {
 
         // Check to see if the server can communicate with rtorrent
         if (stats == "There was a problem connecting to rtorrent") {
