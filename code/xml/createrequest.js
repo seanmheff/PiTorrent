@@ -3,7 +3,8 @@ var xmlbuilder = require('xmlbuilder');
 /* Our module exports */
 module.exports = {
     createRequest : createRequest,
-    createMulticallRequest : createMulticallRequest
+    createMulticallRequest : createMulticallRequest,
+    createFileMulticallRequest : createFileMulticallRequest
 };
 
 
@@ -79,6 +80,19 @@ function createMulticallXml(args) {
     return xml.toString();
 }
 
+function createFileMulticallXml(hash, args) {
+    var xml = xmlbuilder.create("methodCall");
+    xml.ele("methodName", "f.multicall");
+    var params = xml.ele("params")
+    params.ele("param").ele("value").ele("string", hash.toString());
+    params.ele("param").ele("value").ele("i4", "0");
+
+    for (var i = 0; i < args.length; i++) {
+        params.ele("param").ele("value").ele("string", args[i]);
+    }
+    return xml.toString();
+}
+
 
 /**
  * Function that needs to be exported to the module.
@@ -99,4 +113,8 @@ function createRequest(args) {
  */
 function createMulticallRequest(args) {
     return formatRequest(createMulticallXml(args));
+}
+
+function createFileMulticallRequest(hash, args) {
+    return formatRequest(createFileMulticallXml(hash, args));
 }

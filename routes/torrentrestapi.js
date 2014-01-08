@@ -28,6 +28,20 @@ exports.getTorrents = function (req, res) {
 };
 
 
+exports.getTorrentInfo = function (req, res) {
+    var hash = req.params.hash;
+    rtorrentcontroller.getFileData(hash, function(data) {
+        // Send the response as JSON or text, depending on the data
+        if (data === "There was a problem connecting to rtorrent") {
+            res.send(data);
+        }
+        else {
+            res.json(data);
+        }
+    });
+};
+
+
 /**
  * A function to get torrent global stats (overall upload/download speed, etc)
  * Sends either an error message or a JSON object to the client
