@@ -9,6 +9,7 @@
 module.exports = {
     getTorrents: getTorrents,
     getStandardData: getStandardData,
+    getFileData: getFileData,
     getGlobalStats: getGlobalStats
 
 };
@@ -106,6 +107,23 @@ function getStandardData(callback) {
             });
 
             callback(dataToReturn);
+        }
+    });
+}
+
+
+function getFileData(hash, callback) {
+    var request = createrequest.createFileMulticallRequest(hash, rtorrentconstants.MULTICALL_FILE_INFO);
+
+    rtorrentapi.execute(request, function(response) {
+        if (response.toString().indexOf("error") == 0) {
+            callback("There was a problem connecting to rtorrent");
+        }
+        else {
+            // Remove the header
+            response = parseresponse.removeResponseHeader(response);
+
+            callback(response);
         }
     });
 }

@@ -5,7 +5,8 @@ var counter = 150; // Counter needed for flot chart
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/main/:torrentHash', {
-            templateUrl: 'partials/detailedInfo'
+            templateUrl: 'partials/detailed_info',
+            controller: 'DetailedInfoCtrl'
         }).
         when('/main', {
             templateUrl: 'partials/torrents'
@@ -88,6 +89,20 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
     }, 2000);
 });
 
+
+app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http) {
+    getDetailedInfo($scope, $http);
+});
+
+function getDetailedInfo($scope, $http) {
+    // Parse URL
+    var url = document.location.href.toString();
+    console.log(url);
+    var hash = url.substring(url.lastIndexOf('/'), url.length);
+    $http.get(document.location.origin + '/torrents' + hash).success(function(detailedInfo) {
+        $scope.lol = detailedInfo;
+    });
+}
 
 /**
  * This function populates the torrent array. It is called on init and when a torrent is added or removed

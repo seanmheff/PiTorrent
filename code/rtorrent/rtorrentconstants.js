@@ -29,6 +29,16 @@ DOWNLOAD_GET_TORRENT_RATIO = "d.get_ratio";
 
 
 /*
+ * File related
+ */
+FILE_MULTICALL = "f.multicall";
+FILE_GET_PATH = "f.get_path";
+FILE_GET_SIZE_BYTES = "f.get_size_bytes";
+FILE_GET_SIZE_CHUNKS = "f.get_size_chunks";
+FILE_GET_COMPLETED_CHUNKS = "f.get_completed_chunks"
+
+
+/*
  * List of rtorrent views
  */
 VIEW_MAIN = "main";
@@ -40,6 +50,7 @@ VIEW_INCOMPLETE = "incomplete";
 VIEW_HASHING = "hashing";
 VIEW_SEEDING = "seeding";
 VIEW_LEECHING = "leeching";
+
 
 /*
  * List of helpful multicall commands
@@ -55,6 +66,13 @@ MULTICALL_STANDARD_INFO = [
     DOWNLOAD_GET_DOWNLOADED + "= ",
     DOWNLOAD_GET_TORRENT_RATIO + "= ",
     DOWNLOAD_GET_COMPLETE + "= "
+];
+
+MULTICALL_FILE_INFO = [
+    FILE_GET_PATH + "= ",
+    FILE_GET_SIZE_BYTES + "= ",
+    FILE_GET_SIZE_CHUNKS + "= ",
+    FILE_GET_COMPLETED_CHUNKS + "= "
 ];
 
 MULTICALL_GLOBAL_STATS = [
@@ -102,6 +120,7 @@ module.exports = {
      * List of helpful multicall commands
      */
     MULTICALL_STANDARD_INFO : MULTICALL_STANDARD_INFO,
+    MULTICALL_FILE_INFO : MULTICALL_FILE_INFO,
     MULTICALL_GLOBAL_STATS  : MULTICALL_GLOBAL_STATS
 
 }
