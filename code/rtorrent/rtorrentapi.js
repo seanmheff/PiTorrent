@@ -16,14 +16,31 @@ var net = require('net');
  */
 function send(request, callback) {
     var socket = new net.Socket().connect("/tmp/rpc.socket");
+    var firstTime = true;
+    var size;
+    var response = "";
 
     socket.on("connect", function() {
         //console.log("Successfully connected to socket");
         socket.write(request);
 
         socket.on("data", function(data) {
-            //console.log("Got data from socket");
-            callback(data);
+            // Have to make sure the request is complete
+
+            // If its the first time we get data from the socket,
+            // we must parse the header to get the "Content-Length" value
+            if (firstTime) {
+                var contentLengthLine = data.toString().split("\n")[2];
+                size = contentLengthLine.substring(contentLengthLine.lastIndexOf(" ")+1, contentLengthLine.length-1);
+                firstTime = false;
+            }
+
+            response += data;
+
+            if (response.length > size) {
+                callback(response);
+            }
+
         });
     });
 

@@ -97,10 +97,10 @@ app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http) {
 function getDetailedInfo($scope, $http) {
     // Parse URL
     var url = document.location.href.toString();
-    console.log(url);
     var hash = url.substring(url.lastIndexOf('/'), url.length);
+
     $http.get(document.location.origin + '/torrents' + hash).success(function(detailedInfo) {
-        $scope.lol = detailedInfo;
+        $scope.fileInfo = detailedInfo;
     });
 }
 

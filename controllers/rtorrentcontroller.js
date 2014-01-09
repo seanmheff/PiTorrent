@@ -123,7 +123,44 @@ function getFileData(hash, callback) {
             // Remove the header
             response = parseresponse.removeResponseHeader(response);
 
-            callback(response);
+            // Check for errors (invalid hash used as an input)
+            try {
+                // Traverse the XML document until we get to the data
+                var data = new xmldoc.XmlDocument(response)
+                    .childNamed("params")
+                    .childNamed("param")
+                    .childNamed("value")
+                    .childNamed("array")
+                    .childNamed("data");
+
+
+                var dataToReturn = {files:[]};
+
+                // For each file
+                data.eachChild(function(value) {
+                    var innerData = value.childNamed("array").childNamed("data");
+                    var torrentData = [];
+
+                    // For each parameter - push into temp array
+                    // Always push the child at index 0, this allows us to ignore types (<int>, <boolean>, etc)
+                    innerData.eachChild(function(innerValue) {
+                        torrentData.push(innerValue.children[0].val);
+                    });
+
+                    var tmp = { };
+                    tmp["name"] = torrentData[0];
+                    tmp["sizeBytes"] = torrentData[1];
+                    tmp["sizeChunks"] = torrentData[2];
+                    tmp["chunksComplete"] = torrentData[3];
+                    tmp["priority"] = torrentData[4];
+                    dataToReturn.files.push(tmp);
+                });
+            }
+            catch (err) {
+                callback({files:[]});
+            }
+
+            callback(dataToReturn);
         }
     });
 }

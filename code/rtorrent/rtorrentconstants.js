@@ -36,6 +36,7 @@ FILE_GET_PATH = "f.get_path";
 FILE_GET_SIZE_BYTES = "f.get_size_bytes";
 FILE_GET_SIZE_CHUNKS = "f.get_size_chunks";
 FILE_GET_COMPLETED_CHUNKS = "f.get_completed_chunks"
+FILE_GET_PRIORITY = "f.get_priority"
 
 
 /*
@@ -72,7 +73,8 @@ MULTICALL_FILE_INFO = [
     FILE_GET_PATH + "= ",
     FILE_GET_SIZE_BYTES + "= ",
     FILE_GET_SIZE_CHUNKS + "= ",
-    FILE_GET_COMPLETED_CHUNKS + "= "
+    FILE_GET_COMPLETED_CHUNKS + "= ",
+    FILE_GET_PRIORITY + "= "
 ];
 
 MULTICALL_GLOBAL_STATS = [

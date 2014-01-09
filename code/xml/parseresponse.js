@@ -17,8 +17,6 @@ module.exports = {
  * @returns {string} The XML-RPC response, minus the header
  */
 function removeResponseHeader(response) {
-
-
     var lines = response.toString().split("\n");
     return lines.slice(4).join("\n");
 }
