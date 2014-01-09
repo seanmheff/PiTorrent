@@ -1,0 +1,22 @@
+.widget.wred
+  .widget-head
+    .pull-left Files
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    accordion(close-others='false')
+      accordion-group(heading='{{file.name}}', ng-repeat="file in fileInfo.files | orderBy:'name'")
+       p {{file.sizeBytes}}
+//          accordion-group(heading='Dynamic Body Content')
+//            p The body of the accordion group grows to fit the contents
+//            button.btn.btn-default.btn-sm(ng-click='addItem()') Add Item
+//            div(ng-repeat='item in items') {{item}}
+//          accordion-group(is-open='isopen')
+//            accordion-heading
+//              | I can have markup, too!
+//              i.pull-right.glyphicon(ng-class='{"glyphicon-chevron-down": isopen, "glyphicon-chevron-right": !isopen}')
+//            | This is just some content to illustrate fancy headings.
