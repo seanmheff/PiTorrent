@@ -1,11 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: sean
- * Date: 03/08/13
- * Time: 18:42
- * To change this template use File | Settings | File Templates.
- */
-
 module.exports = {
     getTorrents: getTorrents,
     getStandardData: getStandardData,
@@ -122,6 +114,7 @@ function getFileData(hash, callback) {
         else {
             // Remove the header
             response = parseresponse.removeResponseHeader(response);
+            var dataToReturn = { "files": [] };
 
             // Check for errors (invalid hash used as an input)
             try {
@@ -134,8 +127,6 @@ function getFileData(hash, callback) {
                     .childNamed("data");
 
 
-                var dataToReturn = {files:[]};
-
                 // For each file
                 data.eachChild(function(value) {
                     var innerData = value.childNamed("array").childNamed("data");
@@ -147,17 +138,44 @@ function getFileData(hash, callback) {
                         torrentData.push(innerValue.children[0].val);
                     });
 
+
+                    // The next few lines create the directory structure needed
+                    // to efficiently transmit the file data as JSON
+
+                    // The file path is split up into the various directories
+                    var directories = torrentData[0].split("/");
+
+                    // We need to keep track of the current directory we are in
+                    var currentDirectory = dataToReturn;
+
+                    // Check to see if the directories exist in the JSON object to return
+                    // If not - create them
+                    for (var i=0; i< directories.length-1; i++) {
+                        if (currentDirectory[directories[i]] === undefined) {
+                            currentDirectory[directories[i]] = { "files": [] };
+                            currentDirectory = currentDirectory[directories[i]];
+                        }
+                        else {
+                            currentDirectory = currentDirectory[directories[i]];
+                        }
+                    }
+
                     var tmp = { };
-                    tmp["name"] = torrentData[0];
+                    tmp["name"] = directories[directories.length-1];
                     tmp["sizeBytes"] = torrentData[1];
                     tmp["sizeChunks"] = torrentData[2];
                     tmp["chunksComplete"] = torrentData[3];
                     tmp["priority"] = torrentData[4];
-                    dataToReturn.files.push(tmp);
+
+                    // Push the data into the "files" array in the correct directory in the JSON object we will return
+                    currentDirectory.files.push(tmp);
                 });
             }
             catch (err) {
+                console.log(err.toString());
+                console.log(dataToReturn);
                 callback({files:[]});
+                return;
             }
 
             callback(dataToReturn);
