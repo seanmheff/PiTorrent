@@ -1,0 +1,20 @@
+.widget.wred
+  .widget-head
+    .pull-left Tracker(s)
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    ul.project
+      li(ng-repeat='tracker in trackerInfo.trackers')
+        p.p-meta
+          | <strong>URL:</strong> {{tracker.url}}
+        p.p-meta
+          | <strong>Min interval:</strong> {{tracker.minInterval}}
+        p.p-meta
+          | <strong>Normal interval:</strong> {{tracker.normalInterval}}
+        p.p-meta
+          | <strong>Enabled:</strong> {{tracker.isEnabled}}

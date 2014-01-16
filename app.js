@@ -90,7 +90,7 @@ app.get('/', ensureAuthenticated, function(req, res) {
 });
 app.get('/torrents', ensureAuthenticated, torrents.getTorrents);
 app.get('/torrents/:hash', ensureAuthenticated, torrents.getTorrentInfo);
-
+app.get('/trackers/:hash', ensureAuthenticated, torrents.getTrackerInfo);
 app.get('/stats', ensureAuthenticated, torrents.getStats);
 app.get('/login', auth.login);
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res) {

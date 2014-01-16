@@ -102,6 +102,10 @@ function getDetailedInfo($scope, $http) {
     $http.get(document.location.origin + '/torrents' + hash).success(function(detailedInfo) {
         $scope.fileInfo = detailedInfo;
     });
+
+    $http.get(document.location.origin + '/trackers' + hash).success(function(detailedInfo) {
+        $scope.trackerInfo = detailedInfo;
+    });
 }
 
 /**

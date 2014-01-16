@@ -2,6 +2,7 @@ module.exports = {
     getTorrents: getTorrents,
     getStandardData: getStandardData,
     getFileData: getFileData,
+    getTrackerData: getTrackerData,
     getGlobalStats: getGlobalStats
 
 };
@@ -97,6 +98,62 @@ function getStandardData(callback) {
                 tmp["complete"] = torrentData[7];
                 dataToReturn.torrents.push(tmp);
             });
+
+            callback(dataToReturn);
+        }
+    });
+}
+
+
+function getTrackerData(hash, callback) {
+    var request = createrequest.createTrackerMulticallRequest(hash, rtorrentconstants.MULTICALL_TRACKER_INFO);
+
+    rtorrentapi.execute(request, function(response) {
+        if (response.toString().indexOf("error") == 0) {
+            callback("There was a problem connecting to rtorrent");
+        }
+        else {
+            // Remove the header
+            response = parseresponse.removeResponseHeader(response);
+            var dataToReturn = { "trackers": [] };
+
+            // Check for errors (invalid hash used as an input)
+            try {
+                // Traverse the XML document until we get to the data
+                var data = new xmldoc.XmlDocument(response)
+                    .childNamed("params")
+                    .childNamed("param")
+                    .childNamed("value")
+                    .childNamed("array")
+                    .childNamed("data");
+
+                // For each file
+                data.eachChild(function(value) {
+                    var innerData = value.childNamed("array").childNamed("data");
+                    var trackerData = [];
+
+                    // For each parameter - push into temp array
+                    // Always push the child at index 0, this allows us to ignore types (<int>, <boolean>, etc)
+                    innerData.eachChild(function(innerValue) {
+                        trackerData.push(innerValue.children[0].val);
+                    });
+
+                    var tmp = { };
+                    tmp["url"] = trackerData[0];
+                    tmp["minInterval"] = trackerData[1];
+                    tmp["normalInterval"] = trackerData[2];
+                    tmp["isEnabled"] = trackerData[3];
+
+                    // Push the data into the "files" array in the correct directory in the JSON object we will return
+                    dataToReturn.trackers.push(tmp);
+                });
+            }
+            catch (err) {
+                console.log(err.toString());
+                console.log(dataToReturn);
+                callback({trackers:[]});
+                return;
+            }
 
             callback(dataToReturn);
         }

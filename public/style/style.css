@@ -13,6 +13,10 @@
 	background-image: none !important;
 }
 
+td, th {
+    padding: 0px 4px;
+}
+
 form *{
 	font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }

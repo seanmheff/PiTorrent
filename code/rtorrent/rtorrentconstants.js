@@ -35,8 +35,18 @@ FILE_MULTICALL = "f.multicall";
 FILE_GET_PATH = "f.get_path";
 FILE_GET_SIZE_BYTES = "f.get_size_bytes";
 FILE_GET_SIZE_CHUNKS = "f.get_size_chunks";
-FILE_GET_COMPLETED_CHUNKS = "f.get_completed_chunks"
-FILE_GET_PRIORITY = "f.get_priority"
+FILE_GET_COMPLETED_CHUNKS = "f.get_completed_chunks";
+FILE_GET_PRIORITY = "f.get_priority";
+
+
+/*
+ * Tracker Related
+ */
+TRACKER_MULTICALL = "t.multicall";
+TRACKER_GET_URL = "t.get_url";
+TRACKER_GET_MIN_INTERVAL = "t.get_min_interval";
+TRACKER_GET_NORMAL_INTERVAL = "t.get_normal_interval";
+TRACKER_IS_ENABLED = "t.is_enabled";
 
 
 /*
@@ -77,6 +87,13 @@ MULTICALL_FILE_INFO = [
     FILE_GET_PRIORITY + "= "
 ];
 
+MULTICALL_TRACKER_INFO = [
+    TRACKER_GET_URL+ "= ",
+    TRACKER_GET_MIN_INTERVAL + "= ",
+    TRACKER_GET_NORMAL_INTERVAL + "= ",
+    TRACKER_IS_ENABLED + "= "
+];
+
 MULTICALL_GLOBAL_STATS = [
     SYSTEM_MULTICALL,
     GLOBAL_DOWNLOAD_SPEED,
@@ -84,7 +101,6 @@ MULTICALL_GLOBAL_STATS = [
     GLOBAL_DOWNLOAD_SPEED_LIMIT,
     GLOBAL_UPLOAD_SPEED_LIMIT
 ];
-
 
 
 module.exports = {
@@ -123,6 +139,7 @@ module.exports = {
      */
     MULTICALL_STANDARD_INFO : MULTICALL_STANDARD_INFO,
     MULTICALL_FILE_INFO : MULTICALL_FILE_INFO,
+    MULTICALL_TRACKER_INFO: MULTICALL_TRACKER_INFO,
     MULTICALL_GLOBAL_STATS  : MULTICALL_GLOBAL_STATS
 
 }

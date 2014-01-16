@@ -4,7 +4,8 @@ var xmlbuilder = require('xmlbuilder');
 module.exports = {
     createRequest : createRequest,
     createMulticallRequest : createMulticallRequest,
-    createFileMulticallRequest : createFileMulticallRequest
+    createFileMulticallRequest : createFileMulticallRequest,
+    createTrackerMulticallRequest : createTrackerMulticallRequest
 };
 
 
@@ -80,9 +81,24 @@ function createMulticallXml(args) {
     return xml.toString();
 }
 
+
 function createFileMulticallXml(hash, args) {
     var xml = xmlbuilder.create("methodCall");
     xml.ele("methodName", "f.multicall");
+    var params = xml.ele("params")
+    params.ele("param").ele("value").ele("string", hash.toString());
+    params.ele("param").ele("value").ele("i4", "0");
+
+    for (var i = 0; i < args.length; i++) {
+        params.ele("param").ele("value").ele("string", args[i]);
+    }
+    return xml.toString();
+}
+
+
+function createTrackerMulticallXml(hash, args) {
+    var xml = xmlbuilder.create("methodCall");
+    xml.ele("methodName", "t.multicall");
     var params = xml.ele("params")
     params.ele("param").ele("value").ele("string", hash.toString());
     params.ele("param").ele("value").ele("i4", "0");
@@ -117,4 +133,8 @@ function createMulticallRequest(args) {
 
 function createFileMulticallRequest(hash, args) {
     return formatRequest(createFileMulticallXml(hash, args));
+}
+
+function createTrackerMulticallRequest(hash, args) {
+    return formatRequest(createTrackerMulticallXml(hash, args));
 }
