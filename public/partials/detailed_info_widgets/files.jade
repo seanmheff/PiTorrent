@@ -9,9 +9,12 @@ script(type='text/ng-template', id='has_sub_dir').
   </li>
 
 script(type='text/ng-template', id='no_sub_dir').
-  <li ng-repeat="file in data">
-    <p>{{file.name}}</p>
-  </li>
+  <table ng-if="data.length > 0">
+    <tr><th>% Complete</th><th>Priority</th><th>Size</th><th>Filename</th></tr>
+    <tr ng-repeat="file in data | orderBy:'name'">
+      <td>0</td><td>{{file.priority}}</td><td>{{file.sizeBytes}}</td><td>{{file.name}}</td>
+    </tr>
+  </table>
 
 .widget.wred
   .widget-head
@@ -23,7 +26,6 @@ script(type='text/ng-template', id='no_sub_dir').
         i.icon-remove
     .clearfix
   .widget-content
-    //p {{fileInfo}}
     ul.css-treeview
       li(ng-repeat='(key, data) in fileInfo', ng-if='data.files !== undefined', ng-include='"has_sub_dir"')
       li(ng-repeat='(key, data) in fileInfo', ng-if='data.files === undefined', ng-include='"no_sub_dir"')
