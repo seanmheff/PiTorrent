@@ -21,6 +21,14 @@ form *{
 	font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
+.jstree {
+    max-width:100%;
+    overflow:auto;
+    padding:10px;
+    border-radius:5px;
+}
+
+
 input, textarea{
 	background-image: none !important;
 	border: 1px solid #ccc !important;

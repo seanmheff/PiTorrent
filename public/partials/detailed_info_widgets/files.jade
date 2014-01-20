@@ -1,21 +1,3 @@
-script(type='text/ng-template', id='has_sub_dir').
-  <li><input type="checkbox" id="{{key}}" /> <label for="{{key}}">{{key}}</label>
-    <ul>
-      <li ng-repeat="(key, data) in data", ng-if='data.files !== undefined', ng-include='"has_sub_dir"'>
-      </li>
-      <li ng-repeat="(key, data) in data", ng-if='data.files === undefined', ng-include='"no_sub_dir"'>
-      </li>
-    </ul>
-  </li>
-
-script(type='text/ng-template', id='no_sub_dir').
-  <table ng-if="data.length > 0">
-    <tr><th>% Complete</th><th>Priority</th><th>Size</th><th>Filename</th></tr>
-    <tr ng-repeat="file in data | orderBy:'name'">
-      <td>0</td><td>{{file.priority}}</td><td>{{file.sizeBytes}}</td><td>{{file.name}}</td>
-    </tr>
-  </table>
-
 .widget.wred
   .widget-head
     .pull-left Files
@@ -26,6 +8,4 @@ script(type='text/ng-template', id='no_sub_dir').
         i.icon-remove
     .clearfix
   .widget-content
-    ul.css-treeview
-      li(ng-repeat='(key, data) in fileInfo', ng-if='data.files !== undefined', ng-include='"has_sub_dir"')
-      li(ng-repeat='(key, data) in fileInfo', ng-if='data.files === undefined', ng-include='"no_sub_dir"')
+    .jstree(jstree, data="fileData")
