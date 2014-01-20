@@ -65,6 +65,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
     $scope.leeching = leechingFilter;
     $scope.uploading = uploadingFilter;
     $scope.downloading = downloadingFilter;
+    $scope.jstree = {children:[]}
 
     // This is needed for selecting tabs from the overview widget
     $scope.tab = {
@@ -100,7 +101,7 @@ function getDetailedInfo($scope, $http) {
     var hash = url.substring(url.lastIndexOf('/'), url.length);
 
     $http.get(document.location.origin + '/torrents' + hash).success(function(detailedInfo) {
-        $scope.fileInfo = detailedInfo;
+        $scope.fileData = detailedInfo;
     });
 
     $http.get(document.location.origin + '/trackers' + hash).success(function(detailedInfo) {
@@ -340,3 +341,35 @@ function pushUploadSpeed($scope, speed) {
     // Add new speed to array
     $scope.uploadData[0].push([counter++, speed]);
 }
+
+
+
+
+
+
+app.directive('jstree', function() {
+    return {
+        restrict: 'A',
+
+        link: function(scope, element, attrs) {
+
+            scope.$watch(attrs.data, function(v) {
+
+                if (v === undefined) {
+                    return;
+                }
+
+                $(element).jstree({
+                    'core': {
+                        "data": v.children,
+                        "themes": {
+                            "dots": false,
+                            "responsive": true
+                        }
+                    },
+                    "plugins": ["sort", "themes"]
+                }, false); //false -> don't do dirty deep checking (expensive)
+            });
+        }
+    };
+});

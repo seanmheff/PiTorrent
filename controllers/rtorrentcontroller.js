@@ -171,7 +171,7 @@ function getFileData(hash, callback) {
         else {
             // Remove the header
             response = parseresponse.removeResponseHeader(response);
-            var dataToReturn = { "files": [] };
+            var dataToReturn = { "children": [] };
 
             // Check for errors (invalid hash used as an input)
             try {
@@ -205,33 +205,47 @@ function getFileData(hash, callback) {
                     // We need to keep track of the current directory we are in
                     var currentDirectory = dataToReturn;
 
-                    // Check to see if the directories exist in the JSON object to return
+                    // The next few lines check to see if the directories exist
                     // If not - create them
-                    for (var i=0; i< directories.length-1; i++) {
-                        if (currentDirectory[directories[i]] === undefined) {
-                            currentDirectory[directories[i]] = { "files": [] };
-                            currentDirectory = currentDirectory[directories[i]];
+                    for (var i=0; i< directories.length; i++) {
+                        var exists = false;
+                        var index = -1;
+
+                        // Loop through all the directories children
+                        for (var j=0; j<currentDirectory.children.length; j++) {
+                            index += 1;
+
+                            // Check if the directory/file exists already exists
+                            if (currentDirectory.children[j].text === directories[i]) {
+                                exists = true;
+                                break;
+                            }
+                        }
+
+                        if (exists) {
+                            currentDirectory = currentDirectory.children[index];
                         }
                         else {
-                            currentDirectory = currentDirectory[directories[i]];
+                            // Create an object to hold that file/directories data
+                            currentDirectory.children.push({
+                                "text": directories[i],
+                                "children": []
+                            });
+                            currentDirectory = currentDirectory.children[currentDirectory.children.length - 1];
                         }
                     }
 
-                    var tmp = { };
-                    tmp["name"] = directories[directories.length-1];
-                    tmp["sizeBytes"] = torrentData[1];
-                    tmp["sizeChunks"] = torrentData[2];
-                    tmp["chunksComplete"] = torrentData[3];
-                    tmp["priority"] = torrentData[4];
-
-                    // Push the data into the "files" array in the correct directory in the JSON object we will return
-                    currentDirectory.files.push(tmp);
+                    currentDirectory["sizeBytes"] = torrentData[1];
+                    currentDirectory["sizeChunks"] = torrentData[2];
+                    currentDirectory["chunksComplete"] = torrentData[3];
+                    currentDirectory["priority"] = torrentData[4];
                 });
             }
             catch (err) {
                 console.log(err.toString());
+                console.log(err.stack);
                 console.log(dataToReturn);
-                callback({files:[]});
+                callback({children:[]});
                 return;
             }
 
