@@ -69,8 +69,12 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
 
     // This is needed for selecting tabs from the overview widget
     $scope.tab = {
+        overviewTab:false,
+        allTab:false,
         seedingTab:false,
-        leechingTab:false
+        leechingTab:false,
+        currUpTab:false,
+        currDownTab:false
     };
 
     // Set up our chart data
@@ -93,6 +97,13 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
 
 app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http) {
     getDetailedInfo($scope, $http);
+
+    $scope.fileSelected = {};
+
+//    $scope.$watch('fileSelected', function() {
+//        alert('hey, myVar has changed!');
+//    });
+
 });
 
 function getDetailedInfo($scope, $http) {
@@ -344,7 +355,31 @@ function pushUploadSpeed($scope, speed) {
 
 
 
+//return an array of objects according to key, value, or key and value matching
+function getObjects(obj, key, val) {
+    var objects = [];
 
+    for (var i in obj) {
+        if (!obj.hasOwnProperty(i)) {
+            continue;
+        }
+        if (typeof obj[i] == 'object') {
+            objects = objects.concat(getObjects(obj[i], key, val));
+        }
+        else {
+            if (i == key && obj[i] == val || i == key && val == '') {
+                objects.push(obj);
+            }
+            else if (obj[i] == val && key == '') {
+                //only add if the object is not already in the array
+                if (objects.lastIndexOf(obj) == -1){
+                    objects.push(obj);
+                }
+            }
+        }
+    }
+    return objects;
+}
 
 
 app.directive('jstree', function() {
@@ -368,7 +403,12 @@ app.directive('jstree', function() {
                         }
                     },
                     "plugins": ["sort", "themes"]
-                }, false); //false -> don't do dirty deep checking (expensive)
+                }, false).bind("select_node.jstree", function (event, data) {
+                        scope.fileSelected = getObjects(v, '', data.node.text)[0];
+                        scope.$digest();
+                        //console.log(scope.fileSelected)
+                        //alert("lol")
+                    });
             });
         }
     };

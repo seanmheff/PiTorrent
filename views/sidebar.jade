@@ -6,74 +6,22 @@
       form
         input.form-control(type='text', placeholder='Search')
     ul.navi
-      li.nred.current
+      li.has_submenu.nred.current.open
         a(href='#')
           i.icon-desktop
           | Torrents
-      li.has_submenu.nlightblue
-        a(href='#')
-          i.icon-th
-          | Widgets
           span.pull-right
             i.icon-angle-right
         ul
-          li
-            a(href='widgets1.html') Widgets #1
-          li
-            a(href='widgets2.html') Widgets #2
-      li.ngreen
-        a(href='charts.html')
-          i.icon-bar-chart
-          | Charts
-      li.norange
-        a(href='ui.html')
-          i.icon-sitemap
-          | UI Elements
-      li.has_submenu.nviolet
-        a(href='#')
-          i.icon-file-alt
-          | Pages #1
-          span.pull-right
-            i.icon-angle-right
-        ul
-          li
-            a(href='calendar.html') Calendar
-          li
-            a(href='post.html') Make Post
-          li
-            a(href='login.html') Login
-          li
-            a(href='register.html') Register
-          li
-            a(href='statement.html') Statement
-          li
-            a(href='error-log.html') Error Log
-          li
-            a(href='support.html') Support
-      li.has_submenu.nblue
-        a(href='#')
-          i.icon-file-alt
-          | Pages #2
-          span.pull-right
-            i.icon-angle-right
-        ul
-          li
-            a(href='error.html') Error
-          li
-            a(href='gallery.html') Gallery
-          li
-            a(href='grid.html') Grid
-          li
-            a(href='invoice.html') Invoice
-          li
-            a(href='media.html') Media
-          li
-            a(href='profile.html') Profile
-      li.nred
-        a(href='forms.html')
-          i.icon-list
-          | Forms
-      li.nlightblue
-        a(href='tables.html')
-          i.icon-table
-          | Tables
+          li(ng-class="{active: tab.overviewTab}")
+            a(href='#', ng-click="tab.overviewTab = true") Overview
+          li(ng-class="{active: tab.allTab}")
+            a(href='#', ng-click="tab.allTab = true") All
+          li(ng-class="{active: tab.seedingTab}")
+            a(href='#', ng-click="tab.seedingTab = true") Seeding
+          li(ng-class="{active: tab.leechingTab}")
+            a(href='#', ng-click="tab.leechingTab = true") Leeching
+          li(ng-class="{active: tab.currUpTab}")
+            a(href='#', ng-click="tab.currUpTab = true") Currently Uploading
+          li(ng-class="{active: tab.currDownTab}")
+            a(href='#', ng-click="tab.currDownTab = true") Currently Downloading

@@ -171,7 +171,17 @@ function getFileData(hash, callback) {
         else {
             // Remove the header
             response = parseresponse.removeResponseHeader(response);
-            var dataToReturn = { "children": [] };
+            var dataToReturn = {
+                "children": [
+                    {
+                        "children": [],
+                        "text": "/",
+                        "state": {
+                            "opened": true
+                        }
+                    }
+                ]
+            };
 
             // Check for errors (invalid hash used as an input)
             try {
@@ -203,7 +213,7 @@ function getFileData(hash, callback) {
                     var directories = torrentData[0].split("/");
 
                     // We need to keep track of the current directory we are in
-                    var currentDirectory = dataToReturn;
+                    var currentDirectory = dataToReturn.children[0];
 
                     // The next few lines check to see if the directories exist
                     // If not - create them
