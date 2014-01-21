@@ -28,4 +28,5 @@
           .progress(ng-class="{'progress-striped active': (torrent.downloadRate > 0)}")
             .progress-bar(ng-class="{'progress-bar-success': (torrent.complete == 1)}", style='width: {{torrent.percentDone}}%;')
               | {{torrent.percentDone}}%
-      .clearfix
+      li(ng-show='(torrentResults.torrents).length == 0') No torrents
+    .clearfix

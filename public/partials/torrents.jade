@@ -1,5 +1,5 @@
 tabset
-  tab(heading="Overview")
+  tab(heading="Overview", active="tab.overviewTab")
     .container
       .row
         .col-md-6
@@ -14,7 +14,7 @@ tabset
       .row
         .col-md-6
           include global_stats
-  tab(heading="All ({{torrentResults.torrents.length}})")
+  tab(heading="All ({{torrentResults.torrents.length}})", active="tab.allTab")
     .container
       .row
         .col-md-12
@@ -29,12 +29,12 @@ tabset
       .row
         .col-md-12
           include torrent_widgets/leeching
-  tab(heading="Currently uploading ({{(torrentResults.torrents | filter:uploading).length }})")
+  tab(heading="Currently uploading ({{(torrentResults.torrents | filter:uploading).length }})",active="tab.currUpTab")
     .container
       .row
         .col-md-12
           include torrent_widgets/currently-uploading
-  tab(heading="Currently downloading ({{(torrentResults.torrents | filter:downloading).length }})")
+  tab(heading="Currently downloading ({{(torrentResults.torrents | filter:downloading).length }})", active="tab.currDownTab")
     .container
       .row
         .col-md-12
