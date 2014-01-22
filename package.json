@@ -12,6 +12,7 @@
     "passport-local": "*",
     "connect-flash": "*",
 	"xmlbuilder": "*",
-	"xmldoc": "*"
+	"xmldoc": "*",
+    "diskspace": "*"
   }
 }

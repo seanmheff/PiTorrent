@@ -14,7 +14,7 @@ module.exports = {
  * @param {string} xml The XML string
  * @return {string} This is the spoofed XML-RPC call
  */
-function formatRequest(xml){
+function formatRequest(xml) {
 
     /* Build the header of the request */
     var header = "";

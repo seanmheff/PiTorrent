@@ -8,6 +8,7 @@ var express = require('express')
   , passport = require('passport')
   , routes = require('./routes')
   , torrents = require('./routes/torrentrestapi')
+  , system = require('./routes/systemapi')
   , auth = require('./routes/auth')
   , http = require('http')
   , path = require('path')
@@ -92,6 +93,7 @@ app.get('/torrents', ensureAuthenticated, torrents.getTorrents);
 app.get('/torrents/:hash', ensureAuthenticated, torrents.getTorrentInfo);
 app.get('/trackers/:hash', ensureAuthenticated, torrents.getTrackerInfo);
 app.get('/stats', ensureAuthenticated, torrents.getStats);
+app.get('/system-stats', ensureAuthenticated, system.getSystemStats);
 app.get('/login', auth.login);
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res) {
     res.redirect('/');

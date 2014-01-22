@@ -87,11 +87,17 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
     }
 
     populateTorrents($scope, $http);
+    getGlobalStats($scope, $http);
+    getSystemStats($scope, $http);
 
     setInterval(function() {
         updateTorrents($scope, $http);
         getGlobalStats($scope, $http);
     }, 2000);
+
+    setInterval(function() {
+       getSystemStats($scope, $http);
+    }, 5000);
 });
 
 
@@ -99,12 +105,8 @@ app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http) {
     getDetailedInfo($scope, $http);
 
     $scope.fileSelected = {};
-
-//    $scope.$watch('fileSelected', function() {
-//        alert('hey, myVar has changed!');
-//    });
-
 });
+
 
 function getDetailedInfo($scope, $http) {
     // Parse URL
@@ -119,6 +121,7 @@ function getDetailedInfo($scope, $http) {
         $scope.trackerInfo = detailedInfo;
     });
 }
+
 
 /**
  * This function populates the torrent array. It is called on init and when a torrent is added or removed
@@ -215,6 +218,15 @@ function updateTorrents($scope, $http) {
                 $scope.torrentResults.torrents[x].complete = complete;
             }
         }
+    });
+}
+
+
+function getSystemStats($scope, $http) {
+    $http.get(document.location.origin + '/system-stats').success(function(systemInfo) {
+        systemInfo.totalSpaceNormalized = convert(systemInfo.totalDisk);
+        systemInfo.freeSpaceNormalized = convert(systemInfo.freeDisk);
+        $scope.systemInfo = systemInfo;
     });
 }
 

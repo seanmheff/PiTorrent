@@ -10,7 +10,7 @@
   .widget-content
     p(ng-if="fileSelected.text === undefined") No file selected
     .table-responsive
-      table.table.table-condensed.table-striped
+      table.table.table-striped.table-bordered
         tr(ng-if="fileSelected.text !== undefined")
           th <strong>Priority</strong>
           th <strong>Size (bytes)</strong>
@@ -26,20 +26,3 @@
           td {{child.sizeBytes}}
           td {{child.sizeChunks}}
           td {{child.text}}
-
-
-
-//    p {{fileSelected.text}}
-//    ul
-//      li.project(ng-if="fileSelected.priority !== undefined")
-//        p {{fileSelected.text}}
-//        p.p-meta Priority: {{fileSelected.priority}}
-//        p.p-meta Size (bytes): {{fileSelected.sizeBytes}}
-//        p.p-meta Size (chunks): {{fileSelected.sizeChunks}}
-//        p.p-meta Chunks complete: {{fileSelected.chunksComplete}}
-//      li.project(ng-repeat="child in fileSelected.children")
-//        p {{child.text}}
-//        p.p-meta Priority: {{child.priority}}
-//        p.p-meta Size (bytes): {{child.sizeBytes}}
-//        p.p-meta Size (chunks): {{child.sizeChunks}}
-//        p.p-meta Chunks complete: {{child.chunksComplete}}

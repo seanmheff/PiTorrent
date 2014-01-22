@@ -1,11 +1,3 @@
-/**
- * Created with IntelliJ IDEA.
- * User: sean
- * Date: 01/08/13
- * Time: 20:44
- * To change this template use File | Settings | File Templates.
- */
-
 var net = require('net');
 
 
