@@ -12,7 +12,9 @@
       li(ng-repeat="torrent in torrentResults.torrents | orderBy:'name'")
         a(href="#/main/{{torrent.hash}}")
           p
-            | <strong>{{torrent.name}}</strong>
+            b {{torrent.name}}
+          p
+            b {{torrent.trackerMsg}}
           .file-upload
             .pull-right
               .btn-groulp

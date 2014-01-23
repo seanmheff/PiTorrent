@@ -40,7 +40,7 @@
             b File System:
           td
             .progress
-              .progress-bar(style='width: {{100 - (systemInfo.totalDisk/systemInfo.freeDisk)}}%;')
-                | {{100 - (systemInfo.totalDisk/systemInfo.freeDisk) | number:2}}%
+              .progress-bar(style='width: {{((systemInfo.totalDisk-systemInfo.freeDisk)/systemInfo.totalDisk)*100}}%;')
+                | {{((systemInfo.totalDisk-systemInfo.freeDisk)/systemInfo.totalDisk)*100 | number:2}}%
             p Total Space: {{systemInfo.totalSpaceNormalized}}
             p Free Space: {{systemInfo.freeSpaceNormalized}}
