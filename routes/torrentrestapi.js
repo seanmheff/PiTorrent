@@ -47,6 +47,19 @@ exports.getTrackerInfo = function (req, res) {
     });
 };
 
+exports.getDetailedTorrentInfo = function (req, res) {
+    var hash = req.params.hash;
+    rtorrentcontroller.getDetailedTorrentInfo(hash, function(data) {
+        // Send the response as JSON or text, depending on the data
+        if (data === "There was a problem connecting to rtorrent") {
+            res.send(data);
+        }
+        else {
+            res.json(data);
+        }
+    });
+};
+
 
 /**
  * A function to get torrent global stats (overall upload/download speed, etc)

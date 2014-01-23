@@ -1,6 +1,13 @@
-.container
-  .row
-    .col-md-6
-      include detailed_info_widgets/files
-    .col-md-6
-      include detailed_info_widgets/file-info
+h3 {{torrent.name}} Omglol
+tabset
+  tab(heading="Files")
+    .container
+      .row
+        .col-md-6
+          include detailed_info_widgets/files
+        .col-md-6
+          include detailed_info_widgets/file-info
+
+  tab(heading="Peers")
+    .container
+      .row

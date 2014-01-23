@@ -4,8 +4,7 @@ var xmlbuilder = require('xmlbuilder');
 module.exports = {
     createRequest : createRequest,
     createMulticallRequest : createMulticallRequest,
-    createFileMulticallRequest : createFileMulticallRequest,
-    createTrackerMulticallRequest : createTrackerMulticallRequest
+    createSpecificMulticallXml : createSpecificMulticallXml
 };
 
 
@@ -60,9 +59,10 @@ function createXml(args) {
  * A method to create a multicall XML-RPC string based on some input parameters
  * Multicalls are useful as they allow us to execute multiple functions in parallel
  * @param args The parameter(s) you want to give to the request
+ * @param hash An optional parameter used when running multicall requests on a specific torrent
  * @returns {string} Returns an XML formatted string containing the parameter(s)
  */
-function createMulticallXml(args) {
+function createMulticallXml(args, hash) {
     var xml = xmlbuilder.create("methodCall");
     xml.ele("methodName", "system.multicall");
     var data = xml.ele("params").ele("param").ele("value").ele("array").ele("data");
@@ -76,29 +76,21 @@ function createMulticallXml(args) {
 
         var member2 = struct.ele("member");
         member2.ele("name", "params")
-        member2.ele("value").ele("array").ele("data").ele("value").ele("string");
+
+        if (hash === undefined) {
+            member2.ele("value").ele("array").ele("data").ele("value").ele("string");
+        }
+        else {
+            member2.ele("value").ele("array").ele("data").ele("value").ele("string", hash.toString());
+        }
     }
     return xml.toString();
 }
 
 
-function createFileMulticallXml(hash, args) {
+function createSpecificMulticallXml(args, hash, type) {
     var xml = xmlbuilder.create("methodCall");
-    xml.ele("methodName", "f.multicall");
-    var params = xml.ele("params")
-    params.ele("param").ele("value").ele("string", hash.toString());
-    params.ele("param").ele("value").ele("i4", "0");
-
-    for (var i = 0; i < args.length; i++) {
-        params.ele("param").ele("value").ele("string", args[i]);
-    }
-    return xml.toString();
-}
-
-
-function createTrackerMulticallXml(hash, args) {
-    var xml = xmlbuilder.create("methodCall");
-    xml.ele("methodName", "t.multicall");
+    xml.ele("methodName", type);
     var params = xml.ele("params")
     params.ele("param").ele("value").ele("string", hash.toString());
     params.ele("param").ele("value").ele("i4", "0");
@@ -127,8 +119,8 @@ function createRequest(args) {
  * @param args The arguments to give to the request builder
  * @returns {string} Returns a valid XML-RPC formatted string containing the arguments
  */
-function createMulticallRequest(args) {
-    return formatRequest(createMulticallXml(args));
+function createMulticallRequest(args, hash) {
+    return formatRequest(createMulticallXml(args, hash));
 }
 
 function createFileMulticallRequest(hash, args) {

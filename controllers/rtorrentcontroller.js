@@ -3,8 +3,8 @@ module.exports = {
     getStandardData: getStandardData,
     getFileData: getFileData,
     getTrackerData: getTrackerData,
-    getGlobalStats: getGlobalStats
-
+    getGlobalStats: getGlobalStats,
+    getDetailedTorrentInfo: getDetailedTorrentInfo
 };
 
 var rtorrentapi = require("../code/rtorrent/rtorrentapi");
@@ -107,7 +107,8 @@ function getStandardData(callback) {
 
 
 function getTrackerData(hash, callback) {
-    var request = createrequest.createTrackerMulticallRequest(hash, rtorrentconstants.MULTICALL_TRACKER_INFO);
+    var request = createrequest.
+        createSpecificMulticallXml(rtorrentconstants.MULTICALL_TRACKER_INFO, hash, rtorrentconstants.TRACKER_MULTICALL);
 
     rtorrentapi.execute(request, function(response) {
         if (response.toString().indexOf("error") == 0) {
@@ -163,9 +164,13 @@ function getTrackerData(hash, callback) {
 
 
 function getFileData(hash, callback) {
-    var request = createrequest.createFileMulticallRequest(hash, rtorrentconstants.MULTICALL_FILE_INFO);
+    var request = createrequest.
+        createSpecificMulticallXml(rtorrentconstants.MULTICALL_FILE_INFO, hash, rtorrentconstants.FILE_MULTICALL);
+
+    //console.log(request);
 
     rtorrentapi.execute(request, function(response) {
+        console.log(response);
         if (response.toString().indexOf("error") == 0) {
             callback("There was a problem connecting to rtorrent");
         }
@@ -184,6 +189,8 @@ function getFileData(hash, callback) {
                 ]
             };
 
+            //console.log(response);
+
             // Check for errors (invalid hash used as an input)
             try {
                 // Traverse the XML document until we get to the data
@@ -193,7 +200,6 @@ function getFileData(hash, callback) {
                     .childNamed("value")
                     .childNamed("array")
                     .childNamed("data");
-
 
                 // For each file
                 data.eachChild(function(value) {
@@ -205,7 +211,6 @@ function getFileData(hash, callback) {
                     innerData.eachChild(function(innerValue) {
                         torrentData.push(innerValue.children[0].val);
                     });
-
 
                     // The next few lines create the directory structure needed
                     // to efficiently transmit the file data as JSON
@@ -292,6 +297,48 @@ function getGlobalStats(callback) {
 
             var dataToReturn = {};
             var stats = ["downSpeed", "upSpeed", "downLimit", "upLimit"];
+            var counter = 0;
+
+            // For each separate multicall function
+            data.eachChild(function(value) {
+                var value2 = value.childNamed("array").childNamed("data").childNamed("value");
+
+                // Add the returned value to the "dataToReturn" array
+                // Use the "eachChild" function as this allows us to ignore types (<int>, <boolean>, etc)
+                // e.g. node could be <i8>data</i8> or <boolean>data</boolean>
+                // There should only ever be one child... So doing this is safe enough... I hope!
+                value2.eachChild(function(innerValue) {
+                    dataToReturn[stats[counter++]] = innerValue.val;
+                });
+            });
+
+            callback(dataToReturn);
+        }
+    });
+}
+
+
+function getDetailedTorrentInfo(hash, callback) {
+    var request = createrequest.createMulticallRequest(rtorrentconstants.MULTICALL_DETAILED_TORRENT_INFO, hash);
+
+    rtorrentapi.execute(request, function(response) {
+        if (response.toString().indexOf("error") == 0) {
+            callback("There was a problem connecting to rtorrent");
+        }
+        else {
+            // Remove the header
+            response = parseresponse.removeResponseHeader(response);
+
+            // Traverse the XML document until we get to the data
+            var data = new xmldoc.XmlDocument(response)
+                .childNamed("params")
+                .childNamed("param")
+                .childNamed("value")
+                .childNamed("array")
+                .childNamed("data");
+
+            var dataToReturn = {};
+            var stats = ["dir"];
             var counter = 0;
 
             // For each separate multicall function
