@@ -92,6 +92,7 @@ app.get('/', ensureAuthenticated, function(req, res) {
 app.get('/torrents', ensureAuthenticated, torrents.getTorrents);
 app.get('/torrents/:hash', ensureAuthenticated, torrents.getTorrentInfo);
 app.get('/trackers/:hash', ensureAuthenticated, torrents.getTrackerInfo);
+app.get('/info/:hash', ensureAuthenticated, torrents.getDetailedTorrentInfo);
 app.get('/stats', ensureAuthenticated, torrents.getStats);
 app.get('/system-stats', ensureAuthenticated, system.getSystemStats);
 app.get('/login', auth.login);
