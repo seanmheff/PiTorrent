@@ -107,6 +107,11 @@ function getStandardData(callback) {
 }
 
 
+/**
+ * This function gets tracker data for a specific torrent
+ * @param hash The hash that identifies the torrent that we are querying
+ * @param callback The callback to execute when the data has returned from the rtorrent API
+ */
 function getTrackerData(hash, callback) {
     var request = createrequest.
         createSpecificMulticallXml(rtorrentconstants.MULTICALL_TRACKER_INFO, hash, rtorrentconstants.TRACKER_MULTICALL);
@@ -164,6 +169,12 @@ function getTrackerData(hash, callback) {
 }
 
 
+/**
+ * This function gets file data for a specific torrent.
+ * The data returned must be in a specific format so it can be used by the 'jstree' library in the frontend
+ * @param hash The hash that identifies the torrent that we are querying
+ * @param callback The callback to execute when the data has returned from the rtorrent API
+ */
 function getFileData(hash, callback) {
     var request = createrequest.
         createSpecificMulticallXml(rtorrentconstants.MULTICALL_FILE_INFO, hash, rtorrentconstants.FILE_MULTICALL);
@@ -314,6 +325,11 @@ function getGlobalStats(callback) {
 }
 
 
+/**
+ * This function gets detailed data for a specific torrent
+ * @param hash The hash that identifies the torrent that we are querying
+ * @param callback The callback to execute when the data has returned from the rtorrent API
+ */
 function getDetailedTorrentInfo(hash, callback) {
     var request = createrequest.createMulticallRequest(rtorrentconstants.MULTICALL_DETAILED_TORRENT_INFO, hash);
 
@@ -355,8 +371,15 @@ function getDetailedTorrentInfo(hash, callback) {
     });
 }
 
+
+/**
+ * This function gets peer data for a specific torrent
+ * @param hash The hash that identifies the torrent that we are querying
+ * @param callback The callback to execute when the data has returned from the rtorrent API
+ */
 function getPeerInfo(hash, callback) {
-    var request = createrequest.createSpecificMulticallXml(rtorrentconstants.MULTICALL_PEER_INFO, hash,  "p.multicall");
+    var request = createrequest.
+        createSpecificMulticallXml(rtorrentconstants.MULTICALL_PEER_INFO, hash, rtorrentconstants.PEER_MULTICALL);
 
     rtorrentapi.execute(request, function(response) {
         if (response.toString().indexOf("error") == 0) {
