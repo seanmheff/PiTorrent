@@ -4,7 +4,7 @@ var xmlbuilder = require('xmlbuilder');
 module.exports = {
     createRequest : createRequest,
     createMulticallRequest : createMulticallRequest,
-    createSpecificMulticallXml : createSpecificMulticallXml
+    createSpecificMulticallXml : createSpecificMulticallRequest
 };
 
 
@@ -123,10 +123,6 @@ function createMulticallRequest(args, hash) {
     return formatRequest(createMulticallXml(args, hash));
 }
 
-function createFileMulticallRequest(hash, args) {
-    return formatRequest(createFileMulticallXml(hash, args));
-}
-
-function createTrackerMulticallRequest(hash, args) {
-    return formatRequest(createTrackerMulticallXml(hash, args));
+function createSpecificMulticallRequest(hash, args, type) {
+    return formatRequest(createSpecificMulticallXml(hash, args, type));
 }
