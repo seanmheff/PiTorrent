@@ -1,0 +1,30 @@
+.widget.wred
+  .widget-head
+    .pull-left Peers
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    p(ng-if="peerInfo.peers.length === 0") Not connected to any peers
+    .table-responsive(ng-if="peerInfo.peers.length !== 0")
+      table.table.table-striped.table-bordered.table-condensed
+        tr
+          th
+            b Address
+          th
+            b Client
+          th
+            b Down
+          th
+            b Up
+          th
+            b %
+        tr(ng-repeat="peer in peerInfo.peers")
+          td {{peer.address}}
+          td {{peer.client}}
+          td {{peer.downRate}}
+          td {{peer.upRate}}
+          td {{peer.percentComplete}}

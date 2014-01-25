@@ -50,6 +50,19 @@ TRACKER_GET_MIN_INTERVAL = "t.get_min_interval";
 TRACKER_GET_NORMAL_INTERVAL = "t.get_normal_interval";
 TRACKER_IS_ENABLED = "t.is_enabled";
 
+/*
+ * Peer Related
+ */
+PEER_MULTICALL = "p.multicall";
+PEER_GET_ADDRESS = "p.get_address";
+PEER_GET_CLIENT = "p.get_client_version";
+PEER_GET_DOWN_RATE = "p.get_down_rate";
+PEER_GET_DOWN_TOTAL = "p.get_down_total";
+PEER_GET_UP_RATE = "p.get_up_rate";
+PEER_GET_UP_TOTAL = "p.get_up_total";
+PEER_GET_COMPLETE_PERCENT = "p.get_completed_percent";
+
+
 
 /*
  * List of rtorrent views
@@ -97,6 +110,16 @@ MULTICALL_TRACKER_INFO = [
     TRACKER_IS_ENABLED + "= "
 ];
 
+MULTICALL_PEER_INFO = [
+    PEER_GET_ADDRESS + "= ",
+    PEER_GET_CLIENT + "=",
+    PEER_GET_DOWN_RATE + "=",
+    PEER_GET_DOWN_TOTAL + "=",
+    PEER_GET_UP_RATE+ "=",
+    PEER_GET_UP_TOTAL + "=",
+    PEER_GET_COMPLETE_PERCENT + "="
+];
+
 MULTICALL_GLOBAL_STATS = [
     SYSTEM_MULTICALL,
     GLOBAL_DOWNLOAD_SPEED,
@@ -109,7 +132,6 @@ MULTICALL_DETAILED_TORRENT_INFO = [
     SYSTEM_MULTICALL,
     DOWNLOAD_GET_DIRECTORY
 ];
-
 
 module.exports = {
 
@@ -139,6 +161,11 @@ module.exports = {
      * Tracker Related
      */
     TRACKER_MULTICALL   : TRACKER_MULTICALL,
+
+    /*
+     * Peer Related
+     */
+    MULTICALL_PEER_INFO : MULTICALL_PEER_INFO,
 
 
     /*

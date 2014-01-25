@@ -124,6 +124,10 @@ function getDetailedInfo($scope, $http) {
     $http.get(document.location.origin + '/info' + hash).success(function(detailedInfo) {
         $scope.torrentInfo = detailedInfo;
     });
+
+    $http.get(document.location.origin + '/peers' + hash).success(function(detailedInfo) {
+        $scope.peerInfo = detailedInfo;
+    });
 }
 
 
