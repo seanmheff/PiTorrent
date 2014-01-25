@@ -90,7 +90,7 @@ app.get('/', ensureAuthenticated, function(req, res) {
     routes.index(req, res), { user: req.user }
 });
 app.get('/torrents', ensureAuthenticated, torrents.getTorrents);
-app.get('/torrents/:hash', ensureAuthenticated, torrents.getTorrentInfo);
+app.get('/files/:hash', ensureAuthenticated, torrents.getFileInfo);
 app.get('/trackers/:hash', ensureAuthenticated, torrents.getTrackerInfo);
 app.get('/info/:hash', ensureAuthenticated, torrents.getDetailedTorrentInfo);
 app.get('/peers/:hash', ensureAuthenticated, torrents.getPeerInfo);

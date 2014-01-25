@@ -1,11 +1,10 @@
-var xmlbuilder = require('xmlbuilder');
-
-/* Our module exports */
 module.exports = {
     createRequest : createRequest,
     createMulticallRequest : createMulticallRequest,
     createSpecificMulticallXml : createSpecificMulticallRequest
 };
+
+var xmlbuilder = require('xmlbuilder');
 
 
 /**
@@ -88,6 +87,14 @@ function createMulticallXml(args, hash) {
 }
 
 
+/**
+ * A method to create a multicall XML-RPC string based on some input parameters
+ * The multicall is specific to some 'type' specified by the 'type' parameter
+ * @param args The parameter(s) you want to give to the request
+ * @param hash Identifies the torrent on which the query should be run
+ * @param type The type of multicall to run (file, peer, download)
+ * @returns {string} Returns an XML formatted string containing the parameter(s)
+ */
 function createSpecificMulticallXml(args, hash, type) {
     var xml = xmlbuilder.create("methodCall");
     xml.ele("methodName", type);
@@ -123,6 +130,13 @@ function createMulticallRequest(args, hash) {
     return formatRequest(createMulticallXml(args, hash));
 }
 
+
+/**
+ * Function that needs to be exported to the module.
+ * It calls the private functions
+ * @param args The arguments to give to the request builder
+ * @returns {string} Returns a valid XML-RPC formatted string containing the arguments
+ */
 function createSpecificMulticallRequest(hash, args, type) {
     return formatRequest(createSpecificMulticallXml(hash, args, type));
 }

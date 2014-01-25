@@ -2,6 +2,9 @@ var app = angular.module('myApp', ['ui.bootstrap', 'ngRoute']);
 var counter = 150; // Counter needed for flot chart
 
 
+/**
+ * Define our angular routes - i.e. what content is rendered depending on the URL
+ */
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/main/:torrentHash', {
@@ -101,6 +104,9 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
 });
 
 
+/**
+ * A controller for the 'detailed info' part of the app
+ */
 app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http) {
     getDetailedInfo($scope, $http);
 
@@ -108,12 +114,17 @@ app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http) {
 });
 
 
+/**
+ * This function gathers detailed info on a torrent. It is called when the users clicks on a torrent
+ * @param $scope The controller scope
+ * @param $http The http service that is needed to make ajax requests
+ */
 function getDetailedInfo($scope, $http) {
     // Parse URL
     var url = document.location.href.toString();
     var hash = url.substring(url.lastIndexOf('/'), url.length);
 
-    $http.get(document.location.origin + '/torrents' + hash).success(function(detailedInfo) {
+    $http.get(document.location.origin + '/files' + hash).success(function(detailedInfo) {
         $scope.fileData = detailedInfo;
     });
 
@@ -230,6 +241,11 @@ function updateTorrents($scope, $http) {
 }
 
 
+/**
+ * This function gets system stats via an AJAX request
+ * @param $scope The controller scope
+ * @param $http The http service that is needed to make ajax requests
+ */
 function getSystemStats($scope, $http) {
     $http.get(document.location.origin + '/system-stats').success(function(systemInfo) {
         systemInfo.totalSpaceNormalized = convert(systemInfo.totalDisk);
@@ -331,9 +347,10 @@ app.directive('chart', function() {
 
 
 /**
- *
- * @param $scope
- * @param speed
+ * A helper function to push the current download speed (obtained by the 'getGlobalStats' function)
+ * into an array where it will be used by our charting library
+ * @param $scope The app scope
+ * @param speed {string} The download speed
  */
 function pushDownloadSpeed($scope, speed) {
     // Convert speed to kB
@@ -353,9 +370,10 @@ function pushDownloadSpeed($scope, speed) {
 
 
 /**
- *
- * @param $scope
- * @param speed
+ * A helper function to push the current upload speed (obtained by the 'getGlobalStats' function)
+ * into an array where it will be used by our charting library
+ * @param $scope The app scope
+ * @param speed {string} The upload speed
  */
 function pushUploadSpeed($scope, speed) {
     // Convert speed to kB
@@ -374,8 +392,13 @@ function pushUploadSpeed($scope, speed) {
 }
 
 
-
-//return an array of objects according to key, value, or key and value matching
+/**
+ * A helper function to return an array of objects according to key, value, or key and value matching specific inputs
+ * @param obj The object to search through
+ * @param key The key to search for
+ * @param val The value to search for
+ * @returns {Array} An array containing all the matching objects
+ */
 function getObjects(obj, key, val) {
     var objects = [];
 
@@ -402,6 +425,9 @@ function getObjects(obj, key, val) {
 }
 
 
+/**
+ * An Angular directive that plots a 'jstree' tree
+ */
 app.directive('jstree', function() {
     return {
         restrict: 'A',
@@ -426,8 +452,6 @@ app.directive('jstree', function() {
                 }, false).bind("select_node.jstree", function (event, data) {
                         scope.fileSelected = getObjects(v, '', data.node.text)[0];
                         scope.$digest();
-                        //console.log(scope.fileSelected)
-                        //alert("lol")
                     });
             });
         }
