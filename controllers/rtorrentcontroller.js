@@ -4,7 +4,8 @@ module.exports = {
     getFileData: getFileData,
     getTrackerData: getTrackerData,
     getGlobalStats: getGlobalStats,
-    getDetailedTorrentInfo: getDetailedTorrentInfo
+    getDetailedTorrentInfo: getDetailedTorrentInfo,
+    getPeerInfo: getPeerInfo
 };
 
 var rtorrentapi = require("../code/rtorrent/rtorrentapi");
@@ -348,6 +349,64 @@ function getDetailedTorrentInfo(hash, callback) {
                     dataToReturn[stats[counter++]] = innerValue.val;
                 });
             });
+
+            callback(dataToReturn);
+        }
+    });
+}
+
+function getPeerInfo(hash, callback) {
+    var request = createrequest.createSpecificMulticallXml(rtorrentconstants.MULTICALL_PEER_INFO, hash,  "p.multicall");
+
+    rtorrentapi.execute(request, function(response) {
+        if (response.toString().indexOf("error") == 0) {
+            callback("There was a problem connecting to rtorrent");
+        }
+        else {
+            // Remove the header
+            response = parseresponse.removeResponseHeader(response);
+            var dataToReturn = { "peers": [] };
+
+            // Check for errors (invalid hash used as an input)
+            try {
+                // Traverse the XML document until we get to the data
+                var data = new xmldoc.XmlDocument(response)
+                    .childNamed("params")
+                    .childNamed("param")
+                    .childNamed("value")
+                    .childNamed("array")
+                    .childNamed("data");
+
+                // For each file
+                data.eachChild(function(value) {
+                    var innerData = value.childNamed("array").childNamed("data");
+                    var trackerData = [];
+
+                    // For each parameter - push into temp array
+                    // Always push the child at index 0, this allows us to ignore types (<int>, <boolean>, etc)
+                    innerData.eachChild(function(innerValue) {
+                        trackerData.push(innerValue.children[0].val);
+                    });
+
+                    var tmp = { };
+                    tmp["address"] = trackerData[0];
+                    tmp["client"] = trackerData[1];
+                    tmp["downRate"] = trackerData[2];
+                    tmp["downTotal"] = trackerData[3];
+                    tmp["upRate"] = trackerData[4];
+                    tmp["upTotal"] = trackerData[5];
+                    tmp["percentComplete"] = trackerData[6];
+
+                    // Push the data into the "files" array in the correct directory in the JSON object we will return
+                    dataToReturn.peers.push(tmp);
+                });
+            }
+            catch (err) {
+                console.log(err.toString());
+                console.log(dataToReturn);
+                callback({trackers:[]});
+                return;
+            }
 
             callback(dataToReturn);
         }
