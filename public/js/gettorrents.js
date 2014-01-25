@@ -120,6 +120,10 @@ function getDetailedInfo($scope, $http) {
     $http.get(document.location.origin + '/trackers' + hash).success(function(detailedInfo) {
         $scope.trackerInfo = detailedInfo;
     });
+
+    $http.get(document.location.origin + '/info' + hash).success(function(detailedInfo) {
+        $scope.torrentInfo = detailedInfo;
+    });
 }
 
 

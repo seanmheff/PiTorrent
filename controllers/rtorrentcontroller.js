@@ -167,10 +167,7 @@ function getFileData(hash, callback) {
     var request = createrequest.
         createSpecificMulticallXml(rtorrentconstants.MULTICALL_FILE_INFO, hash, rtorrentconstants.FILE_MULTICALL);
 
-    //console.log(request);
-
     rtorrentapi.execute(request, function(response) {
-        console.log(response);
         if (response.toString().indexOf("error") == 0) {
             callback("There was a problem connecting to rtorrent");
         }
@@ -188,8 +185,6 @@ function getFileData(hash, callback) {
                     }
                 ]
             };
-
-            //console.log(response);
 
             // Check for errors (invalid hash used as an input)
             try {
