@@ -51,13 +51,13 @@ $("#status7").sparkline([3,6,3,9,9,5,4,6,5,6,4,9,7,6,7,8,8,5 ], {
     lineColor: '#0ca5e7',
     fillColor: '#e5f3f9'});
 
-$("#todayspark1").sparkline([8,11,9,12,10,9,13,11,12,11,10,12,11,], {
+$("#todayspark1").sparkline([8,11,9,12,10,9,13,11,12,11,10,12,11], {
     type: 'bar',
     height: '50',
     barWidth: 7,
     barColor: '#fff'});
 
-$("#todayspark2").sparkline([7,11,9,12,8,9,14,11,10,12,10,12,11,], {
+$("#todayspark2").sparkline([7,11,9,12,8,9,14,11,10,12,10,12,11], {
     type: 'bar',
     height: '50',
     barWidth: 7,

@@ -1,73 +1,18 @@
-var app = angular.module('myApp', ['ui.bootstrap', 'ngRoute']);
-var counter = 150; // Counter needed for flot chart
-
-
 /**
- * Define our angular routes - i.e. what content is rendered depending on the URL
+ * This module contains our angular controllers
+ * We define the module and inject its dependencies
  */
-app.config(['$routeProvider', function($routeProvider) {
-    $routeProvider.
-        when('/main/:torrentHash', {
-            templateUrl: 'partials/detailed_info',
-            controller: 'DetailedInfoCtrl'
-        }).
-        when('/main', {
-            templateUrl: 'partials/torrents'
-        }).
-        otherwise({
-            redirectTo: '/main'
-        });
-}]);
-
-
-/**
- * An Angular filter function to determine if a torrent is seeding
- * @param torrent The torrent to evaluate
- * @returns {boolean} Returns a boolean to denote if the torrent is seeding
- */
-var seedingFilter = function (torrent) {
-    return torrent.complete == 1
-};
-
-
-/**
- * An Angular filter function to determine if a torrent is leeching
- * @param torrent The torrent to evaluate
- * @returns {boolean} Returns a boolean to denote if the torrent is leeching
- */
-var leechingFilter = function (torrent) {
-    return torrent.complete == 0
-};
-
-
-/**
- * An Angular filter function to determine if a torrent is currently currently uploading
- * @param torrent The torrent to evaluate
- * @returns {boolean} Returns a boolean to denote if the torrent is currently uploading
- */
-var uploadingFilter = function (torrent) {
-    return torrent.uploadRate > 0
-};
-
-
-/**
- * An Angular filter function to determine if a torrent is currently currently downloading
- * @param torrent The torrent to evaluate
- * @returns {boolean} Returns a boolean to denote if the torrent is currently downloading
- */
-var downloadingFilter = function (torrent) {
-    return torrent.downloadRate > 0
-};
+var app = angular.module('myApp.controllers', ['myApp.filters']);
 
 
 /**
  * This is the controller for the torrents
  */
 app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
-    $scope.seeding = seedingFilter;
-    $scope.leeching = leechingFilter;
-    $scope.uploading = uploadingFilter;
-    $scope.downloading = downloadingFilter;
+    $scope.seeding = app.seedingFilter;
+    $scope.leeching = app.leechingFilter;
+    $scope.uploading = app.uploadingFilter;
+    $scope.downloading = app.downloadingFilter;
     $scope.jstree = {children:[]}
 
     // This is needed for selecting tabs from the overview widget
@@ -99,7 +44,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
     }, 2000);
 
     setInterval(function() {
-       getSystemStats($scope, $http);
+        getSystemStats($scope, $http);
     }, 5000);
 });
 
@@ -114,6 +59,11 @@ app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http) {
 });
 
 
+
+
+var counter = 150; // Counter needed for flot chart
+
+
 /**
  * This function gathers detailed info on a torrent. It is called when the users clicks on a torrent
  * @param $scope The controller scope
@@ -125,6 +75,7 @@ function getDetailedInfo($scope, $http) {
     var hash = url.substring(url.lastIndexOf('/'), url.length);
 
     $http.get(document.location.origin + '/files' + hash).success(function(detailedInfo) {
+        recursiveFileWalk(detailedInfo);
         $scope.fileData = detailedInfo;
     });
 
@@ -139,6 +90,45 @@ function getDetailedInfo($scope, $http) {
     $http.get(document.location.origin + '/peers' + hash).success(function(detailedInfo) {
         $scope.peerInfo = detailedInfo;
     });
+}
+
+
+/**
+ * A recursive function used to augment the data returned from the 'files' API
+ * The function finds leaf nodes in the object and computes additional data for these nodes
+ * @param obj The object to perform the walk on
+ */
+function recursiveFileWalk(obj) {
+    if (obj.children.length === 0) {
+        obj.sizeHuman = convertBytes(obj.sizeBytes);
+        obj.priorityHuman = convertPriority(obj.priority);
+        obj.percentComplete = (obj.chunksComplete/obj.sizeChunks) * 100;
+    }
+    else {
+        for (var i=0; i<obj.children.length; i++) {
+            recursiveFileWalk(obj.children[i]);
+        }
+    }
+}
+
+
+/**
+ * A helper function to convert a number to a priority
+ * The 'files' API returns a download priority for each file, which is a number in the set [0,1,2].
+ * This function converts that number to a specific string in the set ['off', 'normal', 'high']
+ * @param priority {string} The numeric priority
+ * @returns {string} The priority, as a human readable string
+ */
+function convertPriority(priority) {
+    if (priority == 0) {
+        return "off";
+    }
+    else if (priority == 1) {
+        return "normal";
+    }
+    else {
+        return "high";
+    }
 }
 
 
@@ -162,10 +152,10 @@ function populateTorrents($scope, $http) {
 
         for (var x in torrents.torrents) {
             torrents.torrents[x].percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
-            torrents.torrents[x]['size'] = convert(torrents.torrents[x]['size']);
-            torrents.torrents[x]['uploadRateHumanReadable'] = convert(torrents.torrents[x]['uploadRate']);
-            torrents.torrents[x]['downloadRateHumanReadable'] = convert(torrents.torrents[x]['downloadRate']);
-            torrents.torrents[x]['downloaded'] = convert(torrents.torrents[x]['downloaded']);
+            torrents.torrents[x]['size'] = convertBytes(torrents.torrents[x]['size']);
+            torrents.torrents[x]['uploadRateHumanReadable'] = convertBytes(torrents.torrents[x]['uploadRate']);
+            torrents.torrents[x]['downloadRateHumanReadable'] = convertBytes(torrents.torrents[x]['downloadRate']);
+            torrents.torrents[x]['downloaded'] = convertBytes(torrents.torrents[x]['downloaded']);
         }
         $scope.torrentResults = torrents;
     });
@@ -207,9 +197,9 @@ function updateTorrents($scope, $http) {
         // Update our torrent data
         for (var x in torrents.torrents) {
             var percentDone = (torrents.torrents[x]['downloaded'] / torrents.torrents[x]['size'] * 100).toFixed(1);
-            var uploadRateHumanReadable = convert(torrents.torrents[x]['uploadRate']);
-            var downloadRateHumanReadable = convert(torrents.torrents[x]['downloadRate']);
-            var downloaded = convert(torrents.torrents[x]['downloaded']);
+            var uploadRateHumanReadable = convertBytes(torrents.torrents[x]['uploadRate']);
+            var downloadRateHumanReadable = convertBytes(torrents.torrents[x]['downloadRate']);
+            var downloaded = convertBytes(torrents.torrents[x]['downloaded']);
             var complete = torrents.torrents[x]['complete'];
 
             // Only update view if the variable has changed
@@ -248,8 +238,8 @@ function updateTorrents($scope, $http) {
  */
 function getSystemStats($scope, $http) {
     $http.get(document.location.origin + '/system-stats').success(function(systemInfo) {
-        systemInfo.totalSpaceNormalized = convert(systemInfo.totalDisk);
-        systemInfo.freeSpaceNormalized = convert(systemInfo.freeDisk);
+        systemInfo.totalSpaceNormalized = convertBytes(systemInfo.totalDisk);
+        systemInfo.freeSpaceNormalized = convertBytes(systemInfo.freeDisk);
         $scope.systemInfo = systemInfo;
     });
 }
@@ -260,7 +250,7 @@ function getSystemStats($scope, $http) {
  * @param fileSizeInBytes A string that contains the size in bytes
  * @returns {string} Returns a human readable size
  */
-function convert(fileSizeInBytes) {
+function convertBytes(fileSizeInBytes) {
     if (fileSizeInBytes == 0) {
         return "0.0 kB";
     }
@@ -298,52 +288,15 @@ function getGlobalStats($scope, $http) {
         pushUploadSpeed($scope, stats.upSpeed);
 
         // Convert bytes to human readable format
-        stats.downSpeed = convert(stats.downSpeed);
-        stats.upSpeed = convert(stats.upSpeed);
-        stats.downLimit = convert(stats.downLimit);
-        stats.upLimit = convert(stats.upLimit);
+        stats.downSpeed = convertBytes(stats.downSpeed);
+        stats.upSpeed = convertBytes(stats.upSpeed);
+        stats.downLimit = convertBytes(stats.downLimit);
+        stats.upLimit = convertBytes(stats.upLimit);
 
         // Add stats to scope
         $scope.stats = stats;
     });
 }
-
-
-/**
- * An Angular directive that plots a 'flot' chart
- */
-app.directive('chart', function() {
-    return {
-        restrict: 'E',
-        template: '<div style="height:300px;"></div>',
-        replace: true,
-        link: function(scope, elem, attrs) {
-
-            var chart = null,
-                opts  = {
-                    series: { shadowSize: 0 }, // drawing is faster without shadows
-                    lines: {fill: true},
-                    grid: {borderWidth:0 },
-                    //yaxis: { min: 0, max: 100 },
-                    colors: ["#ff2424"],
-                    xaxis: {show: false},
-                    yaxis: {min: 0, show: true}
-                };
-
-            scope.$watch(attrs.ngModel, function(v) {
-                if (!chart) {
-                    chart = $.plot(elem, v , opts);
-                    elem.show();
-                }
-                else {
-                    chart.setData(v);
-                    chart.setupGrid();
-                    chart.draw();
-                }
-            }, true);
-        }
-    };
-});
 
 
 /**
@@ -391,69 +344,3 @@ function pushUploadSpeed($scope, speed) {
     $scope.uploadData[0].push([counter++, speed]);
 }
 
-
-/**
- * A helper function to return an array of objects according to key, value, or key and value matching specific inputs
- * @param obj The object to search through
- * @param key The key to search for
- * @param val The value to search for
- * @returns {Array} An array containing all the matching objects
- */
-function getObjects(obj, key, val) {
-    var objects = [];
-
-    for (var i in obj) {
-        if (!obj.hasOwnProperty(i)) {
-            continue;
-        }
-        if (typeof obj[i] == 'object') {
-            objects = objects.concat(getObjects(obj[i], key, val));
-        }
-        else {
-            if (i == key && obj[i] == val || i == key && val == '') {
-                objects.push(obj);
-            }
-            else if (obj[i] == val && key == '') {
-                //only add if the object is not already in the array
-                if (objects.lastIndexOf(obj) == -1){
-                    objects.push(obj);
-                }
-            }
-        }
-    }
-    return objects;
-}
-
-
-/**
- * An Angular directive that plots a 'jstree' tree
- */
-app.directive('jstree', function() {
-    return {
-        restrict: 'A',
-
-        link: function(scope, element, attrs) {
-
-            scope.$watch(attrs.data, function(v) {
-
-                if (v === undefined) {
-                    return;
-                }
-
-                $(element).jstree({
-                    'core': {
-                        "data": v.children,
-                        "themes": {
-                            "dots": false,
-                            "responsive": true
-                        }
-                    },
-                    "plugins": ["sort", "themes"]
-                }, false).bind("select_node.jstree", function (event, data) {
-                        scope.fileSelected = getObjects(v, '', data.node.text)[0];
-                        scope.$digest();
-                    });
-            });
-        }
-    };
-});

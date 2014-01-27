@@ -10,19 +10,28 @@
   .widget-content
     p(ng-if="fileSelected.text === undefined") No file selected
     .table-responsive
-      table.table.table-striped.table-bordered
+      table.table.table-striped.table-bordered.table-condensed
         tr(ng-if="fileSelected.text !== undefined")
-          th <strong>Priority</strong>
-          th <strong>Size (bytes)</strong>
-          th <strong>Size (chunks)</strong>
-          th <strong>Name</strong>
+          th
+            b Priority
+          th
+            b Size
+          th
+            b % Done
+          th
+            b Name
         tr(ng-if="fileSelected.priority !== undefined")
-          td {{fileSelected.priority}}
-          td {{fileSelected.sizeBytes}}
-          td {{fileSelected.sizeChunks}}
+          td {{fileSelected.priorityHuman}}
+          td {{fileSelected.sizeHuman}}
+          //td {{fileSelected.percentComplete | number:2}}%
+          td
+            .progress
+              .progress-bar(style='width: {{fileSelected.percentComplete}}%;') {{fileSelected.percentComplete | number:2}}%
           td {{fileSelected.text}}
         tr(ng-repeat="child in fileSelected.children | orderBy:'text'", ng-if="child.children.length === 0")
-          td {{child.priority}}
-          td {{child.sizeBytes}}
-          td {{child.sizeChunks}}
+          td {{child.priorityHuman}}
+          td {{child.sizeHuman}}
+          td
+            .progress
+              .progress-bar(style='width: {{child.percentComplete}}%;') {{child.percentComplete | number:2}}%
           td {{child.text}}
