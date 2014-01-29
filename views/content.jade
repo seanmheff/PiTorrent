@@ -1,6 +1,4 @@
 // Main content starts
 .content(ng-controller="TorrentCtrl")
-    include sidebar
-    .mainbar
-        include heading
-        include torrents
+  include sidebar
+  .mainbar(ng-view='')

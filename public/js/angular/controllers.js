@@ -2,18 +2,18 @@
  * This module contains our angular controllers
  * We define the module and inject its dependencies
  */
-var app = angular.module('myApp.controllers', ['myApp.filters']);
+var app = angular.module('myApp.controllers', []);
 
 
 /**
  * This is the controller for the torrents
  */
-app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
+app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentName) {
     $scope.seeding = app.seedingFilter;
     $scope.leeching = app.leechingFilter;
     $scope.uploading = app.uploadingFilter;
     $scope.downloading = app.downloadingFilter;
-    $scope.jstree = {children:[]}
+    $scope.jstree = {children:[]};
 
     // This is needed for selecting tabs from the overview widget
     $scope.tab = {
@@ -23,6 +23,10 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
         leechingTab:false,
         currUpTab:false,
         currDownTab:false
+    };
+
+    $scope.setName = function(name) {
+        sharedTorrentName.setName(name);
     };
 
     // Set up our chart data
@@ -52,9 +56,10 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http) {
 /**
  * A controller for the 'detailed info' part of the app
  */
-app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http) {
+app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http, sharedTorrentName) {
     getDetailedInfo($scope, $http);
 
+    $scope.name = sharedTorrentName.getName();
     $scope.fileSelected = {};
 });
 
