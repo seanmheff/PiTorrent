@@ -10,8 +10,9 @@
   .widget-content
     ul.project
       li(ng-repeat="torrent in torrentResults.torrents | filter:uploading | orderBy:'uploadRate'")
-        p
-          | <strong>{{torrent.name}}</strong>
+        a(href="#/main/{{torrent.hash}}", ng-click="setName(torrent.name)")
+          p
+            b {{torrent.name}}
         p.p-meta
           span Downloaded : {{torrent.downloaded}}
           |  Upload Speed: {{torrent.uploadRateHumanReadable}}

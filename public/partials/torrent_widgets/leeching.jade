@@ -10,8 +10,9 @@
   .widget-content
     ul.project
       li(ng-repeat="torrent in torrentResults.torrents | filter:leeching | orderBy:'name'")
-        p
-          | <strong>{{torrent.name}}</strong>
+        a(href="#/main/{{torrent.hash}}", ng-click="setName(torrent.name)")
+          p
+            b {{torrent.name}}
         .file-upload
           .pull-right
             .btn-grou1p

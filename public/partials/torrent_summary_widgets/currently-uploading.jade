@@ -8,19 +8,16 @@
         i.icon-remove
     .clearfix
   .widget-content
-    // Widget content
-    // Task list starts
     ul.project
       li(ng-repeat="torrent in torrentResults.torrents | filter:uploading | orderBy:'uploadRate'")
-        p
-          // Name
-          | <strong>{{torrent.name}}</strong>
+        a(href="#/main/{{torrent.hash}}", ng-click="setName(torrent.name)")
+          p
+            b {{torrent.name}}
         p.p-meta
           span Downloaded : {{torrent.downloaded}}
           |  Upload Speed: {{torrent.uploadRateHumanReadable}}
         .progress(ng-class="{'progress-success progress-striped active': (torrent.complete == 1)}")
           .progress-bar(ng-class="{'progress-bar-success': (torrent.complete == 1)}", style='width: {{torrent.percentDone}}%')
             | {{torrent.percentDone}}%
-      // This list item only shows when the array is empty
       li(ng-show='(torrentResults.torrents | filter:uploading).length == 0') No torrents
     .clearfix
