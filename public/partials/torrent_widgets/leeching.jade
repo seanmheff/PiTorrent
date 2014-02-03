@@ -9,7 +9,7 @@
     .clearfix
   .widget-content
     ul.project
-      li(ng-repeat="torrent in torrentResults.torrents | filter:leeching | orderBy:'name'")
+      li(ng-repeat="torrent in torrentResults.torrents | filter:leeching | filter:started | orderBy:'name'")
         a(href="#/main/{{torrent.hash}}", ng-click="setName(torrent.name)")
           p
             b {{torrent.name}}
@@ -27,5 +27,5 @@
             |  Upload Speed: {{torrent.uploadRateHumanReadable}} Download Speed: {{torrent.downloadRateHumanReadable}}
         .progress(ng-class="{'progress-striped active': (torrent.downloadRate > 0)}")
           .progress-bar(style='width: {{torrent.percentDone}}%') {{torrent.percentDone}}%
-      li(ng-show='(torrentResults.torrents | filter:leeching).length == 0') No torrents
+      li(ng-show='(torrentResults.torrents | filter:leeching | filter:started).length == 0') No torrents
     .clearfix

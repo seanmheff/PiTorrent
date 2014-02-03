@@ -9,6 +9,8 @@ var app = angular.module('myApp.controllers', []);
  * This is the controller for the torrents
  */
 app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentName) {
+    $scope.stopped = app.stoppedFilter;
+    $scope.started = app.startedFilter;
     $scope.seeding = app.seedingFilter;
     $scope.leeching = app.leechingFilter;
     $scope.uploading = app.uploadingFilter;
@@ -19,6 +21,8 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
     $scope.tab = {
         overviewTab:false,
         allTab:false,
+        stoppedTab:false,
+        startedTab:false,
         seedingTab:false,
         leechingTab:false,
         currUpTab:false,
@@ -206,6 +210,8 @@ function updateTorrents($scope, $http) {
             var downloadRateHumanReadable = convertBytes(torrents.torrents[x]['downloadRate']);
             var downloaded = convertBytes(torrents.torrents[x]['downloaded']);
             var complete = torrents.torrents[x]['complete'];
+            var trackerMsg = torrents.torrents[x]['trackerMsg'];
+            var active = torrents.torrents[x]['active'];
 
             // Only update view if the variable has changed
             if ($scope.torrentResults.torrents[x].percentDone !== percentDone ) {
@@ -230,6 +236,14 @@ function updateTorrents($scope, $http) {
 
             if ($scope.torrentResults.torrents[x].complete !== complete ) {
                 $scope.torrentResults.torrents[x].complete = complete;
+            }
+
+            if ($scope.torrentResults.torrents[x].active !== active ) {
+                $scope.torrentResults.torrents[x].active = active;
+            }
+
+            if ($scope.torrentResults.torrents[x].trackerMsg !== trackerMsg ) {
+                $scope.torrentResults.torrents[x].trackerMsg = trackerMsg;
             }
         }
     });
