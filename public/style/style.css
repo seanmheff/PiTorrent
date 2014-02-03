@@ -28,6 +28,29 @@ form *{
     border-radius:5px;
 }
 
+.list-group-item-danger {
+    color: #a94442;
+    background-color: #f2dede;
+}
+a.list-group-item-danger {
+    color: #a94442;
+}
+a.list-group-item-danger .list-group-item-heading {
+    color: inherit;
+}
+a.list-group-item-danger:hover,
+a.list-group-item-danger:focus {
+    color: #a94442;
+    background-color: #ebcccc;
+}
+a.list-group-item-danger.active,
+a.list-group-item-danger.active:hover,
+a.list-group-item-danger.active:focus {
+    color: #fff;
+    background-color: #a94442;
+    border-color: #a94442;
+}
+
 
 input, textarea{
 	background-image: none !important;

@@ -98,6 +98,7 @@ function getStandardData(callback) {
                 tmp["ratio"] = torrentData[6];
                 tmp["complete"] = torrentData[7];
                 tmp["trackerMsg"] = torrentData[8];
+                tmp["active"] = torrentData[9];
                 dataToReturn.torrents.push(tmp);
             });
 

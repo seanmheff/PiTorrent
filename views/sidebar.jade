@@ -17,6 +17,10 @@
             a(href='#', ng-click="tab.overviewTab = true") Overview
           li(ng-class="{active: tab.allTab}")
             a(href='#', ng-click="tab.allTab = true") All
+          li(ng-class="{active: tab.stoppedTab}")
+            a(href='#', ng-click="tab.stoppedTab = true") Stopped
+          li(ng-class="{active: tab.startedTab}")
+            a(href='#', ng-click="tab.startedTab = true") Started
           li(ng-class="{active: tab.seedingTab}")
             a(href='#', ng-click="tab.seedingTab = true") Seeding
           li(ng-class="{active: tab.leechingTab}")

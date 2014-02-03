@@ -1,6 +1,6 @@
 .widget.wred
   .widget-head
-    .pull-left All
+    .pull-left Started
     .widget-icons.pull-right
       a.wminimize(href='#')
         i.icon-chevron-up
@@ -9,17 +9,13 @@
     .clearfix
   .widget-content
     ul.project
-      li(ng-repeat="torrent in torrentResults.torrents | orderBy:'name'",
-        ng-class="{'list-group-item-danger': (torrent.active == 0)}")
+      li(ng-repeat="torrent in torrentResults.torrents | filter:started | orderBy:'name'")
         a(href="#/main/{{torrent.hash}}", ng-click="setName(torrent.name)")
           p
-            b(ng-if="torrent.active == 0") [Inactive]
             b {{torrent.name}}
-        p
-          b {{torrent.trackerMsg}}
         .file-upload
           .pull-right
-            .btn-groulp
+            .btn-grou1p
               button.btn.btn-sm.btn-success
                 i.icon-play
               button.btn.btn-sm.btn-primary
@@ -28,9 +24,8 @@
                 i.icon-remove
           p.p-meta
             span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
-            | Upload Speed: {{torrent.uploadRateHumanReadable}} Download Speed: {{torrent.downloadRateHumanReadable}}
+            |  Upload Speed: {{torrent.uploadRateHumanReadable}} Download Speed: {{torrent.downloadRateHumanReadable}}
         .progress(ng-class="{'progress-striped active': (torrent.downloadRate > 0)}")
-          .progress-bar(ng-class="{'progress-bar-success': (torrent.complete == 1)}", style='width: {{torrent.percentDone}}%;')
-            | {{torrent.percentDone}}%
-      li(ng-show='(torrentResults.torrents).length == 0') No torrents
+          .progress-bar(style='width: {{torrent.percentDone}}%') {{torrent.percentDone}}%
+      li(ng-show='(torrentResults.torrents | filter:started).length == 0') No torrents
     .clearfix

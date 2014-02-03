@@ -25,22 +25,32 @@ tabset
       .row
         .col-md-12
           include torrent_widgets/all
-  tab(heading="Seeding ({{(torrentResults.torrents | filter:seeding).length }})", active="tab.seedingTab")
+  tab(heading="Stopped ({{(torrentResults.torrents | filter:stopped).length }})", active="tab.stoppedTab")
+    .container
+      .row
+        .col-md-12
+          include torrent_widgets/stopped
+  tab(heading="Started ({{(torrentResults.torrents | filter:started).length }})", active="tab.startedTab")
+    .container
+      .row
+        .col-md-12
+          include torrent_widgets/started
+  tab(heading="Seeding ({{(torrentResults.torrents | filter:seeding | filter:started).length}})", active="tab.seedingTab")
     .container
       .row
         .col-md-12
           include torrent_widgets/seeding
-  tab(heading="Leeching ({{(torrentResults.torrents | filter:leeching).length }})", active="tab.leechingTab")
+  tab(heading="Leeching ({{(torrentResults.torrents | filter:leeching | filter:started).length}})", active="tab.leechingTab")
     .container
       .row
         .col-md-12
           include torrent_widgets/leeching
-  tab(heading="Currently uploading ({{(torrentResults.torrents | filter:uploading).length }})",active="tab.currUpTab")
+  tab(heading="Currently uploading ({{(torrentResults.torrents | filter:uploading).length}})",active="tab.currUpTab")
     .container
       .row
         .col-md-12
           include torrent_widgets/currently-uploading
-  tab(heading="Currently downloading ({{(torrentResults.torrents | filter:downloading).length }})", active="tab.currDownTab")
+  tab(heading="Currently downloading ({{(torrentResults.torrents | filter:downloading).length}})", active="tab.currDownTab")
     .container
       .row
         .col-md-12
