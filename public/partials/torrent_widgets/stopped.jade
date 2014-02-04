@@ -13,15 +13,13 @@
         a(href="#/main/{{torrent.hash}}", ng-click="setName(torrent.name)")
           p
             b [Inactive] {{torrent.name}}
+        p
+          b {{torrent.trackerMsg}}
         .file-upload
           .pull-right
             .btn-grou1p
-              button.btn.btn-sm.btn-success
+              button.btn.btn-sm.btn-success(ng-click="startTorrent(torrent.hash)")
                 i.icon-play
-              button.btn.btn-sm.btn-primary
-                i.icon-pause
-              button.btn.btn-sm.btn-danger
-                i.icon-remove
           p.p-meta
             span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done
             |  Upload Speed: {{torrent.uploadRateHumanReadable}} Download Speed: {{torrent.downloadRateHumanReadable}}
