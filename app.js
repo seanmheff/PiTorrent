@@ -89,6 +89,7 @@ if ('development' == app.get('env')) {
 app.get('/', ensureAuthenticated, function(req, res) {
     routes.index(req, res), { user: req.user }
 });
+app.post('/add-torrent', ensureAuthenticated, system.addTorrent);
 app.get('/torrents', ensureAuthenticated, torrents.getTorrents);
 app.get('/files/:hash', ensureAuthenticated, torrents.getFileInfo);
 app.get('/trackers/:hash', ensureAuthenticated, torrents.getTrackerInfo);

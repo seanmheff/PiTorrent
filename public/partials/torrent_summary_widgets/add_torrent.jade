@@ -1,0 +1,13 @@
+.widget.wblue
+  .widget-head
+    .pull-left Add Torrent
+    .widget-icons.pull-right
+      a.wminimize(href='#')
+        i.icon-chevron-up
+      a.wclose(href='#')
+        i.icon-remove
+    .clearfix
+  .widget-content
+    form(action="add-torrent", method="post", enctype="multipart/form-data")
+      input(type="file", name="torrentData")
+      input(type="submit")
