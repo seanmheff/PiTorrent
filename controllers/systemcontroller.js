@@ -1,9 +1,11 @@
 module.exports = {
-    getSystemInfo: getSystemInfo
+    getSystemInfo: getSystemInfo,
+    uploadTorrent: uploadTorrent
 };
 
 var os = require("os");
 var diskspace = require('diskspace');
+var fs = require('fs');
 
 
 /**
@@ -22,5 +24,28 @@ function getSystemInfo(callback) {
         data["freeDisk"] = free
 
         callback(data);
+    });
+}
+
+
+/**
+ * A function to handle the upload of a torrent file
+ * @param tmpPath The path of the uploaded torrent file
+ * @param targetPath The path we wish to move the torrent file to
+ * @param callback The callback to execute when the file has been moved
+ */
+function uploadTorrent(tmpPath, targetPath, callback) {
+    // move the file from the temporary location to the intended location
+    fs.rename(tmpPath, targetPath, function(err) {
+        if (err) {
+            callback(null, err)
+        }
+        // delete the temporary file
+        fs.unlink(tmpPath, function(err) {
+            if (err) {
+                callback(null, err)
+            }
+            callback("ok")
+        });
     });
 }
