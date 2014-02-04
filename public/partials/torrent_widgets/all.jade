@@ -20,11 +20,11 @@
         .file-upload
           .pull-right
             .btn-groulp
-              button.btn.btn-sm.btn-success
+              button.btn.btn-sm.btn-success(ng-click="startTorrent(torrent.hash)")
                 i.icon-play
               button.btn.btn-sm.btn-primary
                 i.icon-pause
-              button.btn.btn-sm.btn-danger
+              button.btn.btn-sm.btn-danger(ng-click="stopTorrent(torrent.hash)")
                 i.icon-remove
           p.p-meta
             span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done

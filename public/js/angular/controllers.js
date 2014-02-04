@@ -33,6 +33,14 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
         sharedTorrentName.setName(name);
     };
 
+    $scope.stopTorrent = function(hash) {
+        $http.get(document.location.origin + '/stop/' + hash);
+    };
+
+    $scope.startTorrent = function(hash) {
+        $http.get(document.location.origin + '/start/' + hash);
+    };
+
     // Set up our chart data
     $scope.downloadData = [[]];
     $scope.uploadData = [[]];
