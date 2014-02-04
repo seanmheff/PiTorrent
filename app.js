@@ -94,6 +94,8 @@ app.get('/files/:hash', ensureAuthenticated, torrents.getFileInfo);
 app.get('/trackers/:hash', ensureAuthenticated, torrents.getTrackerInfo);
 app.get('/info/:hash', ensureAuthenticated, torrents.getDetailedTorrentInfo);
 app.get('/peers/:hash', ensureAuthenticated, torrents.getPeerInfo);
+app.get('/stop/:hash', ensureAuthenticated, torrents.stopTorrent);
+app.get('/start/:hash', ensureAuthenticated, torrents.startTorrent);
 app.get('/stats', ensureAuthenticated, torrents.getStats);
 app.get('/system-stats', ensureAuthenticated, system.getSystemStats);
 app.get('/login', auth.login);

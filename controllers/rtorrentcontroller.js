@@ -5,7 +5,9 @@ module.exports = {
     getTrackerData: getTrackerData,
     getGlobalStats: getGlobalStats,
     getDetailedTorrentInfo: getDetailedTorrentInfo,
-    getPeerInfo: getPeerInfo
+    getPeerInfo: getPeerInfo,
+    stopTorrent: stopTorrent,
+    startTorrent: startTorrent
 };
 
 var rtorrentapi = require("../code/rtorrent/rtorrentapi");
@@ -433,6 +435,78 @@ function getPeerInfo(hash, callback) {
             }
 
             callback(dataToReturn);
+        }
+    });
+}
+
+
+/**
+ * This function stops a torrent
+ * @param hash The hash that identifies the torrent to stop
+ * @param callback The callback to execute when the data has returned from the rtorrent API
+ */
+function stopTorrent(hash, callback) {
+    var request = createrequest.createRequest([rtorrentconstants.DOWNLOAD_STOP, hash]);
+
+    rtorrentapi.execute(request, function(response) {
+        // Remove the header
+        response = parseresponse.removeResponseHeader(response);
+
+        // Check for errors (invalid hash used as an input)
+        try {
+            // Traverse the XML document until we get the status code
+            var status = new xmldoc.XmlDocument(response)
+                .childNamed("params")
+                .childNamed("param")
+                .childNamed("value")
+                .childNamed("i4").val;
+
+            if (status == 0) {
+                callback(200);
+            }
+            else {
+                throw "Invalid rtorrent status";
+            }
+        }
+        catch (err) {
+            console.log(err.toString());
+            callback(500, { error: err });
+        }
+    });
+}
+
+
+/**
+ * This function starts a torrent
+ * @param hash The hash that identifies the torrent to start
+ * @param callback The callback to execute when the data has returned from the rtorrent API
+ */
+function startTorrent(hash, callback) {
+    var request = createrequest.createRequest([rtorrentconstants.DOWNLOAD_START, hash]);
+
+    rtorrentapi.execute(request, function(response) {
+        // Remove the header
+        response = parseresponse.removeResponseHeader(response);
+
+        // Check for errors (invalid hash used as an input)
+        try {
+            // Traverse the XML document until we get the status code
+            var status = new xmldoc.XmlDocument(response)
+                .childNamed("params")
+                .childNamed("param")
+                .childNamed("value")
+                .childNamed("i4").val;
+
+            if (status == 0) {
+                callback(200);
+            }
+            else {
+                throw "Invalid rtorrent status";
+            }
+        }
+        catch (err) {
+            console.log(err.toString());
+            callback(500, { error: err });
         }
     });
 }

@@ -4,7 +4,9 @@ module.exports = {
     getTrackerInfo: getTrackerInfo,
     getDetailedTorrentInfo: getDetailedTorrentInfo,
     getPeerInfo: getPeerInfo,
-    getStats: getStats
+    getStats: getStats,
+    stopTorrent: stopTorrent,
+    startTorrent: startTorrent
 };
 
 var rtorrentcontroller = require('../controllers/rtorrentcontroller.js');
@@ -104,4 +106,30 @@ function sendResponse(data, res) {
     else {
         res.json(data);
     }
+}
+
+
+/**
+ * A function to stop a torrent
+ * @param req The HTTP request
+ * @param res The HTTP response
+ */
+function stopTorrent(req, res) {
+    var hash = req.params.hash;
+    rtorrentcontroller.stopTorrent(hash, function(status) {
+        res.send(status);
+    });
+}
+
+
+/**
+ * A function to start a torrent
+ * @param req The HTTP request
+ * @param res The HTTP response
+ */
+function startTorrent(req, res) {
+    var hash = req.params.hash;
+    rtorrentcontroller.startTorrent(hash, function(status) {
+        res.send(status);
+    });
 }
