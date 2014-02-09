@@ -1,11 +1,17 @@
 module.exports = {
     getSystemInfo: getSystemInfo,
-    uploadTorrent: uploadTorrent
+    uploadTorrent: uploadTorrent,
+    getTorrentFromURL: getTorrentFromURL
 };
 
 var os = require("os");
 var diskspace = require('diskspace');
 var fs = require('fs');
+var url = require('url');
+var https = require('https');
+var http = require('http');
+var path = require('path')
+
 
 
 /**
@@ -48,4 +54,28 @@ function uploadTorrent(tmpPath, targetPath, callback) {
             callback("ok")
         });
     });
+}
+
+
+function getTorrentFromURL(torrentURL, callback) {
+    var torrentURL = url.parse(torrentURL);
+
+    if (torrentURL.protocol === "https:") {
+        https.get(torrentURL.href, function(res) {
+            if (res.statusCode == 200) {
+                var file = fs.createWriteStream('/home/sean/Desktop/Torrents/' + path.basename(torrentURL.path));
+                res.pipe(file);
+            }
+            callback(res.statusCode);
+        });
+    }
+    else if (torrentURL.protocol === "http:") {
+        http.get(torrentURL.href, function(res) {
+            if (res.statusCode == 200) {
+                var file = fs.createWriteStream('/home/sean/Desktop/Torrents/' + path.basename(torrentURL.path));
+                res.pipe(file);
+            }
+            callback(res.statusCode);
+        });
+    }
 }
