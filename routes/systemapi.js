@@ -1,6 +1,7 @@
 module.exports = {
     getSystemStats:getSystemStats,
-    addTorrent: addTorrent
+    addTorrent: addTorrent,
+    addTorrentURL: addTorrentURL
 }
 
 var systemcontroller = require('../controllers/systemcontroller.js');
@@ -31,6 +32,18 @@ function addTorrent(req, res) {
         if (err) {
             console.log(err);
         }
-         res.redirect("/");
+        res.redirect("/");
+    });
+}
+
+
+function addTorrentURL(req, res) {
+    var url = req.body.url;
+
+    systemcontroller.getTorrentFromURL(url, function(statusCode){
+        if (statusCode !== 200) {
+            console.log("Could not GET torrent: " + statusCode);
+        }
+        res.redirect("/");
     });
 }

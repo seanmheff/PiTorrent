@@ -9,5 +9,10 @@
     .clearfix
   .widget-content
     form(action="add-torrent", method="post", enctype="multipart/form-data")
+      label Torrent File
       input(type="file", name="torrentData")
+      input(type="submit")
+    form(action="add-torrent-url", method="post")
+      label Torrent URL
+      input(type="text", name="url")
       input(type="submit")
