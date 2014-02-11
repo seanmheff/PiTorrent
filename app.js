@@ -99,6 +99,7 @@ app.get('/peers/:hash', ensureAuthenticated, torrents.getPeerInfo);
 app.get('/stop/:hash', ensureAuthenticated, torrents.stopTorrent);
 app.get('/start/:hash', ensureAuthenticated, torrents.startTorrent);
 app.get('/stats', ensureAuthenticated, torrents.getStats);
+app.get('/settings', ensureAuthenticated, system.getSettings);
 app.get('/system-stats', ensureAuthenticated, system.getSystemStats);
 app.get('/login', auth.login);
 app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res) {

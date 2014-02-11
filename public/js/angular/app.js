@@ -23,6 +23,10 @@ app.config(['$routeProvider', function($routeProvider) {
         when('/main', {
             templateUrl: 'partials/torrents'
         }).
+        when('/settings', {
+            templateUrl: 'partials/settings',
+            controller: 'SettingsCtrl'
+        }).
         otherwise({
             redirectTo: '/main'
         });

@@ -1,10 +1,13 @@
 module.exports = {
     getSystemStats:getSystemStats,
     addTorrent: addTorrent,
-    addTorrentURL: addTorrentURL
+    addTorrentURL: addTorrentURL,
+    getSettings: getSettings
 }
 
 var systemcontroller = require('../controllers/systemcontroller.js');
+var fs    = require('fs');
+var nconf = require('nconf');
 
 
 /**
@@ -37,6 +40,11 @@ function addTorrent(req, res) {
 }
 
 
+/**
+ * A function to GET a torrent file from a URL
+ * @param req The HTTP request
+ * @param res The HTTP response
+ */
 function addTorrentURL(req, res) {
     var url = req.body.url;
 
@@ -46,4 +54,14 @@ function addTorrentURL(req, res) {
         }
         res.redirect("/");
     });
+}
+
+
+/**
+ * A function to get the app's settings and return them as JSON
+ * @param req The HTTP request
+ * @param res The HTTP response
+ */
+function getSettings(req, res) {
+    res.json(nconf.file('config.json').load());
 }

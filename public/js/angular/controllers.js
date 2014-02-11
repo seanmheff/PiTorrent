@@ -76,6 +76,14 @@ app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http, shar
 });
 
 
+/**
+ * A controller for the 'settings' part of the app
+ */
+app.controller('SettingsCtrl', function SettingsCtrl($scope, $http) {
+    $http.get(document.location.origin + '/settings').success(function(settings) {
+        $scope.settings = settings;
+    });
+});
 
 
 var counter = 150; // Counter needed for flot chart
