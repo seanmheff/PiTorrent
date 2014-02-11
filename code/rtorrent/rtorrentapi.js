@@ -1,4 +1,7 @@
 var net = require('net');
+var nconf = require('nconf');
+
+nconf.file({ file: 'config.json' });
 
 
 /**
@@ -7,7 +10,7 @@ var net = require('net');
  * @param callback {function} The callback that will be called when data is received or an error occurs
  */
 function send(request, callback) {
-    var socket = new net.Socket().connect("/tmp/rpc.socket");
+    var socket = new net.Socket().connect(nconf.get('rpcSocket'));
     var firstTime = true;
     var size;
     var response = "";

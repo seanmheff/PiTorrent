@@ -29,3 +29,13 @@
             a(href='#', ng-click="tab.currUpTab = true") Currently Uploading
           li(ng-class="{active: tab.currDownTab}")
             a(href='#', ng-click="tab.currDownTab = true") Currently Downloading
+    ul.navi
+      li.has_submenu.nblue.current
+        a(href='#')
+          i.icon-desktop
+          | Settings
+          span.pull-right
+            i.icon-angle-right
+        ul
+          li
+            a(href='#/settings') rtorrent Settings

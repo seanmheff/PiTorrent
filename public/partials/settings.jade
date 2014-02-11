@@ -1,0 +1,49 @@
+.page-head
+  h2.pull-left
+    | Settings
+    span.page-meta rtorrent settings
+  .clearfix
+
+.container
+  .row
+    .col-md-12
+      .widget.wred
+        .widget-head
+          .pull-left Settings
+          .widget-icons.pull-right
+            a.wminimize(href='#')
+              i.icon-chevron-up
+            a.wclose(href='#')
+              i.icon-remove
+          .clearfix
+        .widget-content
+          .padd
+            .form.profile
+              form.form-horizontal
+                .form-group
+                  label.control-label.col-md-3(for='socket') Rtorrent socket
+                  .col-md-6
+                    input#socket.form-control(type='text', value="{{settings.rpcSocket}}")
+                .form-group
+                  label.control-label.col-md-3(for='torrentDir') Torrent directory
+                  .col-md-6
+                    input#torrentDir.form-control(type='text', value="{{settings.torrentDir}}")
+                .form-group
+                  label.control-label.col-md-3(for='fsroot') File System root
+                  .col-md-6
+                    input#fsroot.form-control(type='text', value="{{settings.rootFileSystem}}")
+                // Username
+                .form-group
+                  label.control-label.col-md-3(for='username2') Username
+                  .col-md-6
+                    input#username2.form-control(type='text')
+                // Password
+                .form-group
+                  label.control-label.col-md-3(for='password2') Password
+                  .col-md-6
+                    input#password2.form-control(type='password')
+                .form-group
+                  // Buttons
+                  .col-md-6.col-md-offset-1
+                    button.btn.btn-success(type='submit') Update
+                    button.btn.btn-default(type='reset') Reset
