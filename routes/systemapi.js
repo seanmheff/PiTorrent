@@ -2,7 +2,8 @@ module.exports = {
     getSystemStats:getSystemStats,
     addTorrent: addTorrent,
     addTorrentURL: addTorrentURL,
-    getSettings: getSettings
+    getSettings: getSettings,
+    setSettings: setSettings
 }
 
 var systemcontroller = require('../controllers/systemcontroller.js');
@@ -64,4 +65,19 @@ function addTorrentURL(req, res) {
  */
 function getSettings(req, res) {
     res.json(nconf.file('config.json').load());
+}
+
+
+/**
+ * A function to set the app's settings
+ * @param req The HTTP request
+ * @param res The HTTP response
+ */
+function setSettings(req, res) {
+    for (var key in req.body) {
+        nconf.set(key, req.body[key]);
+    }
+
+    nconf.save();
+    res.redirect("/");
 }

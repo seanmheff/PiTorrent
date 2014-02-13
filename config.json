@@ -1,5 +1,5 @@
 {
-    "rpcSocket": "/tmp/rpc.socket",
-    "rootFileSystem": "/",
-    "torrentDir": "/home/sean/Desktop/Torrents/"
+  "rpcSocket": "/tmp/rpc.socket",
+  "rootFileSystem": "/",
+  "torrentDir": "/home/sean/Desktop/Torrents/"
 }

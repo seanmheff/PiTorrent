@@ -8,7 +8,7 @@ var app = angular.module('myApp.controllers', []);
 /**
  * This is the controller for the torrents
  */
-app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentName) {
+app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentName, $location) {
     $scope.stopped = app.stoppedFilter;
     $scope.started = app.startedFilter;
     $scope.seeding = app.seedingFilter;
@@ -27,6 +27,14 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
         leechingTab:false,
         currUpTab:false,
         currDownTab:false
+    };
+
+    $scope.navClass = function (page) {
+        var currentRoute = $location.path().substring(1) || 'main';
+        if (currentRoute.substring(0,4) === "main") {
+            currentRoute = "main";
+        }
+        return page === currentRoute ? 'current open' : '';
     };
 
     $scope.setName = function(name) {
