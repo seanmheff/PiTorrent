@@ -5,7 +5,8 @@
   .clearfix
 
 tabset
-  tab(heading="Overview", active="tab.overviewTab")
+  tab(active="tab.overviewTab")
+    tab-heading Overview
     .container
       .row
         .col-md-6
@@ -22,37 +23,51 @@ tabset
           include torrent_summary_widgets/system_stats
         .col-md-6
           include torrent_summary_widgets/add_torrent
-  tab(heading="All ({{torrentResults.torrents.length}})", active="tab.allTab")
+  tab(active="tab.allTab")
+    tab-heading All
+      span.badge {{torrentResults.torrents.length}}
     .container
       .row
         .col-md-12
           include torrent_widgets/all
-  tab(heading="Stopped ({{(torrentResults.torrents | filter:stopped).length }})", active="tab.stoppedTab")
+  tab(active="tab.stoppedTab")
+    tab-heading Stopped
+      span.badge {{(torrentResults.torrents | filter:stopped).length }}
     .container
       .row
         .col-md-12
           include torrent_widgets/stopped
-  tab(heading="Started ({{(torrentResults.torrents | filter:started).length }})", active="tab.startedTab")
+  tab(active="tab.startedTab")
+    tab-heading Started
+      span.badge {{(torrentResults.torrents | filter:started).length }}
     .container
       .row
         .col-md-12
           include torrent_widgets/started
-  tab(heading="Seeding ({{(torrentResults.torrents | filter:seeding | filter:started).length}})", active="tab.seedingTab")
+  tab(active="tab.seedingTab")
+    tab-heading Seeding
+      span.badge {{(torrentResults.torrents | filter:seeding | filter:started).length}}
     .container
       .row
         .col-md-12
           include torrent_widgets/seeding
-  tab(heading="Leeching ({{(torrentResults.torrents | filter:leeching | filter:started).length}})", active="tab.leechingTab")
+  tab(active="tab.leechingTab")
+    tab-heading Leeching
+      span.badge {{(torrentResults.torrents | filter:leeching | filter:started).length}}
     .container
       .row
         .col-md-12
           include torrent_widgets/leeching
-  tab(heading="Currently uploading ({{(torrentResults.torrents | filter:uploading).length}})",active="tab.currUpTab")
+  tab(active="tab.currUpTab")
+    tab-heading Currently uploading
+      span.badge {{(torrentResults.torrents | filter:uploading).length}}
     .container
       .row
         .col-md-12
           include torrent_widgets/currently-uploading
-  tab(heading="Currently downloading ({{(torrentResults.torrents | filter:downloading).length}})", active="tab.currDownTab")
+  tab(active="tab.currDownTab")
+    tab-heading Currently downloading
+      span.badge {{(torrentResults.torrents | filter:downloading).length}}
     .container
       .row
         .col-md-12

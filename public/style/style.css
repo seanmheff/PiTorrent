@@ -181,7 +181,9 @@ a.btn{
 .badge{
 	font-weight: 400;
 	padding: 3px 8px;
-	font-size: 13px;	
+	font-size: 13px;
+    margin-left: 5px;
+    border-radius: 10px !important;
 }
 
 .progress{
