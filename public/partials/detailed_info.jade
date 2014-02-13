@@ -2,7 +2,9 @@
   h3.pull-left {{name}}
   .clearfix
 
-tabset
+include cant_connect_rtorrent
+
+tabset(ng-show='!cantConnectToRtorrent')
   tab(heading="Overview")
     .container
       .row
