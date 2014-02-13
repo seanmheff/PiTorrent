@@ -29,14 +29,14 @@ function getSystemStats(req, res) {
  * @param res The HTTP response
  */
 function addTorrent(req, res) {
-    var tmpPath = req.files.torrentData.path;
-    var targetPath = '/home/sean/Desktop/Torrents/' + req.files.torrentData.name;
+    var tmpPath = req.files.file.path;
+    var targetPath = nconf.get("torrentDir") + req.files.file.name;
 
     systemcontroller.uploadTorrent(tmpPath, targetPath, function(msg, err){
         if (err) {
-            console.log(err);
+            res.send(err);
         }
-        res.redirect("/");
+        res.send(req.files.file.name + " uploaded to server");
     });
 }
 
@@ -77,7 +77,6 @@ function setSettings(req, res) {
     for (var key in req.body) {
         nconf.set(key, req.body[key]);
     }
-
     nconf.save();
     res.redirect("/");
 }
