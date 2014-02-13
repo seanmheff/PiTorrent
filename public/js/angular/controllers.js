@@ -2,7 +2,34 @@
  * This module contains our angular controllers
  * We define the module and inject its dependencies
  */
-var app = angular.module('myApp.controllers', []);
+var app = angular.module('myApp.controllers', ['angularFileUpload']);
+
+
+app.controller('MyCtrl', function MyCtrl($scope, $upload) {
+    var ddd;
+    $scope.fileSelected = false;
+
+    $scope.selectFile = function($files) {
+        ddd = $files[0];
+        $scope.fileSelected = true;
+    };
+
+    $scope.uploadFile = function() {
+        $scope.upload = $upload.upload({
+            url: 'add-torrent',
+            file: ddd
+        }).progress(function(evt) {
+                console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+        }).success(function(data, status, headers, config) {
+                console.log(data);
+                console.log(status);
+                console.log(headers);
+                console.log(config);
+                $scope.fileSelected = false;
+        });
+    }
+
+});
 
 
 /**

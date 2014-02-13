@@ -41,6 +41,12 @@ function getSystemInfo(callback) {
  * @param callback The callback to execute when the file has been moved
  */
 function uploadTorrent(tmpPath, targetPath, callback) {
+    // Check for .torrent extension
+    if (path.extname(targetPath) !== ".torrent") {
+        callback(null, "Not a torrent file");
+        return;
+    }
+
     // move the file from the temporary location to the intended location
     fs.rename(tmpPath, targetPath, function(err) {
         if (err) {
