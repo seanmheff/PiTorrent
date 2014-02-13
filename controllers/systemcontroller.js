@@ -66,7 +66,7 @@ function getTorrentFromURL(torrentURL, callback) {
     var torrentURL = url.parse(torrentURL);
 
     // Check for .torrent extension
-    if (path.extname() !== ".torrent") {
+    if (path.extname(torrentURL.path) !== ".torrent") {
         callback(500);
     }
     // Have to account for the fact the URL could be a HTTPS url

@@ -6,10 +6,10 @@
       form
         input.form-control(type='text', placeholder='Search')
     ul.navi
-      li.has_submenu.nred.current.open
+      li.has_submenu.nred(ng-class="navClass('main')")
         a(href='#')
-          i.icon-desktop
-          | Torrents
+          i.icon-download-alt
+          |  Torrents
           span.pull-right
             i.icon-angle-right
         ul
@@ -29,13 +29,7 @@
             a(href='#', ng-click="tab.currUpTab = true") Currently Uploading
           li(ng-class="{active: tab.currDownTab}")
             a(href='#', ng-click="tab.currDownTab = true") Currently Downloading
-    ul.navi
-      li.has_submenu.nblue.current
-        a(href='#')
-          i.icon-desktop
-          | Settings
-          span.pull-right
-            i.icon-angle-right
-        ul
-          li
-            a(href='#/settings') rtorrent Settings
+      li.nblue(ng-class="navClass('settings')")
+        a(href='#/settings')
+          i.icon-cogs
+          |  Settings
