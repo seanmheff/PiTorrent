@@ -4,7 +4,9 @@
     span.page-meta rtorrent downloads
   .clearfix
 
-tabset
+include cant_connect_rtorrent
+
+tabset(ng-show='!cantConnectToRtorrent')
   tab(active="tab.overviewTab")
     tab-heading Overview
     .container
