@@ -1,8 +1,3 @@
-
-/**
- * Module dependencies.
- */
-
 var express = require('express')
   , flash = require('connect-flash')
   , passport = require('passport')
@@ -11,61 +6,10 @@ var express = require('express')
   , system = require('./routes/systemapi')
   , auth = require('./routes/auth')
   , http = require('http')
-  , path = require('path')
-  , LocalStrategy = require('passport-local').Strategy;
-
-var users = [
-    { id:1, username: 'sean', password: 'spades' }
-];
-
-function findById(id, fn) {
-    var idx = id - 1;
-    if (users[idx]) {
-        fn(null, users[idx]);
-    } else {
-        fn(new Error('User ' + id + ' does not exist'));
-    }
-}
-
-function findByUsername(username, fn) {
-    for (var i = 0, len = users.length; i < len; i++) {
-        var user = users[i];
-        if (user.username === username) {
-            return fn(null, user);
-        }
-    }
-    return fn(null, null);
-}
-
-passport.serializeUser(function(user, done) {
-    done(null, user.id);
-});
-
-passport.deserializeUser(function(id, done) {
-    findById(id, function (err, user) {
-        done(err, user);
-    });
-});
-
-passport.use(new LocalStrategy(function(username, password, done) {
-        findByUsername(username, function(err, user) {
-            if (err) {
-                return done(err);
-            }
-            if (!user) {
-                return done(null, false, { message: 'Unknown user ' + username });
-            }
-            if (user.password != password) {
-                return done(null, false, { message: 'Invalid password' });
-            }
-            return done(null, user);
-        })
-    }
-));
+  , path = require('path');
 
 var app = express();
 
-// all environments
 app.set('port', process.env.PORT || 3000);
 app.set('views', __dirname + '/views');
 app.set('view engine', 'jade');
@@ -86,9 +30,9 @@ if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
 
-app.get('/', ensureAuthenticated, function(req, res) {
-    routes.index(req, res), { user: req.user }
-});
+require('./config/pass.js')(passport);
+
+app.get('/', ensureAuthenticated, routes.index);
 app.post('/add-torrent', ensureAuthenticated, system.addTorrent);
 app.post('/add-torrent-url', ensureAuthenticated, system.addTorrentURL);
 app.get('/torrents', ensureAuthenticated, torrents.getTorrents);
@@ -103,7 +47,7 @@ app.get('/settings', ensureAuthenticated, system.getSettings);
 app.post('/settings', ensureAuthenticated, system.setSettings);
 app.get('/system-stats', ensureAuthenticated, system.getSystemStats);
 app.get('/login', auth.login);
-app.post('/login', passport.authenticate('local', { failureRedirect: '/login', failureFlash: true }), function(req, res) {
+app.post('/login', passport.authenticate('local', { failureRedirect: '/login'}), function(req, res) {
     res.redirect('/');
 });
 app.get('/logout', function(req, res){
@@ -121,7 +65,7 @@ http.createServer(app).listen(app.get('port'), function(){
 
 
 function ensureAuthenticated(req, res, next) {
-    if (true) {
+    if ('development' == app.get('env') || req.isAuthenticated()) {
         return next();
     }
     res.redirect('/login')

@@ -11,7 +11,7 @@ var url = require('url');
 var https = require('https');
 var http = require('http');
 var path = require('path');
-var nconf = require('nconf');
+var nconf = require('nconf').file('config/config.json');
 
 
 /**

@@ -1,7 +1,6 @@
 var net = require('net');
-var nconf = require('nconf');
+var nconf = require('nconf').file({ file: 'config/config.json' });
 
-nconf.file({ file: 'config.json' });
 
 
 /**
