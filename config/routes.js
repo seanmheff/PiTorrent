@@ -41,6 +41,7 @@ module.exports = function(app, passport) {
     app.get('/peers/:hash', ensureAuthenticated, torrents.getPeerInfo);
     app.get('/stop/:hash', ensureAuthenticated, torrents.stopTorrent);
     app.get('/start/:hash', ensureAuthenticated, torrents.startTorrent);
+    app.get('/remove/:hash', ensureAuthenticated, torrents.removeTorrent);
     app.get('/stats', ensureAuthenticated, torrents.getStats);
     app.get('/settings', ensureAuthenticated, system.getSettings);
     app.get('/system-stats', ensureAuthenticated, system.getSystemStats);
@@ -58,4 +59,4 @@ module.exports = function(app, passport) {
         }
         res.redirect('/login')
     }
-}
+};

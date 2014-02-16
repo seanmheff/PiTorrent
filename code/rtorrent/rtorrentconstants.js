@@ -30,7 +30,8 @@ DOWNLOAD_GET_TRACKER_MESSAGE = "d.get_message";
 DOWNLOAD_GET_DIRECTORY = "d.get_directory";
 DOWNLOAD_GET_STATE = "d.state";
 DOWNLOAD_START = "d.start";
-DOWNLOAD_STOP = "d.stop"
+DOWNLOAD_STOP = "d.stop";
+DOWNLOAD_REMOVE = "d.erase";
 
 
 /*
@@ -155,6 +156,7 @@ module.exports = {
     DOWNLOAD_GET_TRACKER_MESSAGE : DOWNLOAD_GET_TRACKER_MESSAGE,
     DOWNLOAD_START               : DOWNLOAD_START,
     DOWNLOAD_STOP                : DOWNLOAD_STOP,
+    DOWNLOAD_REMOVE              : DOWNLOAD_REMOVE,
 
 
     /*
@@ -199,7 +201,7 @@ module.exports = {
     MULTICALL_GLOBAL_STATS : MULTICALL_GLOBAL_STATS,
     MULTICALL_DETAILED_TORRENT_INFO : MULTICALL_DETAILED_TORRENT_INFO
 
-}
+};
 
 
 

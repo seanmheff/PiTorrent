@@ -6,7 +6,8 @@ module.exports = {
     getPeerInfo: getPeerInfo,
     getStats: getStats,
     stopTorrent: stopTorrent,
-    startTorrent: startTorrent
+    startTorrent: startTorrent,
+    removeTorrent: removeTorrent
 };
 
 var rtorrentcontroller = require('../controllers/rtorrentcontroller.js');
@@ -130,6 +131,19 @@ function stopTorrent(req, res) {
 function startTorrent(req, res) {
     var hash = req.params.hash;
     rtorrentcontroller.startTorrent(hash, function(status) {
+        res.send(status);
+    });
+}
+
+
+/**
+ * A function to remove a torrent
+ * @param req The HTTP request
+ * @param res The HTTP response
+ */
+function removeTorrent(req, res) {
+    var hash = req.params.hash;
+    rtorrentcontroller.removeTorrent(hash, function(status) {
         res.send(status);
     });
 }

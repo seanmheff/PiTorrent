@@ -49,6 +49,10 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
         $http.get(document.location.origin + '/start/' + hash);
     };
 
+    $scope.removeTorrent = function(hash) {
+        $http.get(document.location.origin + '/remove/' + hash);
+    };
+
     // Set up our chart data
     $scope.downloadData = [[]];
     $scope.uploadData = [[]];
