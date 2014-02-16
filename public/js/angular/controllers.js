@@ -5,33 +5,6 @@
 var app = angular.module('myApp.controllers', ['angularFileUpload']);
 
 
-app.controller('MyCtrl', function MyCtrl($scope, $upload) {
-    var ddd;
-    $scope.fileSelected = false;
-
-    $scope.selectFile = function($files) {
-        ddd = $files[0];
-        $scope.fileSelected = true;
-    };
-
-    $scope.uploadFile = function() {
-        $scope.upload = $upload.upload({
-            url: 'add-torrent',
-            file: ddd
-        }).progress(function(evt) {
-                console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
-        }).success(function(data, status, headers, config) {
-                console.log(data);
-                console.log(status);
-                console.log(headers);
-                console.log(config);
-                $scope.fileSelected = false;
-        });
-    }
-
-});
-
-
 /**
  * This is the controller for the torrents
  */
@@ -118,6 +91,36 @@ app.controller('SettingsCtrl', function SettingsCtrl($scope, $http) {
     $http.get(document.location.origin + '/settings').success(function(settings) {
         $scope.settings = settings;
     });
+});
+
+
+/**
+ * A controller for the upload torrent functionality
+ */
+app.controller('UploadTorrent', function UploadTorrent($scope, $upload) {
+    var ddd;
+    $scope.fileSelected = false;
+
+    $scope.selectFile = function($files) {
+        ddd = $files[0];
+        $scope.fileSelected = true;
+    };
+
+    $scope.uploadFile = function() {
+        $scope.upload = $upload.upload({
+            url: 'add-torrent',
+            file: ddd
+        }).progress(function(evt) {
+                console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
+            }).success(function(data, status, headers, config) {
+                console.log(data);
+                console.log(status);
+                console.log(headers);
+                console.log(config);
+                $scope.fileSelected = false;
+            });
+    }
+
 });
 
 
