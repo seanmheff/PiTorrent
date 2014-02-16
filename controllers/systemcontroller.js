@@ -79,8 +79,13 @@ function getTorrentFromURL(torrentURL, callback) {
     else if (torrentURL.protocol === "https:") {
         https.get(torrentURL.href, function(res) {
             if (res.statusCode == 200) {
-                var file = fs.createWriteStream(nconf.get('torrentDir') + path.basename(torrentURL.path));
-                res.pipe(file);
+                try {
+                    var file = fs.createWriteStream(nconf.get('torrentDir') + path.basename(torrentURL.path));
+                    res.pipe(file);
+                } catch (err) {
+                    callback(500);
+                    return;
+                }
             }
             callback(res.statusCode);
         });
@@ -88,8 +93,13 @@ function getTorrentFromURL(torrentURL, callback) {
     else if (torrentURL.protocol === "http:") {
         http.get(torrentURL.href, function(res) {
             if (res.statusCode == 200) {
-                var file = fs.createWriteStream(nconf.get('torrentDir') + path.basename(torrentURL.path));
-                res.pipe(file);
+                try {
+                    var file = fs.createWriteStream(nconf.get('torrentDir') + path.basename(torrentURL.path));
+                    res.pipe(file);
+                } catch (err) {
+                    callback(500);
+                    return;
+                }
             }
             callback(res.statusCode);
         });
