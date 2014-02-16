@@ -24,7 +24,7 @@
                 i.icon-play
               button.btn.btn-sm.btn-warning(ng-click="stopTorrent(torrent.hash)", ng-show="torrent.active == true")
                 i.icon-stop
-              button.btn.btn-sm.btn-danger(ng-click="removeTorrent(torrent.hash)")
+              button.btn.btn-sm.btn-danger(ng-click="openModal(torrent.hash, torrent.name)", ng-show="torrent.active == false")
                 i.icon-remove
           p.p-meta
             span Downloaded : {{torrent.downloaded}} {{torrent.percentDone}}% Done

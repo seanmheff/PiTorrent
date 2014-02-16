@@ -8,7 +8,7 @@ var app = angular.module('myApp.controllers', ['angularFileUpload']);
 /**
  * This is the controller for the torrents
  */
-app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentName, $location) {
+app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentName, $location, $modal) {
     $scope.stopped = app.stoppedFilter;
     $scope.started = app.startedFilter;
     $scope.seeding = app.seedingFilter;
@@ -49,9 +49,18 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
         $http.get(document.location.origin + '/start/' + hash);
     };
 
-    $scope.removeTorrent = function(hash) {
-        $http.get(document.location.origin + '/remove/' + hash);
-    };
+    $scope.openModal = function(hash, name) {
+        var modalDeferred = $modal.open({
+            templateUrl: 'partials/delete-modal',
+            controller: function($scope) {
+                $scope.name = name;
+            }
+        });
+
+        modalDeferred.result.then(function () {
+            $http.get(document.location.origin + '/remove/' + hash);
+        });
+    }
 
     // Set up our chart data
     $scope.downloadData = [[]];
