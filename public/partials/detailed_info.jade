@@ -4,23 +4,25 @@
 
 include cant_connect_rtorrent
 
-tabset(ng-show='!cantConnectToRtorrent')
-  tab(heading="Overview")
-    .container
-      .row
-        .col-md-12
-          include detailed_info_widgets/overview
+ul.nav.nav-pills
+  li.active
+    a(href="#/main/{{hash}}") Overview
+  li
+    a(href="#/main/{{hash}}/peers") Peers
+  li
+    a(href='#') Files
 
-  tab(heading="Files")
-    .container
-      .row
-        .col-md-6
-          include detailed_info_widgets/files
-        .col-md-6
-          include detailed_info_widgets/file-info
-
-  tab(heading="Peers")
-    .container
-      .row
-        .col-md-12
-          include detailed_info_widgets/peers
+.container
+  .row
+    .col-md-12
+      .widget.wred
+        .widget-head
+          .pull-left Overview
+          .widget-icons.pull-right
+            a.wminimize(href='#')
+              i.icon-chevron-up
+            a.wclose(href='#')
+              i.icon-remove
+          .clearfix
+        .widget-content
+          p {{torrentInfo.dir}}

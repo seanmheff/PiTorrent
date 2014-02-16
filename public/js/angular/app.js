@@ -18,7 +18,11 @@ app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/main/:torrentHash', {
             templateUrl: 'partials/detailed_info',
-            controller: 'DetailedInfoCtrl'
+            controller: 'DetailedOverviewCtrl'
+        }).
+        when('/main/:torrentHash/peers', {
+            templateUrl: 'partials/detailed_info_widgets/peers',
+            controller: 'DetailedPeerCtrl'
         }).
         when('/main', {
             templateUrl: 'partials/torrents'

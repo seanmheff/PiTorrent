@@ -26,6 +26,10 @@ module.exports = function(app, passport) {
         var name = req.params.name;
         res.render('../public/partials/' + name);
     });
+    app.get('/partials/detailed_info_widgets/:name', ensureAuthenticated, function (req, res) {
+        var name = req.params.name;
+        res.render('../public/partials/detailed_info_widgets/' + name);
+    });
     app.post('/settings', ensureAuthenticated, system.setSettings);
 
 

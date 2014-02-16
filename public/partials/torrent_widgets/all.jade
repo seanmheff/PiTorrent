@@ -13,7 +13,7 @@
         ng-class="{'list-group-item-danger': (torrent.active == 0)}")
         a(href="#/main/{{torrent.hash}}", ng-click="setName(torrent.name)")
           p
-            b(ng-if="torrent.active == 0") [Inactive]
+            b(ng-if="torrent.active == 0") [Inactive]&nbsp;
             b {{torrent.name}}
         p
           b {{torrent.trackerMsg}}
