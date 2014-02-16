@@ -1,0 +1,8 @@
+.modal-header
+  h3 Removing torrent
+.modal-body
+  p Are your sure you want to remove this torrent:
+  | {{name}}
+.modal-footer
+  button.btn.btn-primary(ng-click="$close()") OK
+  button.btn.btn-warning(ng-click="$dismiss()") Cancel
