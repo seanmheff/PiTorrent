@@ -1,11 +1,20 @@
-.widget.wred
-  .widget-head
-    .pull-left Files
-    .widget-icons.pull-right
-      a.wminimize(href='#')
-        i.icon-chevron-up
-      a.wclose(href='#')
-        i.icon-remove
-    .clearfix
-  .widget-content
-    .jstree(jstree, data="fileData")
+.page-head
+  h3.pull-left {{name}}
+  .clearfix
+
+include ../cant_connect_rtorrent
+
+ul.nav.nav-tabs
+  li
+    a(href="#/main/{{hash}}") Overview
+  li
+    a(href="#/main/{{hash}}/peers") Peers
+  li.active
+    a(href="#/main/{{hash}}/files") Files
+
+.container
+  .row
+    .col-md-6
+      include file-tree
+    .col-md-6
+      include file-info

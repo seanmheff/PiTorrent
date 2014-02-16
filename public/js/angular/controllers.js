@@ -89,7 +89,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
 
 
 /**
- * A controller for the 'detailed info' part of the app
+ * A controller for the 'detailed info' route
  */
 app.controller('DetailedOverviewCtrl', function DetailedOverviewCtrl($scope, $http, $routeParams, sharedTorrentName) {
     var hash = $routeParams.torrentHash;
@@ -122,6 +122,21 @@ app.controller('DetailedPeerCtrl', function DetailedPeerCtrl($scope, $http, $rou
     $scope.$on('$destroy', function() {
         $interval.cancel(interval);
     });
+});
+
+
+/**
+ * A controller for the 'detailed file info' route
+ */
+app.controller('DetailedFileCtrl', function DetailedFileCtrl($scope, $http, $routeParams, sharedTorrentName) {
+    var hash = $routeParams.torrentHash;
+    $http.get(document.location.origin + '/files/' + hash).success(function(detailedInfo) {
+        recursiveFileWalk(detailedInfo);
+        $scope.fileData = detailedInfo;
+    });
+
+    $scope.hash = $routeParams.torrentHash;
+    $scope.name = sharedTorrentName.getName();
 });
 
 
