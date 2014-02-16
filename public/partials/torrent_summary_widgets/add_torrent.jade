@@ -13,6 +13,6 @@
       input(type="text", name="url")
       input(type="submit")
 
-    div(ng-controller='MyCtrl')
+    div(ng-controller='UploadTorrent')
       input(type='file', ng-file-select="selectFile($files)")
       button(ng-if="fileSelected", ng-click='uploadFile()', class="animate-if") Upload
