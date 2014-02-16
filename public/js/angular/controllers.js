@@ -29,6 +29,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
         currDownTab:false
     };
 
+    // Function to highlight the 'Torrents' sidebar item, if the url contains 'main'
     $scope.navClass = function (page) {
         var currentRoute = $location.path().substring(1) || 'main';
         if (currentRoute.substring(0,4) === "main") {
@@ -57,6 +58,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
             }
         });
 
+        // If the user clicks 'ok', remove the torrent
         modalDeferred.result.then(function () {
             $http.get(document.location.origin + '/remove/' + hash);
         });
@@ -89,11 +91,37 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
 /**
  * A controller for the 'detailed info' part of the app
  */
-app.controller('DetailedInfoCtrl', function DetailedInfoCtrl($scope, $http, sharedTorrentName) {
-    getDetailedInfo($scope, $http);
-
+app.controller('DetailedOverviewCtrl', function DetailedOverviewCtrl($scope, $http, $routeParams, sharedTorrentName) {
+    var hash = $routeParams.torrentHash;
+    $http.get(document.location.origin + '/info/' + hash).success(function(detailedInfo) {
+        $scope.torrentInfo = detailedInfo;
+    });
+    $scope.hash = $routeParams.torrentHash;
     $scope.name = sharedTorrentName.getName();
-    $scope.fileSelected = {};
+});
+
+
+/**
+ * A controller for the 'detailed peer info' route
+ */
+app.controller('DetailedPeerCtrl', function DetailedPeerCtrl($scope, $http, $routeParams, $interval, sharedTorrentName) {
+    var hash = $routeParams.torrentHash;
+    $scope.hash = $routeParams.torrentHash;
+    $scope.name = sharedTorrentName.getName();
+
+    $http.get(document.location.origin + '/peers/' + hash).success(function(detailedInfo) {
+        $scope.peerInfo = detailedInfo;
+    });
+
+    var interval = $interval(function() {
+        $http.get(document.location.origin + '/peers/' + hash).success(function(detailedInfo) {
+            $scope.peerInfo = detailedInfo;
+        });
+    }, 2000);
+
+    $scope.$on('$destroy', function() {
+        $interval.cancel(interval);
+    });
 });
 
 
@@ -145,25 +173,23 @@ var counter = 150; // Counter needed for flot chart
  * @param $scope The controller scope
  * @param $http The http service that is needed to make ajax requests
  */
-function getDetailedInfo($scope, $http) {
-    // Parse URL
-    var url = document.location.href.toString();
-    var hash = url.substring(url.lastIndexOf('/'), url.length);
+function getDetailedInfo($scope, $http, $routeParams) {
+    var hash = $routeParams.torrentHash;
 
-    $http.get(document.location.origin + '/files' + hash).success(function(detailedInfo) {
+    $http.get(document.location.origin + '/files/' + hash).success(function(detailedInfo) {
         recursiveFileWalk(detailedInfo);
         $scope.fileData = detailedInfo;
     });
 
-    $http.get(document.location.origin + '/trackers' + hash).success(function(detailedInfo) {
+    $http.get(document.location.origin + '/trackers/' + hash).success(function(detailedInfo) {
         $scope.trackerInfo = detailedInfo;
     });
 
-    $http.get(document.location.origin + '/info' + hash).success(function(detailedInfo) {
+    $http.get(document.location.origin + '/info/' + hash).success(function(detailedInfo) {
         $scope.torrentInfo = detailedInfo;
     });
 
-    $http.get(document.location.origin + '/peers' + hash).success(function(detailedInfo) {
+    $http.get(document.location.origin + '/peers/' + hash).success(function(detailedInfo) {
         $scope.peerInfo = detailedInfo;
     });
 }
