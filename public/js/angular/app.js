@@ -17,12 +17,16 @@ var app = angular.module('myApp', [
 app.config(['$routeProvider', function($routeProvider) {
     $routeProvider.
         when('/main/:torrentHash', {
-            templateUrl: 'partials/detailed_info',
+            templateUrl: 'partials/detailed_info_widgets/overview',
             controller: 'DetailedOverviewCtrl'
         }).
         when('/main/:torrentHash/peers', {
             templateUrl: 'partials/detailed_info_widgets/peers',
             controller: 'DetailedPeerCtrl'
+        }).
+        when('/main/:torrentHash/files', {
+            templateUrl: 'partials/detailed_info_widgets/files',
+            controller: 'DetailedFileCtrl'
         }).
         when('/main', {
             templateUrl: 'partials/torrents'
