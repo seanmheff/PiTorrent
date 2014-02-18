@@ -25,4 +25,5 @@ ul.nav.nav-tabs
               i.icon-remove
           .clearfix
         .widget-content
+          .div(ng-if="!torrentInfo", style="height:50px", cg-busy="'overview'")
           p {{torrentInfo.dir}}
