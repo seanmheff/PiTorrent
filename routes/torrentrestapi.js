@@ -76,9 +76,11 @@ function getDetailedTorrentInfo(req, res) {
  */
 function getPeerInfo(req, res) {
     var hash = req.params.hash;
-    rtorrentcontroller.getPeerInfo(hash, function(data) {
-        sendResponse(data, res);
-    });
+    setTimeout(function() {
+        rtorrentcontroller.getPeerInfo(hash, function(data) {
+            sendResponse(data, res);
+        });
+    }, 1000);
 }
 
 

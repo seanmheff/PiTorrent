@@ -26,7 +26,9 @@ ul.nav.nav-tabs
           .clearfix
         .widget-content
           p(ng-if="peerInfo.peers.length === 0") Not connected to any peers
-          .table-responsive(ng-if="peerInfo.peers.length !== 0")
+          i.icon-spinner.active
+          .div(ng-if="peerInfo.peers.length !== 0", style="height:50px", cg-busy="'peers'")
+          .table-responsive(ng-if="peerInfo.peers.length > 0")
             table.table.table-striped.table-bordered.table-condensed
               tr
                 th
