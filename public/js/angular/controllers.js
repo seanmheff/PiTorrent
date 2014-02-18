@@ -2,7 +2,7 @@
  * This module contains our angular controllers
  * We define the module and inject its dependencies
  */
-var app = angular.module('myApp.controllers', ['angularFileUpload']);
+var app = angular.module('myApp.controllers', ['angularFileUpload', 'ngAnimate', 'ajoslin.promise-tracker', 'cgBusy']);
 
 
 /**
@@ -109,7 +109,7 @@ app.controller('DetailedPeerCtrl', function DetailedPeerCtrl($scope, $http, $rou
     $scope.hash = $routeParams.torrentHash;
     $scope.name = sharedTorrentName.getName();
 
-    $http.get(document.location.origin + '/peers/' + hash).success(function(detailedInfo) {
+    $scope.peers = $http.get(document.location.origin + '/peers/' + hash, { tracker: 'peers'} ).success(function(detailedInfo) {
         $scope.peerInfo = detailedInfo;
     });
 
