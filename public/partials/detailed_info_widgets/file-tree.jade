@@ -8,4 +8,5 @@
         i.icon-remove
     .clearfix
   .widget-content
+    div(ng-if="!fileData", style="height:50px", cg-busy="'files'")
     .jstree(jstree, data="fileData")
