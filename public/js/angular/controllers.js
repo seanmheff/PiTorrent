@@ -4,6 +4,7 @@
  */
 var app = angular.module('myApp.controllers', ['angularFileUpload', 'ngAnimate', 'ajoslin.promise-tracker', 'cgBusy']);
 
+app.value('cgBusyTemplateName','../../style/loading-template.html');
 
 /**
  * This is the controller for the torrents
@@ -93,7 +94,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
  */
 app.controller('DetailedOverviewCtrl', function DetailedOverviewCtrl($scope, $http, $routeParams, sharedTorrentName) {
     var hash = $routeParams.torrentHash;
-    $http.get(document.location.origin + '/info/' + hash).success(function(detailedInfo) {
+    $http.get(document.location.origin + '/info/' + hash, {tracker: 'overview'}).success(function(detailedInfo) {
         $scope.torrentInfo = detailedInfo;
     });
     $scope.hash = $routeParams.torrentHash;
@@ -109,7 +110,7 @@ app.controller('DetailedPeerCtrl', function DetailedPeerCtrl($scope, $http, $rou
     $scope.hash = $routeParams.torrentHash;
     $scope.name = sharedTorrentName.getName();
 
-    $scope.peers = $http.get(document.location.origin + '/peers/' + hash, { tracker: 'peers'} ).success(function(detailedInfo) {
+    $http.get(document.location.origin + '/peers/' + hash, {tracker: 'peers'}).success(function(detailedInfo) {
         $scope.peerInfo = detailedInfo;
     });
 
@@ -130,7 +131,7 @@ app.controller('DetailedPeerCtrl', function DetailedPeerCtrl($scope, $http, $rou
  */
 app.controller('DetailedFileCtrl', function DetailedFileCtrl($scope, $http, $routeParams, sharedTorrentName) {
     var hash = $routeParams.torrentHash;
-    $http.get(document.location.origin + '/files/' + hash).success(function(detailedInfo) {
+    $http.get(document.location.origin + '/files/' + hash, {tracker: 'files'}).success(function(detailedInfo) {
         recursiveFileWalk(detailedInfo);
         $scope.fileData = detailedInfo;
     });
