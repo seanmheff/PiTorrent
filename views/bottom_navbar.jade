@@ -1,0 +1,21 @@
+script(id="uploadThrottle.html", type='text/ng-template')
+  <p>A paragraph with a binding: {{stats.upLimit}}</p>
+
+
+nav.navbar.navbar-default.navbar-fixed-bottom(role='navigation')
+  div.container
+    ul.navbar-nav.navbar-right.list-inline
+      li.bottom-nav Rate:
+      li.bottom-nav
+        i.icon-download-alt
+        | {{stats.downSpeed}}
+      li.bottom-nav
+        i.icon-upload-alt
+        | {{stats.upSpeed}}
+      li.bottom-nav(style="padding-left: 30px") Throttle:
+      li.bottom-nav
+        i.icon-circle-arrow-down
+        | {{stats.downLimit}}
+      li.bottom-nav(popover-template="uploadThrottle.html", popover-placement="top")
+          i.icon-circle-arrow-up
+          | {{stats.upLimit}}

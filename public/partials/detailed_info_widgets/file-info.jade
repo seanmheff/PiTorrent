@@ -23,7 +23,6 @@
         tr(ng-if="fileSelected.priority !== undefined")
           td {{fileSelected.priorityHuman}}
           td {{fileSelected.sizeHuman}}
-          //td {{fileSelected.percentComplete | number:2}}%
           td
             .progress
               .progress-bar(style='width: {{fileSelected.percentComplete}}%;') {{fileSelected.percentComplete | number:2}}%

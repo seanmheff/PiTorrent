@@ -13,8 +13,22 @@
 	background-image: none !important;
 }
 
+.navbar-fixed-bottom {
+    border-color: #000000;
+    min-height: 25px;
+}
+
+body {
+    padding-bottom: 40px;
+}
+
 td, th {
     padding: 0px 4px;
+}
+
+li.bottom-nav {
+    padding: 6px;
+    font-size: 1.15em;
 }
 
 form *{
