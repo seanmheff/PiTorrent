@@ -1,7 +1,7 @@
 .navbar.navbar-inverse.navbar-fixed-top.bs-docs-nav(role='banner')
   .container
     .navbar-header
-      button.navbar-toggle(data-toggle='collapse', data-target='.bs-navbar-collapse')
+      button.navbar-toggle(ng-init='navCollapsed = true', ng-click='navCollapsed = !navCollapsed')
         span.sr-only Toggle navigation
         span.icon-bar
         span.icon-bar
@@ -10,7 +10,7 @@
         | Pi
         span.bold Torrent
 
-    nav.collapse.navbar-collapse.bs-navbar-collapse(role='navigation')
+    nav.collapse.navbar-collapse.bs-navbar-collapse(collapse='navCollapsed')
       ul.nav.navbar-nav.navbar-right
         li.dropdown
           a.dropdown-toggle(data-toggle='dropdown', href='#')
