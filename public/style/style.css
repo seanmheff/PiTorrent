@@ -9,6 +9,11 @@
 	font-weight: 400;
 }
 
+html {
+    overflow: -moz-scrollbars-vertical;
+    overflow-y: scroll;
+}
+
 .navbar *{
 	background-image: none !important;
 }
@@ -16,6 +21,13 @@
 .navbar-fixed-bottom {
     border-color: #000000;
     min-height: 25px;
+}
+
+.btn-bottom-nav {
+    margin: 0px -6px;
+    background: transparent;
+    outline-color: transparent !important;
+    color: #fff !important;
 }
 
 body {
@@ -26,9 +38,14 @@ td, th {
     padding: 0px 4px;
 }
 
+ul.bottom-nav {
+    margin-bottom: 0px !important;
+}
+
 li.bottom-nav {
-    padding: 6px;
+    padding: 2px 0px;
     font-size: 1.15em;
+    color: #fff !important;
 }
 
 form *{
@@ -179,7 +196,7 @@ hr{
 }
 
 .btn{
-	font-size: 13px !important;
+	font-size: 14px !important;
 }
 
 a.btn{
