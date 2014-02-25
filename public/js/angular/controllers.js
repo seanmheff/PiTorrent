@@ -6,10 +6,16 @@ var app = angular.module('myApp.controllers', ['angularFileUpload', 'ngAnimate',
 
 app.value('cgBusyTemplateName','../../style/loading-template.html');
 
+String.prototype.endsWith = function(suffix) {
+    return this.indexOf(suffix, this.length - suffix.length) !== -1;
+};
+
 /**
  * This is the controller for the torrents
  */
 app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentName, $location, $modal) {
+    $scope.changingThrottleSpeeds = false;
+
     $scope.stopped = app.stoppedFilter;
     $scope.started = app.startedFilter;
     $scope.seeding = app.seedingFilter;
@@ -63,7 +69,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
         modalDeferred.result.then(function () {
             $http.get(document.location.origin + '/remove/' + hash);
         });
-    }
+    };
 
     // Set up our chart data
     $scope.downloadData = [[]];
@@ -86,6 +92,16 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
     setInterval(function() {
         getSystemStats($scope, $http);
     }, 5000);
+
+
+    $scope.clickDownloadThrottle = function() {
+        if ($scope.changingThrottleSpeeds) {
+            // Convert speed to bytes
+            var bytes = ($scope.downLimitKb * 1024) + ($scope.downLimitMb*1024*1024);
+            $http.get(document.location.origin + '/set-down-throttle/' + bytes);
+        }
+        $scope.changingThrottleSpeeds = !$scope.changingThrottleSpeeds;
+    };
 });
 
 
@@ -423,6 +439,17 @@ function getGlobalStats($scope, $http) {
 
         // Add stats to scope
         $scope.stats = stats;
+
+        if (!$scope.changingThrottleSpeeds) {
+            if (stats.downLimit.endsWith("MB")) {
+                $scope.downLimitMb = stats.downLimit.substring(0, stats.downLimit.indexOf('.'));
+                $scope.downLimitKb = stats.downLimit.substring(stats.downLimit.indexOf('.')+1, stats.downLimit.indexOf('.')+2)*100;
+            }
+            else if (stats.downLimit.endsWith("kB")) {
+                $scope.downLimitMb = 0;
+                $scope.downLimitKb = stats.downLimit.substring(0, stats.downLimit.indexOf('.'));
+            }
+        }
     });
 }
 

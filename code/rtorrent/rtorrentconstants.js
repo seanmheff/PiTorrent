@@ -11,6 +11,8 @@ GLOBAL_DOWNLOAD_SPEED = "get_down_rate";
 GLOBAL_UPLOAD_SPEED = "get_up_rate";
 GLOBAL_DOWNLOAD_SPEED_LIMIT = "get_download_rate";
 GLOBAL_UPLOAD_SPEED_LIMIT = "get_upload_rate";
+GLOBAL_SET_DOWNLOAD_SPEED_LIMIT = "set_download_rate";
+GLOBAL_SET_UPLOAD_SPEED_LIMIT = "set_upload_rate";
 
 
 /*
@@ -139,6 +141,12 @@ MULTICALL_DETAILED_TORRENT_INFO = [
 ];
 
 module.exports = {
+
+    /*
+     * Global
+     */
+    GLOBAL_SET_DOWNLOAD_SPEED_LIMIT : GLOBAL_SET_DOWNLOAD_SPEED_LIMIT,
+    GLOBAL_SET_UPLOAD_SPEED_LIMIT   : GLOBAL_SET_UPLOAD_SPEED_LIMIT,
 
     /*
      * Download related
