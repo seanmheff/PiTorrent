@@ -7,7 +7,8 @@ module.exports = {
     getStats: getStats,
     stopTorrent: stopTorrent,
     startTorrent: startTorrent,
-    removeTorrent: removeTorrent
+    removeTorrent: removeTorrent,
+    setDownThrottle: setDownThrottle
 };
 
 var rtorrentcontroller = require('../controllers/rtorrentcontroller.js');
@@ -144,6 +145,19 @@ function startTorrent(req, res) {
 function removeTorrent(req, res) {
     var hash = req.params.hash;
     rtorrentcontroller.removeTorrent(hash, function(status) {
+        res.send(status);
+    });
+}
+
+
+/**
+ *
+ * @param req
+ * @param res
+ */
+function setDownThrottle(req, res) {
+    var speed = req.params.speed;
+    rtorrentcontroller.setDownThrottle(speed, function(status) {
         res.send(status);
     });
 }

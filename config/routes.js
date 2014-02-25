@@ -49,6 +49,7 @@ module.exports = function(app, passport) {
     app.get('/stats', ensureAuthenticated, torrents.getStats);
     app.get('/settings', ensureAuthenticated, system.getSettings);
     app.get('/system-stats', ensureAuthenticated, system.getSystemStats);
+    app.get('/set-down-throttle/:speed', ensureAuthenticated, torrents.setDownThrottle);
 
 
     /**

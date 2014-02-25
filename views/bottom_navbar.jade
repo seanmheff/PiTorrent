@@ -2,36 +2,31 @@ script(id="uploadThrottle.html", type='text/ng-template')
   <p>A paragraph with a binding: {{stats.upLimit}}</p>
 
 script(id="downloadThrottle.html", type='text/ng-template')
-  <p>A paragraph with a binding: {{stats.downLimit}}</p>
+  <label for="MB">MB</label>
+  <input id="MB" type="range" ng-model="downLimitMb" min="0" max="100" step="1" style="width: 250px", value="{{downLimitMb}}">
+  <input type="range" ng-model="downLimitKb" min="0" max="1000" step="10" style="width: 250px", value="{{downLimitKb}}">
+  <p>{{downLimitMb}} Mb, {{downLimitKb}} Kb</p>
 
-script(id="upload.html", type='text/ng-template')
-  <p>A paragraph with a binding: {{stats.upSpeed}}</p>
-
-script(id="download.html", type='text/ng-template')
-  <p>A paragraph with a binding: {{stats.downSpeed}}</p>
-  <p>A paragraph with a binding: {{stats.downSpeed}}</p>
-  <p>A paragraph with a binding: {{stats.downSpeed}}</p>
-  <p>A paragraph with a binding: {{stats.downSpeed}}</p>
 
 
 nav.navbar.navbar-inverse.navbar-fixed-bottom(role='navigation')
   .container-fluid
     ul.navbar-right.list-inline.bottom-nav
-      li.bottom-nav(style="margin: 0px 5px;") Rate:
-      li.bottom-nav(popover="ewfewrtewrewr", popover-placement="top")
-        button.btn.btn-bottom-nav(type="button")
-          i.icon-circle-arrow-up
-          | {{stats.upSpeed}}
-      li.bottom-nav(popover-template="download.html", popover-placement="top", stats="{{stats}}")
-        button.btn.btn-bottom-nav(type="button")
-          i.icon-circle-arrow-down
-          | {{stats.downSpeed}}
       li.bottom-nav(style="margin: 0px 5px; padding-left: 30px;") Throttle:
       li.bottom-nav(popover-template="uploadThrottle.html", popover-placement="top")
         button.btn.btn-bottom-nav(type="button")
           i.icon-circle-arrow-up
           | {{stats.upLimit}}
-      li.bottom-nav(popover-template="downloadThrottle.html", popover-placement="top", style="margin-right:30px")
+      li.bottom-nav(popover-template="downloadThrottle.html", popover-placement="top", ng-click="clickDownloadThrottle()")
         button.btn.btn-bottom-nav(type="button")
           i.icon-circle-arrow-down
           | {{stats.downLimit}}
+      li.bottom-nav(style="margin: 0px 5px;") Rate:
+      li.bottom-nav
+        button.btn.btn-bottom-nav(type="button")
+          i.icon-circle-arrow-up
+          | {{stats.upSpeed}}
+      li.bottom-nav(style="margin-right:30px;")
+        button.btn.btn-bottom-nav(type="button")
+          i.icon-circle-arrow-down
+          | {{stats.downSpeed}}
