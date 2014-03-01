@@ -13,6 +13,55 @@
       input(type="text", name="url")
       input(type="submit")
 
-    div(ng-controller='UploadTorrent')
+    //div(ng-controller='UploadTorrent')
       input(type='file', ng-file-select="selectFile($files)")
       button(ng-if="fileSelected", ng-click='uploadFile()', class="animate-if") Upload
+
+
+    div(flow-init)
+      button.btn(flow-btn='')
+        i.icon.icon-file
+        |  Upload File
+
+      p
+        a.btn.btn-small.btn-success(ng-click='$flow.resume()') Upload
+        a.btn.btn-small.btn-danger(ng-click='$flow.pause()') Pause
+        a.btn.btn-small.btn-info(ng-click='$flow.cancel()') Cancel
+        span.label.label-info Size: {{$flow.getSize()}}
+        span.label.label-info Is Uploading: {{$flow.isUploading()}}
+      table.table.table-hover.table-bordered.table-striped(flow-transfers='')
+        thead
+          tr
+            th #
+            th Name
+            th Size
+            th Relative Path
+            th Unique Identifier
+            th #Chunks
+            th Progress
+            th Paused
+            th Uploading
+            th Completed
+            th Settings
+        tbody
+          tr(ng-repeat='file in transfers')
+            td {{$index+1}}
+            td {{file.name}}
+            td {{file.size}}
+            td {{file.relativePath}}
+            td {{file.uniqueIdentifier}}
+            td {{file.chunks.length}}
+            td {{file.progress()}}
+            td {{file.paused}}
+            td {{file.isUploading()}}
+            td {{file.isComplete()}}
+            td
+              .btn-group
+                a.btn.btn-mini.btn-warning(ng-click='file.pause()', ng-hide='file.paused')
+                  | Pause
+                a.btn.btn-mini.btn-warning(ng-click='file.resume()', ng-show='file.paused')
+                  | Resume
+                a.btn.btn-mini.btn-danger(ng-click='file.cancel()')
+                  | Cancel
+                a.btn.btn-mini.btn-info(ng-click='file.retry()', ng-show='file.error')
+                  | Retry

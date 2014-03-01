@@ -24,14 +24,14 @@ html {
 }
 
 .btn-bottom-nav {
-    margin: 0px -6px;
     background: transparent;
     outline-color: transparent !important;
     color: #fff !important;
+    padding: 6px 2px
 }
 
 body {
-    padding-bottom: 40px;
+    padding-bottom: 35px;
 }
 
 td, th {
@@ -43,7 +43,7 @@ ul.bottom-nav {
 }
 
 li.bottom-nav {
-    padding: 2px 0px;
+    margin: 0px 2px;
     font-size: 1.15em;
     color: #fff !important;
 }

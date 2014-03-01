@@ -2,7 +2,7 @@
  * This module contains our angular controllers
  * We define the module and inject its dependencies
  */
-var app = angular.module('myApp.controllers', ['angularFileUpload', 'ngAnimate', 'ajoslin.promise-tracker', 'cgBusy']);
+var app = angular.module('myApp.controllers', ['flow', 'ngAnimate', 'ajoslin.promise-tracker', 'cgBusy']);
 
 app.value('cgBusyTemplateName','../../style/loading-template.html');
 
@@ -198,33 +198,6 @@ app.controller('UploadTorrent', function UploadTorrent($scope, $upload) {
 
 
 var counter = 150; // Counter needed for flot chart
-
-
-/**
- * This function gathers detailed info on a torrent. It is called when the users clicks on a torrent
- * @param $scope The controller scope
- * @param $http The http service that is needed to make ajax requests
- */
-function getDetailedInfo($scope, $http, $routeParams) {
-    var hash = $routeParams.torrentHash;
-
-    $http.get(document.location.origin + '/files/' + hash).success(function(detailedInfo) {
-        recursiveFileWalk(detailedInfo);
-        $scope.fileData = detailedInfo;
-    });
-
-    $http.get(document.location.origin + '/trackers/' + hash).success(function(detailedInfo) {
-        $scope.trackerInfo = detailedInfo;
-    });
-
-    $http.get(document.location.origin + '/info/' + hash).success(function(detailedInfo) {
-        $scope.torrentInfo = detailedInfo;
-    });
-
-    $http.get(document.location.origin + '/peers/' + hash).success(function(detailedInfo) {
-        $scope.peerInfo = detailedInfo;
-    });
-}
 
 
 /**
