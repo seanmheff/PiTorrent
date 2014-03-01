@@ -1,4 +1,4 @@
-/**
+    /**
  * Define our angular app and its dependencies
  */
 var app = angular.module('myApp', [
@@ -38,4 +38,17 @@ app.config(['$routeProvider', function($routeProvider) {
         otherwise({
             redirectTo: '/main'
         });
+}]);
+
+
+app.config(['flowFactoryProvider', function (flowFactoryProvider) {
+    flowFactoryProvider.defaults = {
+        target: '/upload',
+        permanentErrors:[404, 500, 501],
+        minFileSize: 0
+    };
+    // You can also set default events:
+    flowFactoryProvider.on('catchAll', function (event) {
+        console.log(event)
+    });
 }]);
