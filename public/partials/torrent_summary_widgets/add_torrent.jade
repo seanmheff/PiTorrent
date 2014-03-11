@@ -1,67 +1,43 @@
-.widget.wblue
-  .widget-head
-    .pull-left Add Torrent
-    .widget-icons.pull-right
+div.widget.wviolet
+  div.widget-head
+    div.pull-left Add Torrents
+    div.widget-icons.pull-right
       a.wminimize(href='#')
         i.icon-chevron-up
       a.wclose(href='#')
         i.icon-remove
-    .clearfix
-  .widget-content
-    form(action="add-torrent-url", method="post")
-      label Torrent URL
-      input(type="text", name="url")
-      input(type="submit")
+    div.clearfix
+  div.widget-content.referrer
+    div.padd
+      ul.latest-news
+        li
+          h6
+            strong Upload a .torrent file
+          div(flow-init, flow-files-submitted="$flow.resume()", flow-complete="uploadComplete($flow)")
+            p(ng-if="$flow.files.length === 0")
+              | If you wish to add a .torrent file from your computer to here, click this button:
+            p(ng-if="$flow.files.length > 0")
+              | Uploading:
+            button.btn.btn-default(flow-btn, style="margin: 10px 10px 0px", ng-if="$flow.files.length === 0", ng-click="lol($flow)")
+              i.icon.icon-file-alt
+              |  Upload File
+            ul.file-upload(flow-transfers)
+              li(ng-repeat='file in transfers')
+                strong
+                  i.icon-upload-alt.green
+                  |  {{file.name}} ({{file.size}} bytes)
+                progressbar(value="file.progress()*100") {{file.progress() * 100 | number:2}} %
 
-    //div(ng-controller='UploadTorrent')
-      input(type='file', ng-file-select="selectFile($files)")
-      button(ng-if="fileSelected", ng-click='uploadFile()', class="animate-if") Upload
+        li
+          h6
+            strong Get a torrent from a URL
+          p If you wish to add a torrent file from a remote URL, paste the URL in this form:
+          p Note: cookies may be needed to grab the remote URL
+          form.form-inline(action="add-torrent-url", method="post", role="form")
+            .form-group
+              label.sr-only(for"url") Torrent URL
+              input#url.form-control(type='text', name="url", placeholder="Torrent URL")
 
-
-    div(flow-init)
-      button.btn(flow-btn='')
-        i.icon.icon-file
-        |  Upload File
-
-      p
-        a.btn.btn-small.btn-success(ng-click='$flow.resume()') Upload
-        a.btn.btn-small.btn-danger(ng-click='$flow.pause()') Pause
-        a.btn.btn-small.btn-info(ng-click='$flow.cancel()') Cancel
-        span.label.label-info Size: {{$flow.getSize()}}
-        span.label.label-info Is Uploading: {{$flow.isUploading()}}
-      table.table.table-hover.table-bordered.table-striped(flow-transfers='')
-        thead
-          tr
-            th #
-            th Name
-            th Size
-            th Relative Path
-            th Unique Identifier
-            th #Chunks
-            th Progress
-            th Paused
-            th Uploading
-            th Completed
-            th Settings
-        tbody
-          tr(ng-repeat='file in transfers')
-            td {{$index+1}}
-            td {{file.name}}
-            td {{file.size}}
-            td {{file.relativePath}}
-            td {{file.uniqueIdentifier}}
-            td {{file.chunks.length}}
-            td {{file.progress()}}
-            td {{file.paused}}
-            td {{file.isUploading()}}
-            td {{file.isComplete()}}
-            td
-              .btn-group
-                a.btn.btn-mini.btn-warning(ng-click='file.pause()', ng-hide='file.paused')
-                  | Pause
-                a.btn.btn-mini.btn-warning(ng-click='file.resume()', ng-show='file.paused')
-                  | Resume
-                a.btn.btn-mini.btn-danger(ng-click='file.cancel()')
-                  | Cancel
-                a.btn.btn-mini.btn-info(ng-click='file.retry()', ng-show='file.error')
-                  | Retry
+            button.btn.btn-default(type="submit")
+              i.icon.icon-download
+              |  Get Torrent

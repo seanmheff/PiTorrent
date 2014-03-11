@@ -13,7 +13,7 @@ String.prototype.endsWith = function(suffix) {
 /**
  * This is the controller for the torrents
  */
-app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentName, $location, $modal) {
+app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentName, $location, $modal, $timeout) {
     $scope.changingThrottleSpeeds = false;
 
     $scope.stopped = app.stoppedFilter;
@@ -102,6 +102,12 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
         }
         $scope.changingThrottleSpeeds = !$scope.changingThrottleSpeeds;
     };
+
+    $scope.uploadComplete = function($flow) {
+        $timeout(function() {
+            $flow.cancel();
+        }, 5000);
+    }
 });
 
 
