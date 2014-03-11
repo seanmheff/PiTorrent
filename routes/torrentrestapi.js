@@ -8,10 +8,14 @@ module.exports = {
     stopTorrent: stopTorrent,
     startTorrent: startTorrent,
     removeTorrent: removeTorrent,
-    setDownThrottle: setDownThrottle
+    setDownThrottle: setDownThrottle,
+    upload: upload
 };
 
 var rtorrentcontroller = require('../controllers/rtorrentcontroller.js');
+var nconf = require('nconf').file('config/config.json');
+var flow = require('../config/flow-node.js')(nconf.get('torrentDir'));
+var formidable = require('formidable');
 
 
 /**
@@ -151,13 +155,38 @@ function removeTorrent(req, res) {
 
 
 /**
- *
- * @param req
- * @param res
+ * A function to set a download throttle
+ * @param req The HTTP request
+ * @param res The HTTP response
  */
 function setDownThrottle(req, res) {
     var speed = req.params.speed;
     rtorrentcontroller.setDownThrottle(speed, function(status) {
         res.send(status);
+    });
+}
+
+
+/**
+ * A function to upload a torrent file
+ * @param req The HTTP request
+ * @param res The HTTP response
+ */
+function upload(req, res) {
+    var form = new formidable.IncomingForm();
+    form.parse(req, function(err, fields, files) {
+        req.body = fields;
+        req.files = files;
+
+        flow.post(req, function(status, filename, original_filename, identifier) {
+            if (status === "done") {
+
+            }
+            console.log('POST', status, original_filename, identifier);
+            res.send(200, {
+                // NOTE: Uncomment this funciton to enable cross-domain request.
+                //'Access-Control-Allow-Origin': '*'
+            });
+        });
     });
 }
