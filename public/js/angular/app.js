@@ -45,10 +45,11 @@ app.config(['flowFactoryProvider', function (flowFactoryProvider) {
     flowFactoryProvider.defaults = {
         target: '/upload',
         permanentErrors:[404, 500, 501],
-        minFileSize: 0
+        minFileSize: 0,
+        testChunks: false
     };
-    // You can also set default events:
-    flowFactoryProvider.on('catchAll', function (event) {
-        console.log(event)
-    });
+//    // You can also set default events:
+//    flowFactoryProvider.on('catchAll', function (event) {
+//        console.log(event)
+//    });
 }]);
