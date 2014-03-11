@@ -52,6 +52,15 @@ form *{
 	font-family: "Open Sans", Arial, Helvetica, sans-serif;
 }
 
+.col-centered {
+    float: none;
+    margin: 0 auto;
+}
+
+b.big-or {
+    margin: 0px 10px;
+}
+
 .jstree {
     max-width:100%;
     overflow:auto;
@@ -1124,10 +1133,10 @@ form label{
 	padding:7px 12px;
 }
 
-.widget-content .form-inline button {
-	margin-left: 0px;
-	padding:7px 12px;
-}
+/*.widget-content .form-inline button {*/
+	/*margin-left: 0px;*/
+	/*padding:7px 12px;*/
+/*}*/
 
 .buttons button{
 	margin-top:10px;
