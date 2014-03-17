@@ -22,7 +22,7 @@ Traditionally, if we download a file from the internet, we open a connection wit
 
 Now lets just think about this. When Chris and I are downloading the files from the remote web-server over Hypertext Transfer Protocol (HTTP), we are getting the web-server to send the same data across the Atlantic twice. Internet traffic sent across the Atlantic tends to be slower due to network congestion. We are also putting more strain that is necessary on the web-server, as both Chris and I are downloading the file in its entirety twice. 
 
-But what if Chris and I could somehow share our downloads, if we could each download a different half of the file from the web-server in America and share the data amongst ourselves. The advantages of this are clear to see: 
+But what if Chris and I could somehow share our downloads, if we could each download a different half of the file from the web-server in America and share the data we have downloaded amongst ourselves. The advantages of this are clear to see: 
 
 \begin{itemize}
 \item We only need to put half the "strain" on the web-server
@@ -33,26 +33,25 @@ But what if Chris and I could somehow share our downloads, if we could each down
 Because of the advantages of a system like this, the BitTorrent protocol was created.
 
 \subsection{The BitTorrent Protocol}
-Bram Cohen, an American computer programmer designed the BitTorrent protocol in 2001. He released his first implementation of it in July 2001  \citep{Reference4}.
+Bram Cohen, an American computer programmer designed the BitTorrent protocol in 2001. He released his first implementation of it in July 2001 \citep{Reference4}. Bram's vision was to enable simple computers, such as home PC's to share file amongst themselves. The protocol works as follows:
 
+\begin{itemize}
+	\item A user who wishes to share data creates a torrent descriptor file
+	\begin{itemize}	
+		\item This is a .torrent file that defines segments in the data called "chunks"
+		\item A cryptographic hash is generated for each chunk, and the hashes are stored in this descriptor file
+		\item These type of files are quite small, typically a few kilobytes in size
+	\end{itemize}  
+	\item The user distributes the descriptor file by any means it wants to other users who wish to download the file
+	\item The user then makes the data it wishes to share available through a BitTorrent node
+	\item Other users can connect to this node, via links in the torrent descriptor, and download the data. They download data in chunks 
+	\item Once users start to download chunks, they can share the chunks they have downloaded with other users - reducing the load on the original uploader
+	\item Any chunk downloaded can be verified by generating a hash for the chunk and checking this hash against the hash in the torrent descriptor file
+\end{itemize}
 
-\subsection{A Short Math Guide for \LaTeX{}}
+The protocol is implemented by programs called BitTorrent clients. There are multiple clients available to download; uTorrent, rTorrent and Vuze are a few popular options that come to mind.
 
-If you are writing a technical or mathematical thesis, then you may want to read the document by the AMS (American Mathematical Society) called, ``A Short Math Guide for \LaTeX{}''. It can be found online here:\\
-\href{http://www.ams.org/tex/amslatex.html}{\texttt{http://www.ams.org/tex/amslatex.html}}\\
-under the ``Additional Documentation'' section towards the bottom of the page.
-
-\subsection{Common \LaTeX{} Math Symbols}
-There are a multitude of mathematical symbols available for \LaTeX{} and it would take a great effort to learn the commands for them all. The most common ones you are likely to use are shown on this page:\\
-\href{http://www.sunilpatel.co.uk/latexsymbols.html}{\texttt{http://www.sunilpatel.co.uk/latexsymbols.html}}
-
-You can use this page as a reference or crib sheet, the symbols are rendered as large, high quality images so you can quickly find the \LaTeX{} command for the symbol you need.
-
-\subsection{\LaTeX{} on a Mac}
- 
-The \LaTeX{} package is available for many systems including Windows, Linux and Mac OS X. The package for OS X is called MacTeX and it contains all the applications you need -- bundled together and pre-customised -- for a fully working \LaTeX{} environment and workflow.
- 
-MacTeX includes a dedicated \LaTeX{} IDE (Integrated Development Environment) called ``TeXShop'' for writing your `\texttt{.tex}' files and ``BibDesk'': a program to manage your references and create your bibliography section just as easily as managing songs and creating playlists in iTunes.
+BitTorrent has become a well established protocol over the years, with many websites that serve large files adding BitTorrent download links. A large number of BitTorrent clients (programs uto )
 
 %----------------------------------------------------------------------------------------
 
