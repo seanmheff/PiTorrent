@@ -16,6 +16,8 @@
 \contentsline {section}{\numberline {2.2}Node.js}{6}{section.17}
 \contentsline {subsection}{\numberline {2.2.1}Express - a Web Application Framework for Node.js}{8}{subsection.30}
 \contentsline {subsection}{\numberline {2.2.2}Jade - a Node.js Template Engine}{8}{subsection.31}
+\contentsline {section}{\numberline {2.3}AngularJS}{8}{section.32}
+\contentsline {section}{\numberline {2.4}Bootstrap}{10}{section.47}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Appendix Title Here}{9}{appendix.32}
+\contentsline {chapter}{\numberline {A}Appendix Title Here}{12}{appendix.54}
 \vspace {2em}

@@ -1,0 +1,135 @@
+\chapter{Technologies} 
+
+\label{Chapter2} 
+
+\lhead{Chapter 2. \emph{Technologies}} 
+
+%----------------------------------------------------------------------------------------
+
+\section{Foreword}
+One of the intentions from the outset of this project was to embrace new technologies. This does not mean that I jumped on the bandwagon of every up-and-coming hipster product coming straight out of Silicon Valley. I carefully and thoroughly investigated some of the leading "newer" technologies that I felt had genuine potential to become proven mainstream solutions. I discarded some of these technologies, others I chose to use at the core of my project. 
+
+%----------------------------------------------------------------------------------------
+
+\section{Node.js}
+My project has two main sections, the front-end (which users will see on their web browser), and the back-end (which essentially is web-server on the Raspberry Pi). The back-end acts as the middleman between users and rTorrent. If a user clicks a button to stop a torrent in the front-end, the front-end sends a HTTP message across the network to the back-end, the back-end then builds a XML-RPC message to stop the torrent, and sends the XML-RPC message to rTorrent via a UNIX socket. A rTorrent "stop" function is called, and the response is sent back to the back-end, which in turn builds a HTTP response, and sends it to the front-end over the network. Once the front-end gets the response, it update the view to show the torrent has stopped.
+
+The back-end is the core of my project, and choosing a technology to use as the back-end was the biggest decision I had to make while creating PiTorrent. The technology should be:
+
+\begin{itemize}
+	\item ARM compatible - must run on an ARM CPU
+	\item Lightweight - must not hog the Pi's limited resources
+	\item Easy to install - preferably be in Raspbian's software repositories 
+	\item Easy to use - possible to get a prototype up and running quickly
+\end{itemize}
+
+After some consideration I decided to use Node.js as my back-end technology. Node.js is a platform that allows us to use JavaScript as a back-end programming language. It is geared at building fast and scalable net applications. It comes pre-compiled for ARM architecture, so it will run on the Raspberry Pi without any problems. Node's main selling point, and the reason I choose to use it in my project, is it's threading model. Node.js makes use of JavaScript's callback functionality to enable an event driven, non-blocking I/O model. 
+
+One of the most difficult issues to overcome in building server-side web application is threading. For example, with Java you would use an application server like WebSphere or GlassFish to handle thread generation and management for you. Even when using these middleware applications, dealing with threads still proves difficult. This is where Node.js I/O model comes into play. With Node, there is only one main execution thread. All I/O calls are non-blocking and when a result is returned, an event is generated and a callback is executed.
+
+Here is an example of some JavaScript that runs under a Node.js environment. Node comes with a 'net' package that allows us to make use of sockets in our code. This example shows all the code required to connect to a UNIX socket (located at '/tmp/rpc.socket') and write and read data from the socket. Notice the layout of the code - when we try to connect to the socket (line 2), we do not wait for the connection to be established, the thread of execution moves onto the next instruction. In this case, that next instruction is line 11 - printing "Coffee time!" to the screen. Only when the connection has been established, a "connect" event is generated and the thread of execution runs the unnamed function which starts on line 3. 
+
+\vspace{20px}
+\begin{lstlisting}[caption=Node.js and event driven I/O]
+  var socket = new net.Socket().connect("/tmp/rpc.socket");
+  socket.on("connect", function() {
+    socket.write("Hello!");  
+    socket.on("data", function(data) {
+      // Do something with the incoming data
+    });  
+    socket.on("error", function (err) {
+      console.log(err);
+    });
+  }
+  console.log("Coffee time!");
+\end{lstlisting}
+
+
+With this threading model, we don't have to worry about concurrency issues. This will enable us to build quality applications in a much quicker time-frame compared to other platforms.
+
+Another selling point of Node.js is the fact that it is very lightweight. The current Node binary for ARM is 5MB in size. Compare this to Java 7 and GlassFish which is a whopping 140MB combined.
+
+
+\subsection{Express - a Web Application Framework for Node.js}
+Node.js by itself is quite low-level. It allows us to build web applications from the ground up, exactly the way we want them. However, the majority of Node users do not want to spend their time building authentication systems, or URL route handling systems, or other boilerplate code - they want to be writing business logic. This is where Express, a Node web application framework comes into play. Express takes care of all this boilerplate coding that every web project requires. By using the Express module in our Node applications we can use their URL route handling and other neat features like managing view engines, like Jade.
+
+
+\subsection{Jade - a Node.js Template Engine}
+HTML has been around a long time and can be quite tedious to work with. 
+
+
+%----------------------------------------------------------------------------------------
+
+\section{AngularJS}
+AngularJS is a JavaScript framework which is a brainchild of Google. It aims to provide a mechanism for developing Single Page Applications (SPAs). What is does is essentially bring the Model-View-Controller (MVC) paradigm to front-end JavaScript coding, by separating logic from views.
+
+Angular's killer feature, and what makes Angular's MVC paradigm possible is its two-way data binding. What this means is that we can define JavaScript variables in our front-end JavaScript code, and anytime these variables get updated, the HTML that the user sees gets updated also, with the new information. This concept is not the easiest to get across, so I'll explain with an example.
+
+Say we are displaying a list of currently seeding torrents to the user on a HTML webpage. This information has to be updated from the back-end periodically. Without Angular, we would have to create an Asynchronous JavaScript and XML (AJAX) request to get the data from the server, and once we have the data, build the HTML the user sees with JavaScript, and append this HTML to the a Document Object Model (DOM) node.
+
+This is not ideal, as our JavaScript code now contains view logic (HTML) - making the codebase less maintainable. AngularJS was built to get around this problem, by allowing us to define "models" that we can bind to, and display in the view. So, if were displaying the list of torrents using Angular, we could define the a JavaScript array of torrent objects as a model, and anytime a torrent is added or removed, our view would be updated with the changes automatically. 
+
+In the two code snippets below, we see this data binding in action. In our JavaScript code we perform a HTTP GET request on a URL every two seconds. When the result is returned, we bind the result (a JSON object) to "\$scope.torrentResults". The "\$scope" keyword is what allows us to bind data so that it is available in the view.
+
+\vspace{20px}
+\begin{lstlisting}[caption=AngularJS binding data with \$scope keyword]
+  setInterval(function() {
+    $http.get(document.location.origin + '/torrents').success(function(torrents) {
+      $scope.torrentResults = torrents;
+    });
+  }, 2000);
+\end{lstlisting}
+
+
+Now that we have added the object to the scope, we can refer to the object in the view code. AngularJS achieves its MVC paradigm by allowing us to mix in Angular keywords with our view markup. Here is some Jade that creates an unordered list, and loops through our torrent object, displaying torrents as list items. In Angular, we use the "ng-repeat" directive to loop through data. Here we are also applying a filter that only displays seeding torrents (more on filters later), and we are also ordering the torrents by their name. We use double brackets: "\{\{ \}\}" to display data to the user.
+
+\vspace{20px}
+\begin{lstlisting}[caption=Jade with AngularJS]
+ ul
+ 	li(ng-repeat="torrent in torrentResults.torrents | filter:seeding | orderBy:'name'")
+    	strong {{torrent.name}}
+        p
+          span Downloaded : {{torrent.downloaded}}  Upload Speed: {{torrent.uploadSpeed}}
+        .progress
+          .progress-bar(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+\end{lstlisting}
+
+
+As you can see, there is now a nice separation between view logic and code. AngularJS has some other great features that I will mention later, but now I just wish to give you a taste for it and justify why I decided to incorporate it in my project.
+
+
+%----------------------------------------------------------------------------------------
+
+\section{Bootstrap}
+One of the biggest issues I have when designing web-applications is making them look good. I am a software developer, not a designer. This lack of skill for design is not the hindrance it once was to developers like me, thanks to Bootstrap. Bootstrap is a HTML framework that supplies developers with pre-built, styled components that they can use on their websites. These components range from buttons, to progress bars, to dropdown menus, etc.
+
+Furthermore, Bootstrap is designed to be "mobile first", meaning that sites created by using Bootstrap will be responsive - working on all devices, regardless of their screen size. This feature is a big selling point for me, as the current rTorrent front-ends are not responsive and do not work well when being viewed on a table or mobile device.
+
+Using Bootstrap is a no-brainer, all you have to do is download the Bootstrap CSS and JavaScript files and include them in you web-application. You can then make use of components by using specific Bootstrap HTML class names, e.g. to create a list of styled tabs you would use the following HTML:
+
+\vspace{20px}
+\begin{lstlisting}[caption=Bootstrap tabs]
+  <ul class="nav nav-tabs">
+    <li class="active"><a href="#">Home</a></li>
+    <li><a href="#">Profile</a></li>
+    <li><a href="#">Messages</a></li>
+  </ul>
+\end{lstlisting}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
