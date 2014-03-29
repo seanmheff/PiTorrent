@@ -7,30 +7,30 @@ module.exports = {
 var xmlbuilder = require('xmlbuilder');
 
 
-/**
- * This function takes an XML string as its input and builds a valid XML-RPC request
- * @param {string} xml The XML string
- * @return {string} This is the spoofed XML-RPC call
- */
-function formatRequest(xml) {
-
-    /* Build the header of the request */
-    var header = "";
-    header += "CONTENT_LENGTH\000";
-    header += xml.length;
-    header += "\000";
-    header += "SCGI\0001\000";
-
-    /* Build the request */
-    var request = "";
-    request += header.length;
-    request += ":";
-    request += header;
-    request += ",";
-    request += xml;
-
-    return request;
-}
+  /**
+   * This function takes an XML string as its input and builds a valid XML-RPC request
+   * @param {string} xml The XML string
+   * @return {string} This is the spoofed XML-RPC call
+   */
+  function formatRequest(xml) {
+  
+      /* Build the header of the request */
+      var header = "";
+      header += "CONTENT_LENGTH\000";
+      header += xml.length;
+      header += "\000";
+      header += "SCGI\0001\000";
+  
+      /* Build the request */
+      var request = "";
+      request += header.length;
+      request += ":";
+      request += header;
+      request += ",";
+      request += xml;
+  
+      return request;
+  }
 
 
 /**

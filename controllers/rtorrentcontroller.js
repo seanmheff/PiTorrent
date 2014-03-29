@@ -355,7 +355,7 @@ function getDetailedTorrentInfo(hash, callback) {
                 .childNamed("data");
 
             var dataToReturn = {};
-            var stats = ["dir"];
+            var stats = ["name", "dir", "torrentFile", "numFiles", "size", "complete", "downloaded", "uploaded", "up", "down"];
             var counter = 0;
 
             // For each separate multicall function
