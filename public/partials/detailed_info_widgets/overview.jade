@@ -26,4 +26,59 @@ ul.nav.nav-tabs
           .clearfix
         .widget-content
           .div(ng-if="!torrentInfo", style="height:50px", cg-busy="'overview'")
-          p {{torrentInfo.dir}}
+          .table-responsive
+            table.table.table-condensed.table-striped
+              tr
+                td
+                  b Precent done:
+                td
+                  .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrentInfo.complete]")
+                    .progress-bar(ng-class="{'1':'bar-success', '0':''}[torrentInfo.complete]", style='width: {{torrentInfo.percentDone}}%;') {{torrentInfo.percentDone}}%
+              tr
+                td
+                  b Torrent name:
+                td {{torrentInfo.name}}
+              tr
+                td
+                  b Download directory:
+                td {{torrentInfo.dir}}
+              tr
+                td
+                  b Torrent file location:
+                td {{torrentInfo.torrentFile}}
+              tr
+                td
+                  b Number of files:
+                td {{torrentInfo.numFiles}}
+              tr
+                td
+                  b Ratio:
+                td {{torrentInfo.ratio | number:2}}
+              tr
+                td
+                  b Download size:
+                td {{torrentInfo.size}}
+              tr
+                td
+                  b Data downloaded:
+                td {{torrentInfo.downloaded}}
+              tr
+                td
+                  b Data uploaded:
+                td {{torrentInfo.uploaded}}
+              tr
+                td
+                  b Complete:
+                td {{torrentInfo.complete}}
+              tr
+                td
+                  b Upload rate:
+                td {{torrentInfo.up}}
+              tr
+                td
+                  b Download rate:
+                td {{torrentInfo.down}}
+              tr(ng-if="torrentInfo.complete == 0")
+                td
+                  b Estimated completion time:
+                td {{torrentInfo.eta}}

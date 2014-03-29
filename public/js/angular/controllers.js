@@ -2,7 +2,7 @@
  * This module contains our angular controllers
  * We define the module and inject its dependencies
  */
-var app = angular.module('myApp.controllers', ['flow', 'ngAnimate', 'ajoslin.promise-tracker', 'cgBusy']);
+var app = angular.module('myApp.controllers', ['flow', 'ngAnimate', 'ajoslin.promise-tracker', 'cgBusy', 'tableSort']);
 
 app.value('cgBusyTemplateName','../../style/loading-template.html');
 
@@ -114,13 +114,40 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
 /**
  * A controller for the 'detailed info' route
  */
-app.controller('DetailedOverviewCtrl', function DetailedOverviewCtrl($scope, $http, $routeParams, sharedTorrentName) {
+app.controller('DetailedOverviewCtrl', function DetailedOverviewCtrl($scope, $http, $routeParams, $interval, sharedTorrentName) {
     var hash = $routeParams.torrentHash;
-    $http.get(document.location.origin + '/info/' + hash, {tracker: 'overview'}).success(function(detailedInfo) {
-        $scope.torrentInfo = detailedInfo;
-    });
     $scope.hash = $routeParams.torrentHash;
     $scope.name = sharedTorrentName.getName();
+
+    $http.get(document.location.origin + '/info/' + hash, {tracker: 'overview'}).success(function(detailedInfo) {
+        detailedInfo.eta = secondsToTime(detailedInfo.size/detailedInfo.down);
+        detailedInfo.percentDone = (detailedInfo.downloaded / detailedInfo.size * 100).toFixed(1);
+        detailedInfo.size = convertBytes(detailedInfo.size);
+        detailedInfo.ratio = detailedInfo.uploaded/detailedInfo.downloaded || 0;
+        detailedInfo.downloaded = convertBytes(detailedInfo.downloaded);
+        detailedInfo.uploaded = convertBytes(detailedInfo.uploaded);
+        detailedInfo.up = convertBytes(detailedInfo.up);
+        detailedInfo.down = convertBytes(detailedInfo.down);
+        $scope.torrentInfo = detailedInfo;
+    });
+
+    var interval = $interval(function() {
+        $http.get(document.location.origin + '/info/' + hash, {tracker: 'overview'}).success(function(detailedInfo) {
+            detailedInfo.eta = secondsToTime(detailedInfo.size/detailedInfo.down);
+            detailedInfo.percentDone = (detailedInfo.downloaded / detailedInfo.size * 100).toFixed(1);
+            detailedInfo.size = convertBytes(detailedInfo.size);
+            detailedInfo.ratio = detailedInfo.uploaded/detailedInfo.downloaded || 0;
+            detailedInfo.downloaded = convertBytes(detailedInfo.downloaded);
+            detailedInfo.uploaded = convertBytes(detailedInfo.uploaded);
+            detailedInfo.up = convertBytes(detailedInfo.up);
+            detailedInfo.down = convertBytes(detailedInfo.down);
+            $scope.torrentInfo = detailedInfo;
+        });
+    }, 2000);
+
+    $scope.$on('$destroy', function() {
+        $interval.cancel(interval);
+    });
 });
 
 
@@ -133,11 +160,19 @@ app.controller('DetailedPeerCtrl', function DetailedPeerCtrl($scope, $http, $rou
     $scope.name = sharedTorrentName.getName();
 
     $http.get(document.location.origin + '/peers/' + hash, {tracker: 'peers'}).success(function(detailedInfo) {
+        for (var i in detailedInfo.peers) {
+            detailedInfo.peers[i].downRateHuman = convertBytes(detailedInfo.peers[i].downRate);
+            detailedInfo.peers[i].upRateHuman = convertBytes(detailedInfo.peers[i].upRate);
+        }
         $scope.peerInfo = detailedInfo;
     });
 
     var interval = $interval(function() {
         $http.get(document.location.origin + '/peers/' + hash).success(function(detailedInfo) {
+            for (var i in detailedInfo.peers) {
+                detailedInfo.peers[i].downRateHuman = convertBytes(detailedInfo.peers[i].downRate);
+                detailedInfo.peers[i].upRateHuman = convertBytes(detailedInfo.peers[i].upRate);
+            }
             $scope.peerInfo = detailedInfo;
         });
     }, 2000);
@@ -478,3 +513,21 @@ function pushUploadSpeed($scope, speed) {
     $scope.uploadData[0].push([counter++, speed]);
 }
 
+
+
+function secondsToTime(seconds) {
+    var sec_num = parseInt(seconds, 10);
+    var hours   = Math.floor(sec_num / 3600);
+    var minutes = Math.floor((sec_num - (hours * 3600)) / 60);
+    var seconds = sec_num - (hours * 3600) - (minutes * 60);
+
+    if (hours   < 10) {hours   = "0"+hours;}
+    if (minutes < 10) {minutes = "0"+minutes;}
+    if (seconds < 10) {seconds = "0"+seconds;}
+    var time    = hours+':'+minutes+':'+seconds;
+
+    if (isNaN(hours)) {
+        return "Infinity";
+    }
+    return time;
+}

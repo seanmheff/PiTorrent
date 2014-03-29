@@ -8,16 +8,25 @@
 \contentsline {section}{\numberline {1.1}Welcome}{1}{section.9}
 \contentsline {section}{\numberline {1.2}Torrents and the BitTorrent Protocol}{1}{section.10}
 \contentsline {subsection}{\numberline {1.2.1}The BitTorrent Protocol}{2}{subsection.11}
-\contentsline {section}{\numberline {1.3}The problems with running a BitTorrent server}{3}{section.12}
+\contentsline {section}{\numberline {1.3}The Problems with Running a BitTorrent Server}{3}{section.12}
 \contentsline {section}{\numberline {1.4}The Raspberry Pi}{4}{section.13}
 \contentsline {section}{\numberline {1.5}rTorrent}{4}{section.14}
-\contentsline {chapter}{\numberline {2}Technologies}{6}{chapter.15}
+\contentsline {chapter}{\numberline {2}Technologies Used}{6}{chapter.15}
 \contentsline {section}{\numberline {2.1}Foreword}{6}{section.16}
 \contentsline {section}{\numberline {2.2}Node.js}{6}{section.17}
 \contentsline {subsection}{\numberline {2.2.1}Express - a Web Application Framework for Node.js}{8}{subsection.30}
 \contentsline {subsection}{\numberline {2.2.2}Jade - a Node.js Template Engine}{8}{subsection.31}
 \contentsline {section}{\numberline {2.3}AngularJS}{8}{section.32}
 \contentsline {section}{\numberline {2.4}Bootstrap}{10}{section.47}
+\contentsline {chapter}{\numberline {3}Design and Implementation}{12}{chapter.55}
+\contentsline {section}{\numberline {3.1}Proof of concept}{12}{section.56}
+\contentsline {subsection}{\numberline {3.1.1}XML-RPC Message Format}{13}{subsection.59}
+\contentsline {subsection}{\numberline {3.1.2}SCGI Message Format}{15}{subsection.76}
+\contentsline {section}{\numberline {3.2}Structuring the Project}{16}{section.117}
+\contentsline {section}{\numberline {3.3}Node.js back-end development}{17}{section.119}
+\contentsline {subsection}{\numberline {3.3.1}Serving static files with Express}{18}{subsection.122}
+\contentsline {subsection}{\numberline {3.3.2}Creating rTorrent API's}{18}{subsection.138}
+\contentsline {section}{\numberline {3.4}AngularJS front-end development}{22}{section.229}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Appendix Title Here}{12}{appendix.54}
+\contentsline {chapter}{\numberline {A}Appendix Title Here}{23}{appendix.230}
 \vspace {2em}

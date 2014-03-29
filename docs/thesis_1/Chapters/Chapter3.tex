@@ -1,124 +1,303 @@
-\chapter{Technologies} 
+\chapter{Design and Implementation} 
 
-\label{Chapter2} 
+\label{Chapter3} 
 
-\lhead{Chapter 2. \emph{Technologies}} 
-
-%----------------------------------------------------------------------------------------
-
-\section{Foreword}
-One of the intentions from the outset of this project was to embrace new technologies. This does not mean that I jumped on the bandwagon of every up-and-coming hipster product coming straight out of Silicon Valley. I carefully and thoroughly investigated some of the leading "newer" technologies that I felt had genuine potential to become proven mainstream solutions. I discarded some of these technologies, others I chose to use at the core of my project. 
+\lhead{Chapter 3. \emph{Design and Implementation}} 
 
 %----------------------------------------------------------------------------------------
 
-\section{Node.js}
-My project has two main sections, the front-end (which users will see on their web browser), and the back-end (which essentially is web-server on the Raspberry Pi). The back-end acts as the middleman between users and rTorrent. If a user clicks a button to stop a torrent in the front-end, the front-end sends a HTTP message across the network to the back-end, the back-end then builds a XML-RPC message to stop the torrent, and sends the XML-RPC message to rTorrent via a UNIX socket. A rTorrent "stop" function is called, and the response is sent back to the back-end, which in turn builds a HTTP response, and sends it to the front-end over the network. Once the front-end gets the response, it update the view to show the torrent has stopped.
+\section{Proof of concept}
+As I have outlined in chapter 1, my project should work by utilising UNIX sockets for communication between Node.js and rTorrent. Communication between the back-end and rTorrent traditionally used a web-server with SCGI plugins like so: 
 
-The back-end is the core of my project, and choosing a technology to use as the back-end was the biggest decision I had to make while creating PiTorrent. The technology should be:
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.75]{Figures/ruTorrent.png}
+  \caption{ruTorrent setup}
+\end{figure}
+
+Users would make HTTP requests to the ruTorrent back-end to get torrent information. The back-end then would then have to route requests to rTorrent via the SCGI web-server plugin. This is not ideal, as all XML-RPC requests between ruTorrent and rTorrent are routed through the SCGI plugin, and this method of communication is open to abuse. It may be possible for malicious individuals to send commands to rTorrent directly, by bypassing ruTorrent on an unsecured setup. An attack is possible as the SCGI interface runs off a port on the web-server, a port which may be accessible to unauthorized users on the network. My project aims to remove the SCGI dependency by spoofing SCGI requests in my Node.js back-end and sending these requests directly to rTorrent's XML-RPC socket like so:
+
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.8]{Figures/PiTorrent.png}
+  \caption{PiTorrent setup}
+\end{figure}
+
+This has the added benefit of being easier to set up - there is no need to install and configure surplus technologies.
+
+
+\subsection{XML-RPC Message Format}
+In order to talk about spoofing SCGI requests to do away with the SCGI plugin, I will need explain the format of a typical XML-RPC message. XML-RPC is a simple specification with the purpose of calling remote functions over a network. The format is built on top of HTTP. A XML-RPC message is essentially just a HTTP POST request with a specific XML format as the request body. Here is an example XML-RPC request:
+
+\vspace{20px}
+\begin{lstlisting}[caption=A basic XML-RPC request, language=XML]
+  POST /RPC2 HTTP/1.0
+  User-Agent: Frontier/5.1.2 (WinNT)
+  Host: localhost
+  Content-Type: text/xml
+  Content-length: 181
+
+  <?xml version="1.0"?>
+  <methodCall>
+    <methodName>getStateName</methodName>
+    <params>
+      <param>
+        <value><i4>41</i4></value>
+      </param>
+    </params>
+  </methodCall>
+\end{lstlisting}
+
+The header contains typical HTTP header information. The body contains an XML document with specific node names. The values contained in these nodes must specify the name of the remote method we wish to call, and any parameters we wish to pass to the method. Parameter values can be any of the following types:
 
 \begin{itemize}
-	\item ARM compatible - must run on an ARM CPU
-	\item Lightweight - must not hog the Pi's limited resources
-	\item Easy to install - preferably be in Raspbian's software repositories 
-	\item Easy to use - possible to get a prototype up and running quickly
+	\item <i4> or <int>
+	\item <boolean>
+	\item <string>
+	\item <double>
+	\item <dateTime>
+	\item <base64>
+	\item <struct>
 \end{itemize}
 
-After some consideration I decided to use Node.js as my back-end technology. Node.js is a platform that allows us to use JavaScript as a back-end programming language. It is geared at building fast and scalable net applications. It comes pre-compiled for ARM architecture, so it will run on the Raspberry Pi without any problems. Node's main selling point, and the reason I choose to use it in my project, is it's threading model. Node.js makes use of JavaScript's callback functionality to enable an event driven, non-blocking I/O model. 
+In the example above, we are passing an integer with the value 41 to the method "getStateName".
 
-One of the most difficult issues to overcome in building server-side web application is threading. For example, with Java you would use an application server like WebSphere or GlassFish to handle thread generation and management for you. Even when using these middleware applications, dealing with threads still proves difficult. This is where Node.js I/O model comes into play. With Node, there is only one main execution thread. All I/O calls are non-blocking and when a result is returned, an event is generated and a callback is executed.
-
-Here is an example of some JavaScript that runs under a Node.js environment. Node comes with a 'net' package that allows us to make use of sockets in our code. This example shows all the code required to connect to a UNIX socket (located at '/tmp/rpc.socket') and write and read data from the socket. Notice the layout of the code - when we try to connect to the socket (line 2), we do not wait for the connection to be established, the thread of execution moves onto the next instruction. In this case, that next instruction is line 11 - printing "Coffee time!" to the screen. Only when the connection has been established, a "connect" event is generated and the thread of execution runs the unnamed function which starts on line 3. 
+\subsection{SCGI Message Format}
+SCGI is a wrapper around XML-RPC. As incoming remote XML-RPC messages are received, our SCGI plugin will wrap the entire XML-RPC message with a header and send the newly wrapped message to the RPC socket. The layout of a SCGI header can be described with the following thing:
 
 \vspace{20px}
-\begin{lstlisting}[caption=Node.js and event driven I/O]
-  var socket = new net.Socket().connect("/tmp/rpc.socket");
-  socket.on("connect", function() {
-    socket.write("Hello!");  
-    socket.on("data", function(data) {
-      // Do something with the incoming data
-    });  
-    socket.on("error", function (err) {
-      console.log(err);
-    });
+\begin{lstlisting}[caption=Layout of a SCGI header]
+  headers ::= header*
+  header ::= name NUL value NUL
+  name ::= notnull+                
+  value ::= notnull*
+  notnull ::= <01> | <02> | <03> | ... | <ff>
+  NUL = <00>
+\end{lstlisting}
+
+The first header must have the name "CONTENT\_LENGTH", with the corresponding value containing the length of the body. A "SCGI" header must also be present, with a value of "1". SCGI requests take the form of [length of SCGI header]":"[SCGI header]","[data]. Here is the SCGI request created by wrapping the XML-RPC request in Figure 3.1. 
+
+\vspace{20px}
+\begin{lstlisting}[caption=Layout of a SCGI request, language=XML]
+  26:
+     CONTENT_LENGTH<00>181<00>
+     SCGI<00>1<00>
+  ,
+  <?xml version="1.0"?>
+  <methodCall>
+    <methodName>getStateName</methodName>
+    <params>
+      <param>
+        <value><i4>41</i4></value>
+      </param>
+    </params>
+  </methodCall>
+\end{lstlisting}
+
+
+After researching XML-RPC and SCGI, I determined that I could indeed spoof SCGI requests within Node.js by replicating the SCGI protocol, and sending these requests to rTorrent's RPC interface over a UNIX socket. Here is some Node.js code that I wrote as a proof of concept of creating spoofed SCGI requests:
+
+\vspace{20px}
+\begin{lstlisting}[caption=Layout of a SCGI request, language=JavaScript]
+  function formatRequest(xml) {  
+    /* Build the header of the request */
+    var header = "";
+    header += "CONTENT_LENGTH\000";
+    header += xml.length;
+    header += "\000";
+    header += "SCGI\0001\000";
+  
+    /* Build the request */
+    var request = "";
+    request += header.length;
+    request += ":";
+    request += header;
+    request += ",";
+    request += xml;
+  
+    return request;
   }
-  console.log("Coffee time!");
 \end{lstlisting}
 
-
-With this threading model, we don't have to worry about concurrency issues. This will enable us to build quality applications in a much quicker time-frame compared to other platforms.
-
-Another selling point of Node.js is the fact that it is very lightweight. The current Node binary for ARM is 5MB in size. Compare this to Java 7 and GlassFish which is a whopping 140MB combined.
+I tried sending some spoofed SCGI requests to rTorrent's RPC socket using Node.js and listening for responses (Node.js code to achieve this contained in Figure 2.1), and low and behold - it worked! I now knew that my project was viable and I could start building it.
 
 
-\subsection{Express - a Web Application Framework for Node.js}
-Node.js by itself is quite low-level. It allows us to build web applications from the ground up, exactly the way we want them. However, the majority of Node users do not want to spend their time building authentication systems, or URL route handling systems, or other boilerplate code - they want to be writing business logic. This is where Express, a Node web application framework comes into play. Express takes care of all this boilerplate coding that every web project requires. By using the Express module in our Node applications we can use their URL route handling and other neat features like managing view engines, like Jade.
+\section{Structuring the Project}
+Due to the Raspberry Pi's limited resources, I wanted the Node.js back-end to do as little computation as possible. One way to achieve this is by using a web development technique know as "client-side rendering". With client-side rendering, when you request a web-page from a server, the server sends you a static HTML page, along with any CSS or JavaScript code that the HTML page requires. The JavaScript code then makes another request to the server for any dynamic data needed to render the page (in our case - torrent information). Once the JavaScript gets the response, it modifies the original HTML page to include the data it received from the server's Application Programming Interface (API), and renders the page.
+
+With this technique, the Pi does not need to generate dynamic HTML pages - instead it pushes this computation to the client. We also have the added benefit of solving another problem - how to continually send live torrent information to the client. In order to perform client-side rendering, we need to create server API's where live torrent information can be consumed by our JavaScript. These API's can then be polled at set intervals by our JavaScript to get up-to-date torrent information.
+
+Here is the general structure that my project should take:
+
+\vspace{10px}
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=1]{Figures/Structure2.png}
+  \caption{Project structure}
+\end{figure}
 
 
-\subsection{Jade - a Node.js Template Engine}
-HTML has been around a long time and can be quite tedious to work with. 
+\section{Node.js back-end development}
+Our Node.js back-end has two distinct jobs:
 
+\begin{enumerate}
+	\item Serving static HTML pages, JavaScript and CSS files
+	\item Providing API's that provide up-to-date rTorrent information.
+\end{enumerate}
 
-%----------------------------------------------------------------------------------------
-
-\section{AngularJS}
-AngularJS is a JavaScript framework which is a brainchild of Google. It aims to provide a mechanism for developing Single Page Applications (SPAs). What is does is essentially bring the Model-View-Controller (MVC) paradigm to front-end JavaScript coding, by separating logic from views.
-
-Angular's killer feature, and what makes Angular's MVC paradigm possible is its two-way data binding. What this means is that we can define JavaScript variables in our front-end JavaScript code, and anytime these variables get updated, the HTML that the user sees gets updated also, with the new information. This concept is not the easiest to get across, so I'll explain with an example.
-
-Say we are displaying a list of currently seeding torrents to the user on a HTML webpage. This information has to be updated from the back-end periodically. Without Angular, we would have to create an Asynchronous JavaScript and XML (AJAX) request to get the data from the server, and once we have the data, build the HTML the user sees with JavaScript, and append this HTML to the a Document Object Model (DOM) node.
-
-This is not ideal, as our JavaScript code now contains view logic (HTML) - making the codebase less maintainable. AngularJS was built to get around this problem, by allowing us to define "models" that we can bind to, and display in the view. So, if were displaying the list of torrents using Angular, we could define the a JavaScript array of torrent objects as a model, and anytime a torrent is added or removed, our view would be updated with the changes automatically. 
-
-In the two code snippets below, we see this data binding in action. In our JavaScript code we perform a HTTP GET request on a URL every two seconds. When the result is returned, we bind the result (a JSON object) to "\$scope.torrentResults". The "\$scope" keyword is what allows us to bind data so that it is available in the view.
+\subsection{Serving static files with Express}
+Job number 1 is trivial with Node.js and the Express framework. When I talked about Express in Chapter 2, I mentioned that we could use it to accomplish a lot of commonly used tasks. Serving static files is one of these tasks. We can supply Express with a directory and Express will recursively serve all the files within this directory. Here is all the code required to serve content in the "public" folder on port 80:
 
 \vspace{20px}
-\begin{lstlisting}[caption=AngularJS binding data with \$scope keyword]
-  setInterval(function() {
-    $http.get(document.location.origin + '/torrents').success(function(torrents) {
-      $scope.torrentResults = torrents;
-    });
-  }, 2000);
+\begin{lstlisting}[caption=Express serving static files, language=JavaScript]
+  var express = require('express')
+    , http = require('http')
+    , path = require('path')
+    , app = express()
+    , port = 80;
+ 
+  // Tell our Express app to use the 'static' middleware module and
+  // specify a directory where static content resides
+  app.use(express.static(path.join(__dirname, 'public')));
+
+  // Create a web server on port 80
+  http.createServer(app).listen(port, function() {
+    console.log('Express server listening on port ' + port);
+  });
+\end{lstlisting}
+
+Without Express we would have to manually parse the URL of incoming requests to see what file they wish to download, check if the file exists, and if so, read the file contents into a buffer and pipe the buffer contents to a HTTP response. If the file does not exist, we would have to send a 404 message. Its clear to see why using a framework like Express is a no-brainer.  
+
+\subsection{Creating rTorrent API's}
+Job number 2 on our list of server tasks is to provide a set of API's where rTorrent information can be accessed from. We should also be able to "control" rTorrent from these API's, e.g. we should be able to stop a torrent by sending a HTTP POST request to a certain API.
+
+These API's will act as the connector between our front-end and rTorrent. If the front-end wants to see all the torrents that rTorrent is currently managing - the front-end JavaScript should send a HTTP request to a specific URL, say "http://localhost/torrents" (if the Node.js server was running locally). Once Node.js gets a request to this URL, Node should call some XML-RPC method on rTorrent's socket to get a list of all the torrents. rTorrent will respond with an XML document, which our Node server should parse, and send a human readable JSON object to the front-end.
+
+I need to convert the rTorrent XML response to JSON as our front-end JavaScript library, AngularJS can only work with JSON objects. I had two options to convert this data - either convert it on the server and send JSON data to the front-end over HTTP, or send XML to the front-end, and let the front-end JavaScript convert it to JSON. I choose to convert it on the server as JSON is more compact that XML, and by having the server send JSON data over the network will reduce bandwidth usage.
+
+Here I will go through all the steps in the front-end getting live torrent data from the server:
+
+Firstly the following front-end code will call a server API ("/torrents"):
+\vspace{10px}
+\begin{lstlisting}[caption=AngularJS performing a HTTP GET, language=JavaScript]
+  $http.get(document.location.origin + '/torrents').success(function(torrents) {
+    $scope.torrentResults = torrents;
+  });
 \end{lstlisting}
 
 
-Now that we have added the object to the scope, we can refer to the object in the view code. AngularJS achieves its MVC paradigm by allowing us to mix in Angular keywords with our view markup. Here is some Jade that creates an unordered list, and loops through our torrent object, displaying torrents as list items. In Angular, we use the "ng-repeat" directive to loop through data. Here we are also applying a filter that only displays seeding torrents (more on filters later), and we are also ordering the torrents by their name. We use double brackets: "\{\{ \}\}" to display data to the user.
-
-\vspace{20px}
-\begin{lstlisting}[caption=Jade with AngularJS]
- ul
- 	li(ng-repeat="torrent in torrentResults.torrents | filter:seeding | orderBy:'name'")
-    	strong {{torrent.name}}
-        p
-          span Downloaded : {{torrent.downloaded}}  Upload Speed: {{torrent.uploadSpeed}}
-        .progress
-          .progress-bar(style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+When Node.js gets a request for the "/torrents" URL it will create a specific XML-RPC request. This XML-RPC call attempts to get the hash, name and size of all the torrents in the rTorrent "main" view (rTorrent views include main, seeding, leeching, etc.):
+\vspace{10px}
+\begin{lstlisting}[caption=Node.js generated XML-RPC request, language=XML]
+  <?xml version="1.0" encoding="UTF-8"?>
+  <methodCall>
+    <methodName>d.multicall</methodName>
+    <params>
+      <param>
+        <value>
+          <string>main</string>
+        </value>
+      </param>
+      <param>
+        <value>
+          <string>d.get_hash=</string>
+        </value>
+      </param>
+      <param>
+        <value>
+          <string>d.get_name=</string>
+        </value>
+      </param>
+      <param>
+        <value>
+          <string>d.get_size_bytes=</string>
+        </value>
+      </param>
+    </params>
+  </methodCall>
 \end{lstlisting}
 
-
-As you can see, there is now a nice separation between view logic and code. AngularJS has some other great features that I will mention later, but now I just wish to give you a taste for it and justify why I decided to incorporate it in my project.
-
-
-%----------------------------------------------------------------------------------------
-
-\section{Bootstrap}
-One of the biggest issues I have when designing web-applications is making them look good. I am a software developer, not a designer. This lack of skill for design is not the hindrance it once was to developers like me, thanks to Bootstrap. Bootstrap is a HTML framework that supplies developers with pre-built, styled components that they can use on their websites. These components range from buttons, to progress bars, to dropdown menus, etc.
-
-Furthermore, Bootstrap is designed to be "mobile first", meaning that sites created by using Bootstrap will be responsive - working on all devices, regardless of their screen size. This feature is a big selling point for me, as the current rTorrent front-ends are not responsive and do not work well when being viewed on a table or mobile device.
-
-Using Bootstrap is a no-brainer, all you have to do is download the Bootstrap CSS and JavaScript files and include them in you web-application. You can then make use of components by using specific Bootstrap HTML class names, e.g. to create a list of styled tabs you would use the following HTML:
-
-\vspace{20px}
-\begin{lstlisting}[caption=Bootstrap tabs]
-  <ul class="nav nav-tabs">
-    <li class="active"><a href="#">Home</a></li>
-    <li><a href="#">Profile</a></li>
-    <li><a href="#">Messages</a></li>
-  </ul>
+A SCGI header is added to the request, and it is sent to rTorrent via a UNIX socket. A XML response is received. When the SCGI header is removed from the response, we get the following:
+\vspace{10px}
+\begin{lstlisting}[caption=XML-RPC response, language=XML]
+  <?xml version="1.0" encoding="UTF-8"?>
+  <methodResponse>
+    <params>
+      <param>
+        <value>
+          <array>
+            <data>
+              <value>
+                <array>
+                  <data>
+                    <value>
+                      <string>BB1D8144644F1F2CA9C2CDE60B3FB1B8A904A3C9</string>
+                    </value>
+                    <value>
+                      <string>linuxmint-16-mate-dvd-32bit.iso</string>
+                    </value>
+                    <value>
+                      <i8>1289748480</i8>
+                    </value>
+                  </data>
+                </array>
+              </value>
+              <value>
+                <array>
+                  <data>
+                    <value>
+                      <string>5741F87F027608169473EE68D2EA7DDBBFA4EA4A</string>
+                    </value>
+                    <value>
+                      <string>debian-7.4.0-i386-CD-1.iso</string>
+                    </value>
+                    <value>
+                      <i8>679477248</i8>
+                    </value>
+                  </data>
+                </array>
+              </value>
+            </data>
+          </array>
+        </value>
+      </param>
+    </params>
+  </methodResponse>
 \end{lstlisting}
 
+You can see why I chose to parse this data on the server and not send the raw XML to the client. The XML is very verbose and by converting it to JSON, I can make significant bandwidth savings. Once I have the XML response, I make the conversion to JSON and send the JSON object to the front-end over HTTP. Here is what that HTTP response would contain:
+\vspace{10px}
+\begin{lstlisting}[caption=XML-RPC response converted to JSON, language=JavaScript]
+  {
+    "torrents": [
+      {
+        "hash": "BB1D8144644F1F2CA9C2CDE60B3FB1B8A904A3C9",
+        "name": "linuxmint-16-mate-dvd-32bit.iso",
+        "size": "1289748480",
+      },
+      {
+        "hash": "5741F87F027608169473EE68D2EA7DDBBFA4EA4A",
+        "name": "debian-7.4.0-i386-CD-1.iso",
+        "size": "679477248",
+      }
+    ]
+  }
+\end{lstlisting}
+
+I created a number of API's that the front-end could call. Here are just some of these API's:
+
+\begin{itemize}
+	\item "/torrents" - list the names and basic information of all torrents
+	\item "/stats" - list some global stats: upload rate, download rate, etc.
+	\item "/files/:hash" - list the files for a specific torrent: "hash" is the torrent identifier
+	\item "/peers/:hash" - list the peers connected to a specific torrent
+	\item "/stop/:hash" - stop a specific torrent
+	\item "/start/:hash" - start a specific torrent
+\end{itemize}
 
 
-
+\section{AngularJS front-end development}
+Once I have API's to retrieve torrent data from, I need to display this data in a meaningful way. The API data is potentially always changing, so these API's need to be polled at regular intervals so users get up-to-date information about their torrents.
 
 
 

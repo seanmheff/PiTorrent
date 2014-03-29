@@ -1,8 +1,8 @@
-\chapter{Technologies} 
+\chapter{Technologies Used} 
 
 \label{Chapter2} 
 
-\lhead{Chapter 2. \emph{Technologies}} 
+\lhead{Chapter 2. \emph{Technologies Used}} 
 
 %----------------------------------------------------------------------------------------
 
@@ -12,7 +12,7 @@ One of the intentions from the outset of this project was to embrace new technol
 %----------------------------------------------------------------------------------------
 
 \section{Node.js}
-My project has two main sections, the front-end (which users will see on their web browser), and the back-end (which essentially is web-server on the Raspberry Pi). The back-end acts as the middleman between users and rTorrent. If a user clicks a button to stop a torrent in the front-end, the front-end sends a HTTP message across the network to the back-end, the back-end then builds a XML-RPC message to stop the torrent, and sends the XML-RPC message to rTorrent via a UNIX socket. A rTorrent "stop" function is called, and the response is sent back to the back-end, which in turn builds a HTTP response, and sends it to the front-end over the network. Once the front-end gets the response, it update the view to show the torrent has stopped.
+My project has two main sections, the front-end (which users will see on their web browser), and the back-end (a web-server on the Raspberry Pi). The back-end acts as the middleman between users and rTorrent. If a user clicks a button to stop a torrent in the front-end, the front-end sends a HTTP message across the network to the back-end, the back-end then builds a XML-RPC message to stop the torrent, and sends the XML-RPC message to rTorrent via a UNIX socket. A rTorrent "stop" function is called, and the response is sent back to the back-end, which in turn builds a HTTP response, and sends it to the front-end over the network. Once the front-end gets the response, it update the view to show the torrent has stopped.
 
 The back-end is the core of my project, and choosing a technology to use as the back-end was the biggest decision I had to make while creating PiTorrent. The technology should be:
 
@@ -69,10 +69,10 @@ Say we are displaying a list of currently seeding torrents to the user on a HTML
 
 This is not ideal, as our JavaScript code now contains view logic (HTML) - making the codebase less maintainable. AngularJS was built to get around this problem, by allowing us to define "models" that we can bind to, and display in the view. So, if were displaying the list of torrents using Angular, we could define the a JavaScript array of torrent objects as a model, and anytime a torrent is added or removed, our view would be updated with the changes automatically. 
 
-In the two code snippets below, we see this data binding in action. In our JavaScript code we perform a HTTP GET request on a URL every two seconds. When the result is returned, we bind the result (a JSON object) to "\$scope.torrentResults". The "\$scope" keyword is what allows us to bind data so that it is available in the view.
+In the two code snippets below, we see this data binding in action. In our JavaScript code we perform a HTTP GET request on a URL every two seconds. When the result is returned, we bind the result (a JavaScript Object Notation (JSON) object) to "\$scope.torrentResults". The "\$scope" keyword is what allows us to bind data so that it is available in the view.
 
 \vspace{20px}
-\begin{lstlisting}[caption=AngularJS binding data with \$scope keyword]
+\begin{lstlisting}[caption=AngularJS binding data with \$scope keyword, language=JavaScript]
   setInterval(function() {
     $http.get(document.location.origin + '/torrents').success(function(torrents) {
       $scope.torrentResults = torrents;
@@ -95,20 +95,20 @@ Now that we have added the object to the scope, we can refer to the object in th
 \end{lstlisting}
 
 
-As you can see, there is now a nice separation between view logic and code. AngularJS has some other great features that I will mention later, but now I just wish to give you a taste for it and justify why I decided to incorporate it in my project.
+As you can see, there is now a nice separation between view logic and code. Also, as we are rendering our views on the client side, our back-end does not need to serve dynamic HTML pages, just static pages and JSON data. This is hugely beneficial as client side view rendering reduces the load on the Raspberry Pi. AngularJS has some other great features that I will mention later, but now I just wish to give you a taste for it and justify why I decided to incorporate it in my project.
 
 
 %----------------------------------------------------------------------------------------
 
 \section{Bootstrap}
-One of the biggest issues I have when designing web-applications is making them look good. I am a software developer, not a designer. This lack of skill for design is not the hindrance it once was to developers like me, thanks to Bootstrap. Bootstrap is a HTML framework that supplies developers with pre-built, styled components that they can use on their websites. These components range from buttons, to progress bars, to dropdown menus, etc.
+One of the biggest issues I have when designing web-applications is making them look good. I am a software developer, not a designer. This lack of flair for design is not the hindrance it once was to developers like me, thanks to Bootstrap. Bootstrap is a HTML framework that supplies developers with pre-built, styled components that they can use on their websites. These components range from buttons, to progress bars, to dropdown menus, etc.
 
-Furthermore, Bootstrap is designed to be "mobile first", meaning that sites created by using Bootstrap will be responsive - working on all devices, regardless of their screen size. This feature is a big selling point for me, as the current rTorrent front-ends are not responsive and do not work well when being viewed on a table or mobile device.
+Furthermore, Bootstrap is designed to be "mobile first", meaning that sites created by using Bootstrap will be responsive - working on all devices, regardless of their screen size. This feature is a big selling point for me, as the current rTorrent front-ends are not responsive and do not work well when being viewed on a tablet or mobile device.
 
 Using Bootstrap is a no-brainer, all you have to do is download the Bootstrap CSS and JavaScript files and include them in you web-application. You can then make use of components by using specific Bootstrap HTML class names, e.g. to create a list of styled tabs you would use the following HTML:
 
 \vspace{20px}
-\begin{lstlisting}[caption=Bootstrap tabs]
+\begin{lstlisting}[caption=Bootstrap tabs HTML code]
   <ul class="nav nav-tabs">
     <li class="active"><a href="#">Home</a></li>
     <li><a href="#">Profile</a></li>
@@ -117,8 +117,13 @@ Using Bootstrap is a no-brainer, all you have to do is download the Bootstrap CS
 \end{lstlisting}
 
 
+Producing the following: 
 
-
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.75]{Figures/Tabs.png}
+  \caption{Bootstrap tabs}
+\end{figure}
 
 
 

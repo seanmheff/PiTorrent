@@ -55,7 +55,7 @@ BitTorrent has become a well established protocol over the years, with many webs
 
 %----------------------------------------------------------------------------------------
 
-\section{The problems with running a BitTorrent server}
+\section{The Problems with Running a BitTorrent Server}
 BitTorrent is a peer-to-peer (P2P) protocol where the overall "health" of a torrent relies on users keeping their torrent client open and uploading the torrent data back to other users. If all users stopped their torrent client after they downloaded the torrent, it would not take long until there were no "seeders" on the network, i.e. users who have the all the data and are uploading it back to the community. Some BitTorrent communities exist where users share files with each other exclusively, and each user is asked to maintain a 1:1 ratio - meaning they upload as much data to their peers as they download from their peers. Failing to keep this ratio will result in the user being removed from the community. 
 
 Because of this, serious BitTorrent users usually leave their BitTorrent clients running for extended periods of time - until they upload as much data as they have downloaded. This in itself may prove problematic, as it can be inconvenient to leave your laptop or PC running unattended for hours on end. Therefore enthusiasts usually resort to resurrecting old PC's or buying cheap PC's that they can use solely as BitTorrent servers that they run 24/7.
@@ -78,7 +78,7 @@ In over to overcome these issues, numerous attempts were made by 3rd party indiv
 
 The problem with these solutions is that they are by no means simple to get working. They rely on a number of different technologies that need to be installed and configured to work together. Technologies like PHP, Apache, and Simple Common Gateway Interface (SCGI) plugins for Apache to enable PHP and rTorrent to communicate with RPC messages. Remember that in many cases, the server on which you are wishing to install these products on are headless - so this installing and configuring needs to be done entirely over the command line, a daunting task to the uninitiated in Linux admin. 
 
-So this is where I come in. My idea is create a web interface for rTorrent that will do away with the hardship of setting up such a system. I propose to use UNIX sockets to communicate with rTorrent's RPC interface, which has not been done before. With this approach I can remove the necessity to install a web server such as Apache, and configuring it with SCGI and PHP plugins. My system should be a "one click install" product that also incorporates modern development requirements like responsive design - something that rival products lack.
+So this is where I come in. My idea is create a web interface for rTorrent that will do away with the hardship of setting up such a system. I propose to use UNIX sockets to communicate with rTorrent's RPC interface. With this approach I can remove the necessity to install a web server such as Apache, and configuring it with SCGI and PHP plugins. My system should be a "one click install" product that also incorporates modern development requirements like responsive design - something that rival products lack.
 
 
 
