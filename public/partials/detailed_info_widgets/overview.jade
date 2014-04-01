@@ -26,7 +26,7 @@ ul.nav.nav-tabs
           .clearfix
         .widget-content
           .div(ng-if="!torrentInfo", style="height:50px", cg-busy="'overview'")
-          .table-responsive
+          .table-responsive(ng-if="torrentInfo")
             table.table.table-condensed.table-striped
               tr
                 td
