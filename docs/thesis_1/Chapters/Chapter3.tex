@@ -137,7 +137,7 @@ Here is the general structure that my project should take:
 \end{figure}
 
 
-\section{Node.js back-end development}
+\section{Back-end development with Node.js}
 Our Node.js back-end has two distinct jobs:
 
 \begin{enumerate}
@@ -296,8 +296,51 @@ I created a number of API's that the front-end could call. Here are just some of
 \end{itemize}
 
 
-\section{AngularJS front-end development}
-Once I have API's to retrieve torrent data from, I need to display this data in a meaningful way. The API data is potentially always changing, so these API's need to be polled at regular intervals so users get up-to-date information about their torrents.
+\section{Front-end development with JavaScript and Jade}
+Once I have API's to retrieve torrent data from, I need to display this data in a meaningful way. The API data is potentially always changing, so these API's need to be polled at regular intervals so users get up-to-date information about their torrents. Since the main purpose of the front-end is to display torrent data to the user, I choose to use the AngularJS JavaScript framework to help me manage the task of keeping the view up-to-date. 
+
+AngularJS has some neat features. I have already mentioned it's two-way data binding - which I use extensively in this project. This data binding allows me to poll the server API's continually with JavaScript code, and any changes in the data are automatically shown in the view. By using AngularJS I estimate I reduced the time taken to code the front-end by a significant amount. Angular takes care of a lot of the boilerplate code that is needed in updating data.
+
+The front-end contains a lot of dynamic data. Anywhere I want to display this data, I insert AngularJS "\{\{data bindings\}\}" in my view markup. I can then use the "\$scope" object in my JavaScript code to associate these bindings with data. Now that I have an idea of how to show the user updated torrent data, I need to decide on the layout of my front-end.
+
+\subsection{Layout of the web-app}
+I decided to give the front-end a standard web-app layout:
+
+\vspace{10px}
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.32]{Figures/Home.png}
+  \caption{Front-end layout}
+\end{figure}
+
+There is a navigation panel on the left-hand side so that users can easily find there way around the app at all times. This panel is responsive, and will be hidden by default on tablets and other smaller screen devices. 
+
+There are horizontal bars running across both the top and bottom of the app. These bars are fixed to the top and bottom of the screen, so that if you scroll the page up or down, the bars will remain in place. The top bar has a PiTorrent logo on the left-hand side and a dropdown menu on the right-hand side. The dropdown is typical of a dropdown one would expect to see on the top right corner of we a web-app - it contains a link to the settings page, and a logout link. 
+
+The bottom bar has torrent speed and torrent throttle indicators, so that we can easily see what our upload and download speeds are at all times. A user can also click on the throttle indicators and be presented with a "popover" window where they can drag a slider to set upload or download throttle speeds. Here is what that popover looks like:
+
+\vspace{10px}
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.75]{Figures/Throttle.png}
+  \caption{Front-end layout}
+\end{figure}
+
+The main section of the app will display data to the user. I decided to use a widget theme with my data, where different data sections are partitioned across "widgets". These widgets are then arranged in a grid format. The grid is collapsible, so if you are viewing the site on a smaller screened device the grid columns merge into one. 
+
+The default page when you log in is the "torrents overview" page. This page shows lists of currently uploading and download torrents (if any), along with graphs of upload and download speeds over the last five minutes. The overview page also has a "System Stats" and a "Add Torrents" widget.
+
+The System Stats widget gives users information about the Raspberry Pi. Users can see uptime, load averages and memory usage, amongst other things.
+
+
+
+
+
+
+
+
+
+
 
 
 

@@ -1,8 +1,11 @@
 script(id="uploadThrottle.html", type='text/ng-template')
-  <p>A paragraph with a binding: {{stats.upLimit}}</p>
+  <label for="MB">Set upload throttle (MB and KB)</label>
+  <input id="MB" type="range" ng-model="upLimitMb" min="0" max="100" step="1" style="width: 250px", value="{{upLimitMb}}">
+  <input type="range" ng-model="upLimitKb" min="0" max="1000" step="10" style="width: 250px", value="{{upLimitKb}}">
+  <p>{{upLimitMb}} Mb, {{upLimitKb}} Kb</p>
 
 script(id="downloadThrottle.html", type='text/ng-template')
-  <label for="MB">MB</label>
+  <label for="MB">Set download throttle (MB and KB)</label>
   <input id="MB" type="range" ng-model="downLimitMb" min="0" max="100" step="1" style="width: 250px", value="{{downLimitMb}}">
   <input type="range" ng-model="downLimitKb" min="0" max="1000" step="10" style="width: 250px", value="{{downLimitKb}}">
   <p>{{downLimitMb}} Mb, {{downLimitKb}} Kb</p>
@@ -13,7 +16,7 @@ nav.navbar.navbar-inverse.navbar-fixed-bottom(role='navigation')
   .container-fluid
     ul.navbar-right.list-inline.bottom-nav
       li.bottom-nav(style="margin: 0px 5px; padding-left: 30px;") Throttle:
-      li.bottom-nav(popover-template="uploadThrottle.html", popover-placement="top")
+      li.bottom-nav(popover-template="uploadThrottle.html", popover-placement="top", ng-click="clickUploadThrottle()")
         button.btn.btn-bottom-nav(type="button")
           i.icon-circle-arrow-up
           | {{stats.upLimit}}

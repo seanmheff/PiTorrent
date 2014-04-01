@@ -23,10 +23,11 @@
 \contentsline {subsection}{\numberline {3.1.1}XML-RPC Message Format}{13}{subsection.59}
 \contentsline {subsection}{\numberline {3.1.2}SCGI Message Format}{15}{subsection.76}
 \contentsline {section}{\numberline {3.2}Structuring the Project}{16}{section.117}
-\contentsline {section}{\numberline {3.3}Node.js back-end development}{17}{section.119}
+\contentsline {section}{\numberline {3.3}Back-end development with Node.js}{17}{section.119}
 \contentsline {subsection}{\numberline {3.3.1}Serving static files with Express}{18}{subsection.122}
 \contentsline {subsection}{\numberline {3.3.2}Creating rTorrent API's}{18}{subsection.138}
-\contentsline {section}{\numberline {3.4}AngularJS front-end development}{22}{section.229}
+\contentsline {section}{\numberline {3.4}Front-end development with JavaScript and Jade}{22}{section.229}
+\contentsline {subsection}{\numberline {3.4.1}Layout of the web-app}{23}{subsection.230}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Appendix Title Here}{23}{appendix.230}
+\contentsline {chapter}{\numberline {A}Appendix Title Here}{25}{appendix.233}
 \vspace {2em}
