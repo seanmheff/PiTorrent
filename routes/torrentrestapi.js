@@ -9,6 +9,7 @@ module.exports = {
     startTorrent: startTorrent,
     removeTorrent: removeTorrent,
     setDownThrottle: setDownThrottle,
+    setUpThrottle: setUpThrottle,
     upload: upload
 };
 
@@ -162,6 +163,19 @@ function removeTorrent(req, res) {
 function setDownThrottle(req, res) {
     var speed = req.params.speed;
     rtorrentcontroller.setDownThrottle(speed, function(status) {
+        res.send(status);
+    });
+}
+
+
+/**
+ * A function to set a upload throttle
+ * @param req The HTTP request
+ * @param res The HTTP response
+ */
+function setUpThrottle(req, res) {
+    var speed = req.params.speed;
+    rtorrentcontroller.setUpThrottle(speed, function(status) {
         res.send(status);
     });
 }

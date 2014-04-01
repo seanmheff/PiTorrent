@@ -103,6 +103,15 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
         $scope.changingThrottleSpeeds = !$scope.changingThrottleSpeeds;
     };
 
+    $scope.clickUploadThrottle = function() {
+        if ($scope.changingThrottleSpeeds) {
+            // Convert speed to bytes
+            var bytes = ($scope.upLimitKb * 1024) + ($scope.upLimitMb*1024*1024);
+            $http.get(document.location.origin + '/set-up-throttle/' + bytes);
+        }
+        $scope.changingThrottleSpeeds = !$scope.changingThrottleSpeeds;
+    };
+
     $scope.uploadComplete = function($flow) {
         $timeout(function() {
             $flow.cancel();
@@ -304,6 +313,7 @@ function populateTorrents($scope, $http) {
             torrents.torrents[x]['uploadRateHumanReadable'] = convertBytes(torrents.torrents[x]['uploadRate']);
             torrents.torrents[x]['downloadRateHumanReadable'] = convertBytes(torrents.torrents[x]['downloadRate']);
             torrents.torrents[x]['downloaded'] = convertBytes(torrents.torrents[x]['downloaded']);
+            torrents.torrents[x]['uploaded'] = convertBytes(torrents.torrents[x]['uploaded']);
         }
         $scope.torrentResults = torrents;
     });
@@ -348,6 +358,7 @@ function updateTorrents($scope, $http) {
             var uploadRateHumanReadable = convertBytes(torrents.torrents[x]['uploadRate']);
             var downloadRateHumanReadable = convertBytes(torrents.torrents[x]['downloadRate']);
             var downloaded = convertBytes(torrents.torrents[x]['downloaded']);
+            var uploaded = convertBytes(torrents.torrents[x]['uploaded']);
             var complete = torrents.torrents[x]['complete'];
             var trackerMsg = torrents.torrents[x]['trackerMsg'];
             var active = torrents.torrents[x]['active'];
@@ -371,6 +382,10 @@ function updateTorrents($scope, $http) {
 
             if ($scope.torrentResults.torrents[x].downloaded !== downloaded ) {
                 $scope.torrentResults.torrents[x].downloaded = downloaded;
+            }
+
+            if ($scope.torrentResults.torrents[x].uploaded !== uploaded ) {
+                $scope.torrentResults.torrents[x].uploaded = uploaded;
             }
 
             if ($scope.torrentResults.torrents[x].complete !== complete ) {
@@ -462,6 +477,15 @@ function getGlobalStats($scope, $http) {
             else if (stats.downLimit.endsWith("kB")) {
                 $scope.downLimitMb = 0;
                 $scope.downLimitKb = stats.downLimit.substring(0, stats.downLimit.indexOf('.'));
+            }
+
+            if (stats.upLimit.endsWith("MB")) {
+                $scope.upLimitMb = stats.upLimit.substring(0, stats.upLimit.indexOf('.'));
+                $scope.upLimitKb = stats.upLimit.substring(stats.upLimit.indexOf('.')+1, stats.upLimit.indexOf('.')+2)*100;
+            }
+            else if (stats.upLimit.endsWith("kB")) {
+                $scope.upLimitMb = 0;
+                $scope.upLimitKb = stats.upLimit.substring(0, stats.upLimit.indexOf('.'));
             }
         }
     });

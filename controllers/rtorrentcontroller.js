@@ -9,7 +9,8 @@ module.exports = {
     stopTorrent: stopTorrent,
     startTorrent: startTorrent,
     removeTorrent: removeTorrent,
-    setDownThrottle: setDownThrottle
+    setDownThrottle: setDownThrottle,
+    setUpThrottle: setUpThrottle
 };
 
 var rtorrentapi = require("../code/rtorrent/rtorrentapi");
@@ -99,10 +100,11 @@ function getStandardData(callback) {
                 tmp["uploadRate"] = torrentData[3];
                 tmp["downloadRate"] = torrentData[4];
                 tmp["downloaded"] = torrentData[5];
-                tmp["ratio"] = torrentData[6];
-                tmp["complete"] = torrentData[7];
-                tmp["trackerMsg"] = torrentData[8];
-                tmp["active"] = torrentData[9];
+                tmp["uploaded"] = torrentData[6];
+                tmp["ratio"] = torrentData[7];
+                tmp["complete"] = torrentData[8];
+                tmp["trackerMsg"] = torrentData[9];
+                tmp["active"] = torrentData[10];
                 dataToReturn.torrents.push(tmp);
             });
 
@@ -557,6 +559,42 @@ function removeTorrent(hash, callback) {
  */
 function setDownThrottle(speed, callback) {
     var request = createrequest.createRequest([rtorrentconstants.GLOBAL_SET_DOWNLOAD_SPEED_LIMIT, speed]);
+
+    rtorrentapi.execute(request, function(response) {
+        // Remove the header
+        response = parseresponse.removeResponseHeader(response);
+
+        // Check for errors (invalid hash used as an input)
+        try {
+            // Traverse the XML document until we get the status code
+            var status = new xmldoc.XmlDocument(response)
+                .childNamed("params")
+                .childNamed("param")
+                .childNamed("value")
+                .childNamed("i4").val;
+
+            if (status == 0) {
+                callback(200);
+            }
+            else {
+                throw "Invalid rtorrent status";
+            }
+        }
+        catch (err) {
+            console.log(err.toString());
+            callback(500, { error: err });
+        }
+    });
+}
+
+
+/**
+ *
+ * @param speed
+ * @param callback
+ */
+function setUpThrottle(speed, callback) {
+    var request = createrequest.createRequest([rtorrentconstants.GLOBAL_SET_UPLOAD_SPEED_LIMIT, speed]);
 
     rtorrentapi.execute(request, function(response) {
         // Remove the header
