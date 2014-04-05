@@ -35,13 +35,17 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'partials/settings',
             controller: 'SettingsCtrl'
         }).
+        when('/fileBrowser', {
+            templateUrl: 'partials/file_browser',
+            controller: 'FileBrowserController'
+        }).
         otherwise({
             redirectTo: '/main'
         });
 }]);
 
 
-app.config(['flowFactoryProvider', function (flowFactoryProvider) {
+app.config(['flowFactoryProvider', function(flowFactoryProvider) {
     flowFactoryProvider.defaults = {
         target: '/upload',
         permanentErrors:[404, 500, 501],
