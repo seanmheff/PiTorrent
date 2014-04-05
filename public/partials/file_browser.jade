@@ -5,12 +5,13 @@
   .clearfix
 
 ol.breadcrumb
-  li(ng-repeat="dir in fileData.breadcrumb", ng-click="browse(dir, $index)") {{dir}}
+  li.directory(ng-repeat="dir in fileData.breadcrumb", ng-click="browse(dir, $index)") {{dir}}
 
 ul
   li.file(ng-repeat="folder in fileData.dirs", ng-click="browse(folder)")
     img(src="/img/icons/folder.png")
     .name {{folder}}
-  li.file(ng-repeat="file in fileData.files", ng-click="browse(file.name)")
-    img(src="/img/icons/{{file.type}}.png")
-    .name {{file.name}}
+  li.file(ng-repeat="file in fileData.files")
+    a(href="/download{{fileData.breadcrumb.join('/') + '/' + file.name}}")
+      img(src="/img/icons/{{file.type}}.png")
+      .name {{file.name}}

@@ -116,7 +116,6 @@ function fileBrowser(req, res) {
                 "breadcrumb": ["/"]
             };
 
-            console.log(req.params[0].length)
             if (req.params[0].length > 0) {
                 data.breadcrumb = data.breadcrumb.concat(req.params[0].split("/"))
             }

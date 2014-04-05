@@ -29,7 +29,10 @@
 \contentsline {section}{\numberline {3.4}Front-end development}{22}{section.229}
 \contentsline {subsection}{\numberline {3.4.1}Layout of the web-app}{23}{subsection.230}
 \contentsline {chapter}{\numberline {4}Results}{27}{chapter.235}
-\contentsline {section}{\numberline {4.1}How the project went}{27}{section.236}
+\contentsline {section}{\numberline {4.1}What happened}{27}{section.236}
+\contentsline {section}{\numberline {4.2}Testing}{28}{section.237}
+\contentsline {section}{\numberline {4.3}Comparison to Rival Products}{28}{section.238}
+\contentsline {section}{\numberline {4.4}Evaluation}{28}{section.240}
 \vspace {2em}
-\contentsline {chapter}{\numberline {A}Appendix Title Here}{28}{appendix.237}
+\contentsline {chapter}{\numberline {A}Appendix Title Here}{30}{appendix.241}
 \vspace {2em}
