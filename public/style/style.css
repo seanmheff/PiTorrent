@@ -30,6 +30,47 @@ html {
     padding: 6px 2px
 }
 
+
+.files {
+    padding: 0;
+    margin: 0;
+}
+
+.file {
+    padding: 2px;
+    margin: 15px 30px;
+    width: 120px;
+    display: inline-block;
+
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+}
+
+.file.focus {
+    background-color: #08C;
+    -webkit-border-radius: 4px;
+}
+
+.file .name {
+    width: 120px;
+    word-wrap: break-word;
+}
+
+.file.focus .name {
+    color: white;
+}
+
+.file .icon {
+    margin: auto;
+    margin-top: 0;
+    width: 60px;
+}
+
+.file.focus .icon {
+    -webkit-filter: invert(20%);
+}
+
 body {
     padding-bottom: 35px;
 }

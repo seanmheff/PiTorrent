@@ -137,7 +137,7 @@ Here is the general structure that my project should take:
 \end{figure}
 
 
-\section{Back-end development with Node.js}
+\section{Back-end development}
 Our Node.js back-end has two distinct jobs:
 
 \begin{enumerate}
@@ -296,10 +296,10 @@ I created a number of API's that the front-end could call. Here are just some of
 \end{itemize}
 
 
-\section{Front-end development with JavaScript and Jade}
+\section{Front-end development}
 Once I have API's to retrieve torrent data from, I need to display this data in a meaningful way. The API data is potentially always changing, so these API's need to be polled at regular intervals so users get up-to-date information about their torrents. Since the main purpose of the front-end is to display torrent data to the user, I choose to use the AngularJS JavaScript framework to help me manage the task of keeping the view up-to-date. 
 
-AngularJS has some neat features. I have already mentioned it's two-way data binding - which I use extensively in this project. This data binding allows me to poll the server API's continually with JavaScript code, and any changes in the data are automatically shown in the view. By using AngularJS I estimate I reduced the time taken to code the front-end by a significant amount. Angular takes care of a lot of the boilerplate code that is needed in updating data.
+AngularJS has some neat features. I have already mentioned it's two-way data binding - which I use extensively in this project. This data binding allows me to poll the server API's continually with JavaScript code, and any changes in the data are automatically shown in the view. By using AngularJS I reduced the time taken to code the front-end by a significant amount. Angular takes care of a lot of the boilerplate code that is needed in updating data.
 
 The front-end contains a lot of dynamic data. Anywhere I want to display this data, I insert AngularJS "\{\{data bindings\}\}" in my view markup. I can then use the "\$scope" object in my JavaScript code to associate these bindings with data. Now that I have an idea of how to show the user updated torrent data, I need to decide on the layout of my front-end.
 
@@ -323,27 +323,38 @@ The bottom bar has torrent speed and torrent throttle indicators, so that we can
 \begin{figure}[h!]
   \centering
     \includegraphics[scale=0.75]{Figures/Throttle.png}
-  \caption{Front-end layout}
+  \caption{Download throttle configuration}
 \end{figure}
 
-The main section of the app will display data to the user. I decided to use a widget theme with my data, where different data sections are partitioned across "widgets". These widgets are then arranged in a grid format. The grid is collapsible, so if you are viewing the site on a smaller screened device the grid columns merge into one. 
+The main section of the app will display data to the user. I decided to use a "widget" theme with my data, where different data sections are partitioned across widgets. These widgets are then arranged in a grid format. The grid is collapsible, so if you are viewing the site on a smaller screened device the grid columns merge into one. 
 
 The default page when you log in is the "torrents overview" page. This page shows lists of currently uploading and download torrents (if any), along with graphs of upload and download speeds over the last five minutes. The overview page also has a "System Stats" and a "Add Torrents" widget.
 
-The System Stats widget gives users information about the Raspberry Pi. Users can see uptime, load averages and memory usage, amongst other things.
+The System Stats widget gives users information about the Raspberry Pi. Users can see uptime, load averages and memory usage, amongst other things. The Add Torrents widget allows users to add torrents to the system. Users can either upload a .torrent file from their computer, or they can remotely fetch a .torrent file by providing a URL. 
 
+Along the top of the main section, there is a set of tabs where users can view torrents in different states. States include: All, Stopped, Started, Seeding, Leeching, Currently Uploading and Currently Downloading. By clicking a tab, users can quickly see all the torrents in that state.
 
+Users can click on a torrent and see detailed information about that torrent. When a user clicks on a torrent AngularJS will intercept the event and change the main section of the view to another view where we can see detailed torrent information. When users are in the "detailed information" view, they have three sections that they can look at: Overview, Peer and Files. 
 
+The overview section displays general information about the torrent (upload/download speeds, amount of data uploaded/downloaded, etc.). The Peers section shows a list of all the peers we are connected to. The list contains information about each of the peers (IP address, the speeds we are uploading/downloading to/from the peer, etc.). Lastly, the Files section shows us a list of all the files in the torrent, and what percentage downloaded each file is. This can be handy for large downloads, where we wish to see if a specific part of the torrent has downloaded. Here is what the overview section looks like, notice the tabs to enter the other sections:
 
+\vspace{10px}
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.75]{Figures/DetailedInfo.png}
+  \caption{Overview section of detailed information view}
+\end{figure}
 
+Finally, there is a Settings section in the app. This section allows the user to change the system's settings. When I was coding the back-end, I made sure to include any environment specific parameters in a config file. This config file contains parameters like the location of the rTorrent RPC socket and the directory the back-end should monitor for .torrent files. The settings section of the app enables the user to change these back-end parameters without editing the config file on the server via SSH or FTP.
 
+Here is a screenshot of the settings section:
 
-
-
-
-
-
-
+\vspace{10px}
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.75]{Figures/Settings.png}
+  \caption{The settings section}
+\end{figure}
 
 
 
