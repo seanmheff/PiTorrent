@@ -18,7 +18,7 @@ div.widget.wviolet
               | If you wish to add a .torrent file from your computer to here, click this button:
             p(ng-if="$flow.files.length > 0")
               | Uploading:
-            button.btn.btn-default(flow-btn, style="margin: 10px 10px 0px", ng-if="$flow.files.length === 0", ng-click="lol($flow)")
+            button.btn.btn-default(flow-btn, style="margin: 10px 10px 0px", ng-if="$flow.files.length === 0")
               i.icon.icon-file-alt
               |  Upload File
             ul.file-upload(flow-transfers)
@@ -27,7 +27,6 @@ div.widget.wviolet
                   i.icon-upload-alt.green
                   |  {{file.name}} ({{file.size}} bytes)
                 progressbar(value="file.progress()*100") {{file.progress() * 100 | number:2}} %
-
         li
           h6
             strong Get a torrent from a URL
