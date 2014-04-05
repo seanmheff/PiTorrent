@@ -52,6 +52,7 @@ module.exports = function(app, passport) {
     app.get('/set-down-throttle/:speed', ensureAuthenticated, torrents.setDownThrottle);
     app.get('/set-up-throttle/:speed', ensureAuthenticated, torrents.setUpThrottle);
     app.post('/upload', ensureAuthenticated, torrents.upload);
+    app.get('/file-browser/*', ensureAuthenticated, system.fileBrowser);
 
 
 

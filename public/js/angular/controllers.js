@@ -217,6 +217,24 @@ app.controller('SettingsCtrl', function SettingsCtrl($scope, $http) {
 });
 
 
+app.controller('FileBrowserController', function FileBrowserController($scope, $http) {
+    $http.get(document.location.origin + '/file-browser/').success(function(fileData) {
+        $scope.fileData = fileData;
+    });
+
+    $scope.browse = function(directory, index) {
+        var path = $scope.fileData.breadcrumb.slice(0, index).join("/") + "/";
+        var url = document.location.origin + '/file-browser/' + path + directory;
+        url = url.replace(/([^:]\/)\/+/g, "$1");
+
+        $http.get(url).success(function(fileData) {
+            $scope.fileData = fileData;
+            window.scrollTo(0,0);
+        });
+    };
+});
+
+
 /**
  * A controller for the upload torrent functionality
  */
