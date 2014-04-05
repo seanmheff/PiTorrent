@@ -2,7 +2,8 @@ var express = require('express')
   , flash = require('connect-flash')
   , passport = require('passport')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , nconf = require('nconf').file('config/config.json');
 
 var app = express();
 
@@ -20,6 +21,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
+app.use('/download', express.static(nconf.get('downloadDir')));
 app.use(express.static(path.join(__dirname, 'public')));
 
 
