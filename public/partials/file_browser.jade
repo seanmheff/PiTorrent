@@ -12,6 +12,6 @@ ul
     img(src="/img/icons/folder.png")
     .name {{folder}}
   li.file(ng-repeat="file in fileData.files")
-    a(href="/download{{fileData.breadcrumb.join('/') + '/' + file.name}}")
-      img(src="/img/icons/{{file.type}}.png")
+    a(ng-href="/download{{fileData.breadcrumb.join('/') + '/' + file.name}}", target="_blank" )
+      img(ng-src="/img/icons/{{file.type}}.png")
       .name {{file.name}}

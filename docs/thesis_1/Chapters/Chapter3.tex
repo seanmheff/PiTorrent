@@ -27,7 +27,7 @@ This has the added benefit of being easier to set up - there is no need to insta
 
 
 \subsection{XML-RPC Message Format}
-In order to talk about spoofing SCGI requests to do away with the SCGI plugin, I will need explain the format of a typical XML-RPC message. XML-RPC is a simple specification with the purpose of calling remote functions over a network. The format is built on top of HTTP. A XML-RPC message is essentially just a HTTP POST request with a specific XML format as the request body. Here is an example XML-RPC request:
+In order to talk about spoofing SCGI requests to do away with the SCGI plugin, I will need explain the format of a typical XML-RPC message. XML-RPC is a simple specification with the purpose of calling remote functions over a network. The format is built on top of HTTP. A XML-RPC message is essentially just a HTTP POST request with a specific XML format as the request body\cite{XML-RPC}. Here is an example XML-RPC request:
 
 \vspace{20px}
 \begin{lstlisting}[caption=A basic XML-RPC request, language=XML]
@@ -63,7 +63,7 @@ The header contains typical HTTP header information. The body contains an XML do
 In the example above, we are passing an integer with the value 41 to the method "getStateName".
 
 \subsection{SCGI Message Format}
-SCGI is a wrapper around XML-RPC. As incoming remote XML-RPC messages are received, our SCGI plugin will wrap the entire XML-RPC message with a header and send the newly wrapped message to the RPC socket. The layout of a SCGI header can be described with the following thing:
+SCGI is a wrapper around XML-RPC. As incoming remote XML-RPC messages are received, our SCGI plugin will wrap the entire XML-RPC message with a header and send the newly wrapped message to the RPC socket. The layout of a SCGI header can be described with the following context-free grammar\cite{SCGI}:
 
 \vspace{20px}
 \begin{lstlisting}[caption=Layout of a SCGI header]
@@ -345,7 +345,7 @@ The overview section displays general information about the torrent (upload/down
   \caption{Overview section of detailed information view}
 \end{figure}
 
-Finally, there is a Settings section in the app. This section allows the user to change the system's settings. When I was coding the back-end, I made sure to include any environment specific parameters in a config file. This config file contains parameters like the location of the rTorrent RPC socket and the directory the back-end should monitor for .torrent files. The settings section of the app enables the user to change these back-end parameters without editing the config file on the server via SSH or FTP.
+There is also a Settings section in the app. This section allows the user to change the system's settings. When I was coding the back-end, I made sure to include any environment specific parameters in a config file. This config file contains parameters like the location of the rTorrent RPC socket and the directory the back-end should monitor for .torrent files. The settings section of the app enables the user to change these back-end parameters without editing the config file on the server via SSH or FTP.
 
 Here is a screenshot of the settings section:
 
@@ -353,12 +353,17 @@ Here is a screenshot of the settings section:
 \begin{figure}[h!]
   \centering
     \includegraphics[scale=0.75]{Figures/Settings.png}
-  \caption{The settings section}
+  \caption{The Settings section}
 \end{figure}
 
+Finally, there is a File Browser section of the app. One of the functional requirements of the application was to provide the ability to download data from the server over HTTP. I therefore included a File Browser section that allows users to browse through their rTorrent download directory and remotely download files over HTTP. I styled this section to look like a typical file manager found on an operating system. Folders are easy to identify as they have a "folder" icon. Similarly, all the various types of files are styled with relevant icons. You can see in the figure below that the compressed archive file labelled "node-v0.10.25.tar.gz" has an zipper icon to denote that this type of file is a compressed archive.
 
-
-
+\vspace{10px}
+\begin{figure}[h!]
+  \centering
+    \includegraphics[scale=0.50]{Figures/FileBrowser.png}
+  \caption{The File Browser section}
+\end{figure}
 
 
 

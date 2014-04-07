@@ -33,7 +33,7 @@ But what if Chris and I could somehow share our downloads, if we could each down
 Because of the advantages of a system like this, the BitTorrent protocol was created.
 
 \subsection{The BitTorrent Protocol}
-Bram Cohen, an American computer programmer designed the BitTorrent protocol in 2001. He released his first implementation of it in July 2001 \citep{Reference4}. Bram's vision was to enable simple computers, such as home PC's to share file amongst themselves. The protocol works as follows:
+Bram Cohen, an American computer programmer designed the BitTorrent protocol in 2001. He released his first implementation of it in July 2001\cite{Reference4}. Bram's vision was to enable simple computers, such as home PC's to share file amongst themselves. The protocol works as follows:
 
 \begin{itemize}
 	\item A user who wishes to share data creates a torrent descriptor file
@@ -49,7 +49,7 @@ Bram Cohen, an American computer programmer designed the BitTorrent protocol in 
 	\item Any chunk downloaded can be verified by generating a hash for the chunk and checking this hash against the hash in the torrent descriptor file
 \end{itemize}
 
-The protocol is implemented by programs called BitTorrent clients. There are multiple clients available to download; uTorrent, rTorrent and Vuze are a few popular options that come to mind.
+The protocol is implemented by programs called BitTorrent clients. There are multiple clients available to download; uTorrent\cite{uTorrent}, rTorrent\cite{rTorrent} and Vuze\cite{Vuze} are a few popular options that come to mind.
 
 BitTorrent has become a well established protocol over the years, with many websites that serve large files adding BitTorrent download links.
 
@@ -65,18 +65,18 @@ These servers are usually run headless (without a monitor, keyboard and mouse) a
 %----------------------------------------------------------------------------------------
 
 \section{The Raspberry Pi}
-The Raspberry Pi is a pocket sized computer that is developed by the non-profit group, the Raspberry Pi Foundation. The Pi was initially released in February 2012 as a cheap computer to promote the teaching of computer science to kids in schools. The Pi was priced at 35 USD and was capable of running a full Linux stack, as well as having a Graphics Processing Unit (GPU) of playing full HD 1080p video. The project generated huge hype and interest due to the "bang-for-buck" of the Pi's specifications. Any self respecting gadget enthusiast put themselves on a waiting list for a Pi. 
+The Raspberry Pi\cite{RaspberryPi} is a pocket sized computer that is developed by the non-profit group, the Raspberry Pi Foundation. The Pi was initially released in February 2012 as a cheap computer to promote the teaching of computer science to kids in schools. The Pi was priced at 35 USD and was capable of running a full Linux stack, as well as having a Graphics Processing Unit (GPU) of playing full HD 1080p video. The project generated huge hype and interest due to the "bang-for-buck" of the Pi's specifications. Any self respecting gadget enthusiast put themselves on a waiting list for a Pi. 
 
-Due to the Pi's price tag, form factor and low power consumption they make an excellent torrent server. Raspbian, a port of the popular Linux distribution was created especially for the Raspberry Pi. Raspbian comes with over 35,000 packages especially compiled and optimised for the ARM architecture of the Raspberry Pi. As luck would have it, Raspbian comes with some torrent client packages that can easily be installed. However, many of these clients are quite CPU intensive and are reported to make the Pi sluggish. The torrent client that has the lightest footprint, and therefore the best suited for the Pi's limited resources is called rTorrent. 
+Due to the Pi's price tag, form factor and low power consumption they make an excellent torrent server. Raspbian\cite{Raspbian}, a port of the popular Linux distribution was created especially for the Raspberry Pi. Raspbian comes with over 35,000 packages especially compiled and optimised for the ARM architecture of the Raspberry Pi. As luck would have it, Raspbian comes with some torrent client packages that can easily be installed. However, many of these clients are quite CPU intensive and are reported to make the Pi sluggish. The torrent client that has the lightest footprint, and therefore the best suited for the Pi's limited resources is called rTorrent. 
 
 %----------------------------------------------------------------------------------------
 
 \section{rTorrent}
 rTorrent is a text based BitTorrent client that runs over a Command Line Interface (CLI). It is written in C++ and was developed with a focus on high performance and low memory usage. It has become a very popular torrent client due to its stability and efficiency. But it is not without its issues. As rTorrent is a CLI based program, it has a learning curve as users need to learn keyboard macros such as pressing CTRL+s to start a torrent and CTRL+d to stop a torrent. rTorrent also is not web-based, although users can log into a server via SSH (Secure Shell) to administer their torrents over the command line. 
 
-In over to overcome these issues, numerous attempts were made by 3rd party individuals to code a web interface to rTorrent by calling functions on rTorrent's exposed Remote Procedure Call (RPC) interface. Some of these attempts were quite good, with good products like ruTorrent and TorrentFlux being moderately successful. 
+In over to overcome these issues, numerous attempts were made by 3rd party individuals to code a web interface to rTorrent by calling functions on rTorrent's exposed Remote Procedure Call (RPC) interface. Some of these attempts were quite good, with good products like ruTorrent\cite{ruTorrent} and TorrentFlux\cite{TorrentFlux} being moderately successful. 
 
-The problem with these solutions is that they are by no means simple to get working. They rely on a number of different technologies that need to be installed and configured to work together. Technologies like PHP, Apache, and Simple Common Gateway Interface (SCGI) plugins for Apache to enable PHP and rTorrent to communicate with RPC messages. Remember that in many cases, the server on which you are wishing to install these products on are headless - so this installing and configuring needs to be done entirely over the command line, a daunting task to the uninitiated in Linux admin. 
+The problem with these solutions is that they are by no means simple to get working. They rely on a number of different technologies that need to be installed and configured to work together. Technologies like PHP\cite{PHP}, Apache\cite{Apache}, and Simple Common Gateway Interface (SCGI) plugins for Apache to enable PHP and rTorrent to communicate with RPC messages. Remember that in many cases, the server on which you are wishing to install these products on are headless - so this installing and configuring needs to be done entirely over the command line, a daunting task to the uninitiated in Linux admin. 
 
 So this is where I come in. My idea is create a web interface for rTorrent that will do away with the hardship of setting up such a system. I propose to use UNIX sockets to communicate with rTorrent's RPC interface. With this approach I can remove the necessity to install a web server such as Apache, and configuring it with SCGI and PHP plugins. My system should be a "one click install" product that also incorporates modern development requirements like responsive design - something that rival products lack.
 

@@ -23,9 +23,9 @@ The back-end is the core of my project, and choosing a technology to use as the 
 	\item Easy to use - possible to get a prototype up and running quickly
 \end{itemize}
 
-After some consideration I decided to use Node.js as my back-end technology. Node.js is a platform that allows us to use JavaScript as a back-end programming language. It is geared at building fast and scalable net applications. It comes pre-compiled for ARM architecture, so it will run on the Raspberry Pi without any problems. Node's main selling point, and the reason I choose to use it in my project, is it's threading model. Node.js makes use of JavaScript's callback functionality to enable an event driven, non-blocking I/O model. 
+After some consideration I decided to use Node.js\cite{Node} as my back-end technology. Node.js is a platform that allows us to use JavaScript as a back-end programming language. It is geared at building fast and scalable net applications. It comes pre-compiled for ARM architecture, so it will run on the Raspberry Pi without any problems. Node's main selling point, and the reason I choose to use it in my project, is it's threading model. Node.js makes use of JavaScript's callback functionality to enable an event driven, non-blocking I/O model. 
 
-One of the most difficult issues to overcome in building server-side web application is threading. For example, with Java you would use an application server like WebSphere or GlassFish to handle thread generation and management for you. Even when using these middleware applications, dealing with threads still proves difficult. This is where Node.js I/O model comes into play. With Node, there is only one main execution thread. All I/O calls are non-blocking and when a result is returned, an event is generated and a callback is executed.
+One of the most difficult issues to overcome in building server-side web application is threading. For example, with Java you would use an application server like WebSphere\cite{WebSphere} or GlassFish\cite{GlassFish} to handle thread generation and management for you. Even when using these middleware applications, dealing with threads still proves difficult. This is where Node.js I/O model comes into play. With Node, there is only one main execution thread. All I/O calls are non-blocking and when a result is returned, an event is generated and a callback is executed.
 
 Here is an example of some JavaScript that runs under a Node.js environment. Node comes with a 'net' package that allows us to make use of sockets in our code. This example shows all the code required to connect to a UNIX socket (located at '/tmp/rpc.socket') and write and read data from the socket. Notice the layout of the code - when we try to connect to the socket (line 2), we do not wait for the connection to be established, the thread of execution moves onto the next instruction. In this case, that next instruction is line 11 - printing "Coffee time!" to the screen. Only when the connection has been established, a "connect" event is generated and the thread of execution runs the unnamed function which starts on line 3. 
 
@@ -51,17 +51,51 @@ Another selling point of Node.js is the fact that it is very lightweight. The cu
 
 
 \subsection{Express - a Web Application Framework for Node.js}
-Node.js by itself is quite low-level. It allows us to build web applications from the ground up, exactly the way we want them. However, the majority of Node users do not want to spend their time building authentication systems, or URL route handling systems, or other boilerplate code - they want to be writing business logic. This is where Express, a Node web application framework comes into play. Express takes care of all this boilerplate coding that every web project requires. By using the Express module in our Node applications we can use their URL route handling and other neat features like managing view engines, like Jade.
+Node.js by itself is quite low-level. It allows us to build web applications from the ground up, exactly the way we want them. However, the majority of Node users do not want to spend their time building authentication systems, or URL route handling systems, or other boilerplate code - they want to be writing business logic. This is where Express\cite{express}, a Node web application framework comes into play. Express takes care of all this boilerplate coding that every web project requires. By using the Express module in our Node applications we can use their URL route handling and other neat features like managing view engines, like Jade\cite{jade}.
 
 
 \subsection{Jade - a Node.js Template Engine}
-HTML has been around a long time and can be quite tedious to work with. 
+HTML can be quite tedious to work with. It is very verbose and can be slow to develop with, as the syntax requires compulsory closing tags around all statements. Jade is a templating language that tries to improve on some of the issues that HTML has. Jade has a cleaner, more readable syntax than HTML and Jade code compiles to error free HTML that browsers can easily render.
 
+I choose to use Jade in the project as it will speed up development and will improve code readability. Jade also has some useful features like "includes" - which allows us to include Jade snippets in another Jade file. This helps to make our code more modular and will reduce redundancy.
+
+Here is an example of some Jade code. This is code for a Bootstrap (more on Bootstrap later) navigation bar. By using Jade we can keep all the code for the navigation bar in one file and "include" this file when we want to show the navigation bar across multiple pages on our site. As you can see, Jade relies on tabs as a means to structure code. By using tabs we can avoid writing closing-tags and speed up development and readability substantially. 
+
+\vspace{20px}
+\begin{lstlisting}[caption=AngularJS binding data with \$scope keyword, language=JavaScript]
+  .navbar.navbar-inverse.navbar-fixed-top.bs-docs-nav(role='banner')
+    .container
+      .navbar-header
+        button.navbar-toggle(ng-init='navCollapsed = true', ng-click='navCollapsed = !navCollapsed')
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        a.navbar-brand(href='/')
+          | Pi
+          span.bold Torrent
+  
+      nav.collapse.navbar-collapse.bs-navbar-collapse(collapse='navCollapsed')
+        ul.nav.navbar-nav.navbar-right
+          li.dropdown
+            a.dropdown-toggle(data-toggle='dropdown', href='#')
+              | Admin
+              b.caret
+            ul.dropdown-menu
+              li
+                a(href='#/settings')
+                  i.icon-cogs
+                  | Settings
+              li
+                a(href='/logout')
+                  i.icon-off
+                  | Logout
+\end{lstlisting}
 
 %----------------------------------------------------------------------------------------
 
 \section{AngularJS}
-AngularJS is a JavaScript framework which is a brainchild of Google. It aims to provide a mechanism for developing Single Page Applications (SPAs). What is does is essentially bring the Model-View-Controller (MVC) paradigm to front-end JavaScript coding, by separating logic from views.
+AngularJS\cite{AngularJS} is a JavaScript framework which is a brainchild of Google. It aims to provide a mechanism for developing Single Page Applications (SPAs). What is does is essentially bring the Model-View-Controller (MVC) paradigm to front-end JavaScript coding, by separating logic from views.
 
 Angular's killer feature, and what makes Angular's MVC paradigm possible is its two-way data binding. What this means is that we can define JavaScript variables in our front-end JavaScript code, and anytime these variables get updated, the HTML that the user sees gets updated also, with the new information. This concept is not the easiest to get across, so I'll explain with an example.
 
@@ -101,7 +135,7 @@ As you can see, there is now a nice separation between view logic and code. Also
 %----------------------------------------------------------------------------------------
 
 \section{Bootstrap}
-One of the biggest issues I have when designing web-applications is making them look good. I am a software developer, not a designer. This lack of flair for design is not the hindrance it once was to developers like me, thanks to Bootstrap. Bootstrap is a HTML framework that supplies developers with pre-built, styled components that they can use on their websites. These components range from buttons, to progress bars, to dropdown menus, etc.
+One of the biggest issues I have when designing web-applications is making them look good. I am a software developer, not a designer. This lack of flair for design is not the hindrance it once was to developers like me, thanks to Bootstrap\cite{Bootstrap}. Bootstrap is a HTML framework that supplies developers with pre-built, styled components that they can use on their websites. These components range from buttons, to progress bars, to dropdown menus, etc.
 
 Furthermore, Bootstrap is designed to be "mobile first", meaning that sites created by using Bootstrap will be responsive - working on all devices, regardless of their screen size. This feature is a big selling point for me, as the current rTorrent front-ends are not responsive and do not work well when being viewed on a tablet or mobile device.
 

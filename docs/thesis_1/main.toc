@@ -16,23 +16,23 @@
 \contentsline {section}{\numberline {2.2}Node.js}{6}{section.17}
 \contentsline {subsection}{\numberline {2.2.1}Express - a Web Application Framework for Node.js}{8}{subsection.30}
 \contentsline {subsection}{\numberline {2.2.2}Jade - a Node.js Template Engine}{8}{subsection.31}
-\contentsline {section}{\numberline {2.3}AngularJS}{8}{section.32}
-\contentsline {section}{\numberline {2.4}Bootstrap}{10}{section.47}
-\contentsline {chapter}{\numberline {3}Design and Implementation}{12}{chapter.55}
-\contentsline {section}{\numberline {3.1}Proof of concept}{12}{section.56}
-\contentsline {subsection}{\numberline {3.1.1}XML-RPC Message Format}{13}{subsection.59}
-\contentsline {subsection}{\numberline {3.1.2}SCGI Message Format}{15}{subsection.76}
-\contentsline {section}{\numberline {3.2}Structuring the Project}{16}{section.117}
-\contentsline {section}{\numberline {3.3}Back-end development}{17}{section.119}
-\contentsline {subsection}{\numberline {3.3.1}Serving static files with Express}{18}{subsection.122}
-\contentsline {subsection}{\numberline {3.3.2}Creating rTorrent API's}{18}{subsection.138}
-\contentsline {section}{\numberline {3.4}Front-end development}{22}{section.229}
-\contentsline {subsection}{\numberline {3.4.1}Layout of the web-app}{23}{subsection.230}
-\contentsline {chapter}{\numberline {4}Results}{27}{chapter.235}
-\contentsline {section}{\numberline {4.1}What happened}{27}{section.236}
-\contentsline {section}{\numberline {4.2}Testing}{28}{section.237}
-\contentsline {section}{\numberline {4.3}Comparison to Rival Products}{28}{section.238}
-\contentsline {section}{\numberline {4.4}Evaluation}{28}{section.240}
-\vspace {2em}
-\contentsline {chapter}{\numberline {A}Appendix Title Here}{30}{appendix.241}
+\contentsline {section}{\numberline {2.3}AngularJS}{10}{section.60}
+\contentsline {section}{\numberline {2.4}Bootstrap}{11}{section.75}
+\contentsline {chapter}{\numberline {3}Design and Implementation}{13}{chapter.83}
+\contentsline {section}{\numberline {3.1}Proof of concept}{13}{section.84}
+\contentsline {subsection}{\numberline {3.1.1}XML-RPC Message Format}{14}{subsection.87}
+\contentsline {subsection}{\numberline {3.1.2}SCGI Message Format}{16}{subsection.104}
+\contentsline {section}{\numberline {3.2}Structuring the Project}{17}{section.145}
+\contentsline {section}{\numberline {3.3}Back-end development}{18}{section.147}
+\contentsline {subsection}{\numberline {3.3.1}Serving static files with Express}{19}{subsection.150}
+\contentsline {subsection}{\numberline {3.3.2}Creating rTorrent API's}{19}{subsection.166}
+\contentsline {section}{\numberline {3.4}Front-end development}{23}{section.257}
+\contentsline {subsection}{\numberline {3.4.1}Layout of the web-app}{24}{subsection.258}
+\contentsline {chapter}{\numberline {4}Results}{29}{chapter.264}
+\contentsline {section}{\numberline {4.1}What happened}{29}{section.265}
+\contentsline {section}{\numberline {4.2}Testing}{30}{section.266}
+\contentsline {section}{\numberline {4.3}Comparison to Rival Products}{30}{section.267}
+\contentsline {section}{\numberline {4.4}Evaluation}{31}{section.269}
+\contentsline {chapter}{\numberline {5}Final Conclusion}{33}{chapter.273}
+\contentsline {section}{\numberline {5.1}Future Work}{33}{section.274}
 \vspace {2em}
