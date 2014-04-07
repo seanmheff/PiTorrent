@@ -129,7 +129,7 @@ app.controller('DetailedOverviewCtrl', function DetailedOverviewCtrl($scope, $ht
     $scope.name = sharedTorrentName.getName();
 
     $http.get(document.location.origin + '/info/' + hash, {tracker: 'overview'}).success(function(detailedInfo) {
-        detailedInfo.eta = secondsToTime(detailedInfo.size/detailedInfo.down);
+        detailedInfo.eta = secondsToTime((detailedInfo.size-detailedInfo.downloaded)/detailedInfo.down);
         detailedInfo.percentDone = (detailedInfo.downloaded / detailedInfo.size * 100).toFixed(1);
         detailedInfo.size = convertBytes(detailedInfo.size);
         detailedInfo.ratio = detailedInfo.uploaded/detailedInfo.downloaded || 0;
@@ -142,7 +142,7 @@ app.controller('DetailedOverviewCtrl', function DetailedOverviewCtrl($scope, $ht
 
     var interval = $interval(function() {
         $http.get(document.location.origin + '/info/' + hash, {tracker: 'overview'}).success(function(detailedInfo) {
-            detailedInfo.eta = secondsToTime(detailedInfo.size/detailedInfo.down);
+            detailedInfo.eta = secondsToTime((detailedInfo.size-detailedInfo.downloaded)/detailedInfo.down);
             detailedInfo.percentDone = (detailedInfo.downloaded / detailedInfo.size * 100).toFixed(1);
             detailedInfo.size = convertBytes(detailedInfo.size);
             detailedInfo.ratio = detailedInfo.uploaded/detailedInfo.downloaded || 0;

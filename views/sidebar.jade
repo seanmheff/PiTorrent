@@ -29,11 +29,11 @@
             a(href='#', ng-click="tab.currUpTab = true") Currently Uploading
           li(ng-class="{active: tab.currDownTab}")
             a(href='#', ng-click="tab.currDownTab = true") Currently Downloading
-      li.nblue(ng-class="navClass('settings')")
-        a(href='#/settings')
-          i.icon-cogs
-          |  Settings
       li.nviolet(ng-class="navClass('fileBrowser')")
         a(href='#/fileBrowser')
           i.icon-folder-open
           |  File Browser
+      li.nblue(ng-class="navClass('settings')")
+        a(href='#/settings')
+          i.icon-cogs
+          |  Settings
