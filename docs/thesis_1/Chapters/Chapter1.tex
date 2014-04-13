@@ -20,7 +20,7 @@ So with that said, lets start at the beginning. What are torrents and why should
 \section{Torrents and the BitTorrent Protocol}
 Traditionally, if we download a file from the internet, we open a connection with a web-server and download the file from this web-server. Just two parties are involved in the transaction, us (the client) and the web-server. This model is good and works well, but has some possible shortcomings. For example, say I wish to download the Eclipse Integrated Development Environment (IDE), which is located on a web-server in America. My friend, who I'll call Chris, also wishes to download Eclipse. We are both located in Galway, Ireland. In order to download Eclipse, we both have to open connections to the web-server in America and transfer the same data across the Atlantic.
 
-Now lets just think about this. When Chris and I are downloading the files from the remote web-server over Hypertext Transfer Protocol (HTTP), we are getting the web-server to send the same data across the Atlantic twice. Internet traffic sent across the Atlantic tends to be slower due to network congestion. We are also putting more strain that is necessary on the web-server, as both Chris and I are downloading the file in its entirety twice. 
+Now lets just think about this. When Chris and I are downloading the files from the remote web-server over Hypertext Transfer Protocol (HTTP), we are getting the web-server to send the same data across the Atlantic twice. Internet traffic sent across the Atlantic may be slower than downloading from a more local source. We are also putting more strain than is necessary on the web-server, as both Chris and I are downloading the file in its entirety twice. 
 
 But what if Chris and I could somehow share our downloads, if we could each download a different half of the file from the web-server in America and share the data we have downloaded amongst ourselves. The advantages of this are clear to see: 
 
@@ -33,7 +33,7 @@ But what if Chris and I could somehow share our downloads, if we could each down
 Because of the advantages of a system like this, the BitTorrent protocol was created.
 
 \subsection{The BitTorrent Protocol}
-Bram Cohen, an American computer programmer designed the BitTorrent protocol in 2001. He released his first implementation of it in July 2001\cite{Reference4}. Bram's vision was to enable simple computers, such as home PC's to share file amongst themselves. The protocol works as follows:
+Bram Cohen, an American computer programmer designed the BitTorrent protocol in 2001. He released his first implementation of it in July 2001\cite{Reference4}. Bram's vision was to enable simple computers, such as home PC's to share files amongst themselves. The protocol works as follows:
 
 \begin{itemize}
 	\item A user who wishes to share data creates a torrent descriptor file
@@ -44,7 +44,7 @@ Bram Cohen, an American computer programmer designed the BitTorrent protocol in 
 	\end{itemize}  
 	\item The user distributes the descriptor file by any means it wants to other users who wish to download the data
 	\item The user then makes the data it wishes to share available through a BitTorrent node
-	\item Other users can connect to this node, via links in the torrent descriptor, and download the data. They download data in chunks 
+	\item Other users can connect to this node, via links in the torrent descriptor, and download the data. They download the data in chunks 
 	\item Once users start to download chunks, they can share the chunks they have downloaded with other users - reducing the load on the original uploader
 	\item Any chunk downloaded can be verified by generating a hash for the chunk and checking this hash against the hash in the torrent descriptor file
 \end{itemize}
@@ -56,7 +56,7 @@ BitTorrent has become a well established protocol over the years, with many webs
 %----------------------------------------------------------------------------------------
 
 \section{The Problems with Running a BitTorrent Server}
-BitTorrent is a peer-to-peer (P2P) protocol where the overall "health" of a torrent relies on users keeping their torrent client open and uploading the torrent data back to other users. If all users stopped their torrent client after they downloaded the torrent, it would not take long until there were no "seeders" on the network, i.e. users who have the all the data and are uploading it back to the community. Some BitTorrent communities exist where users share files with each other exclusively, and each user is asked to maintain a 1:1 ratio - meaning they upload as much data to their peers as they download from their peers. Failing to keep this ratio will result in the user being removed from the community. 
+BitTorrent is a peer-to-peer (P2P) protocol where the overall "health" of a torrent relies on users keeping their torrent client open and uploading the torrent data back to other users. If all users stopped their torrent client after they downloaded the torrent, it would not take long until there were no "seeders" on the network, i.e. users who have the all the data and are uploading it back to other users. Some BitTorrent communities exist where users share files with each other exclusively, and each user is asked to maintain a 1:1 ratio - meaning they upload as much data to their peers as they download from their peers. Failing to keep this ratio will result in the user being removed from the community. 
 
 Because of this, serious BitTorrent users usually leave their BitTorrent clients running for extended periods of time - until they upload as much data as they have downloaded. This in itself may prove problematic, as it can be inconvenient to leave your laptop or PC running unattended for hours on end. Therefore enthusiasts usually resort to resurrecting old PC's or buying cheap PC's that they can use solely as BitTorrent servers that they run 24/7.
 
@@ -72,11 +72,11 @@ Due to the Pi's price tag, form factor and low power consumption they make an ex
 %----------------------------------------------------------------------------------------
 
 \section{rTorrent}
-rTorrent is a text based BitTorrent client that runs over a Command Line Interface (CLI). It is written in C++ and was developed with a focus on high performance and low memory usage. It has become a very popular torrent client due to its stability and efficiency. But it is not without its issues. As rTorrent is a CLI based program, it has a learning curve as users need to learn keyboard macros such as pressing CTRL+s to start a torrent and CTRL+d to stop a torrent. rTorrent also is not web-based, although users can log into a server via SSH (Secure Shell) to administer their torrents over the command line. 
+rTorrent\cite{rTorrent} is a text based BitTorrent client that runs over a Command Line Interface (CLI). It is written in C++ and was developed with a focus on high performance and low memory usage. It has become a very popular torrent client due to its stability and efficiency. But it is not without its issues. As rTorrent is a CLI based program, it has a learning curve as users need to learn keyboard macros such as pressing CTRL+s to start a torrent and CTRL+d to stop a torrent. rTorrent also is not web-based, although users can log into a server via SSH (Secure Shell) to administer their torrents over the command line. 
 
-In over to overcome these issues, numerous attempts were made by 3rd party individuals to code a web interface to rTorrent by calling functions on rTorrent's exposed Remote Procedure Call (RPC) interface. Some of these attempts were quite good, with good products like ruTorrent\cite{ruTorrent} and TorrentFlux\cite{TorrentFlux} being moderately successful. 
+In order to overcome these issues, numerous attempts were made by 3rd party individuals to code a web interface to rTorrent by calling functions on rTorrent's exposed Remote Procedure Call (RPC) interface. Some of these attempts were quite good, with good products like ruTorrent\cite{ruTorrent} and TorrentFlux\cite{TorrentFlux} being moderately successful. 
 
-The problem with these solutions is that they are by no means simple to get working. They rely on a number of different technologies that need to be installed and configured to work together. Technologies like PHP\cite{PHP}, Apache\cite{Apache}, and Simple Common Gateway Interface (SCGI) plugins for Apache to enable PHP and rTorrent to communicate with RPC messages. Remember that in many cases, the server on which you are wishing to install these products on are headless - so this installing and configuring needs to be done entirely over the command line, a daunting task to the uninitiated in Linux admin. 
+The problem with these solutions is that they are by no means simple to get working. They rely on a number of different technologies that need to be installed and configured to work together. Technologies like PHP\cite{PHP}, Apache\cite{Apache}, and Simple Common Gateway Interface (SCGI) plugins for Apache\cite{SCGIplugin} to enable PHP and rTorrent to communicate with RPC messages. Remember that in many cases, the server on which you are wishing to install these products on are headless - so this installing and configuring needs to be done entirely over the command line, a daunting task to the uninitiated Linux admin. 
 
 So this is where I come in. My idea is create a web interface for rTorrent that will do away with the hardship of setting up such a system. I propose to use UNIX sockets to communicate with rTorrent's RPC interface. With this approach I can remove the necessity to install a web server such as Apache, and configuring it with SCGI and PHP plugins. My system should be a "one click install" product that also incorporates modern development requirements like responsive design - something that rival products lack.
 

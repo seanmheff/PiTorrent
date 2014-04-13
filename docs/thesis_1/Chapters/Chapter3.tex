@@ -7,7 +7,7 @@
 %----------------------------------------------------------------------------------------
 
 \section{Proof of concept}
-As I have outlined in chapter 1, my project should work by utilising UNIX sockets for communication between Node.js and rTorrent. Communication between the back-end and rTorrent traditionally used a web-server with SCGI plugins like so: 
+As I have outlined in Chapter 1, my project should work by utilising UNIX sockets for communication between Node.js and rTorrent. Communication between the back-end and rTorrent traditionally used a web-server with SCGI plugins like so: 
 
 \begin{figure}[h!]
   \centering
@@ -27,7 +27,7 @@ This has the added benefit of being easier to set up - there is no need to insta
 
 
 \subsection{XML-RPC Message Format}
-In order to talk about spoofing SCGI requests to do away with the SCGI plugin, I will need explain the format of a typical XML-RPC message. XML-RPC is a simple specification with the purpose of calling remote functions over a network. The format is built on top of HTTP. A XML-RPC message is essentially just a HTTP POST request with a specific XML format as the request body\cite{XML-RPC}. Here is an example XML-RPC request:
+In order to talk about spoofing SCGI requests to do away with the SCGI plugin, I will need explain the format of a typical XML-RPC message\cite{XML-RPC}. XML-RPC is a simple specification with the purpose of calling remote functions over a network. The format is built on top of HTTP. A XML-RPC message is essentially just a HTTP POST request with a specific XML format as the request body. Here is an example XML-RPC request:
 
 \vspace{20px}
 \begin{lstlisting}[caption=A basic XML-RPC request, language=XML]
@@ -123,7 +123,7 @@ I tried sending some spoofed SCGI requests to rTorrent's RPC socket using Node.j
 
 
 \section{Structuring the Project}
-Due to the Raspberry Pi's limited resources, I wanted the Node.js back-end to do as little computation as possible. One way to achieve this is by using a web development technique know as "client-side rendering". With client-side rendering, when you request a web-page from a server, the server sends you a static HTML page, along with any CSS or JavaScript code that the HTML page requires. The JavaScript code then makes another request to the server for any dynamic data needed to render the page (in our case - torrent information). Once the JavaScript gets the response, it modifies the original HTML page to include the data it received from the server's Application Programming Interface (API), and renders the page.
+Due to the Raspberry Pi's limited resources, I wanted the Node.js back-end to do as little computation as possible. One way to achieve this is by using a web development technique known as "client-side rendering". With client-side rendering, when you request a web-page from a server, the server sends you a static HTML page, along with any CSS or JavaScript code that the HTML page requires. The JavaScript code then makes another request to the server for any dynamic data needed to render the page (in our case - torrent information). Once the JavaScript gets the response, it modifies the original HTML page to include the data it received from the server's Application Programming Interface (API), and renders the page.
 
 With this technique, the Pi does not need to generate dynamic HTML pages - instead it pushes this computation to the client. We also have the added benefit of solving another problem - how to continually send live torrent information to the client. In order to perform client-side rendering, we need to create server API's where live torrent information can be consumed by our JavaScript. These API's can then be polled at set intervals by our JavaScript to get up-to-date torrent information.
 
@@ -173,7 +173,7 @@ Job number 2 on our list of server tasks is to provide a set of API's where rTor
 
 These API's will act as the connector between our front-end and rTorrent. If the front-end wants to see all the torrents that rTorrent is currently managing - the front-end JavaScript should send a HTTP request to a specific URL, say "http://localhost/torrents" (if the Node.js server was running locally). Once Node.js gets a request to this URL, Node should call some XML-RPC method on rTorrent's socket to get a list of all the torrents. rTorrent will respond with an XML document, which our Node server should parse, and send a human readable JSON object to the front-end.
 
-I need to convert the rTorrent XML response to JSON as our front-end JavaScript library, AngularJS can only work with JSON objects. I had two options to convert this data - either convert it on the server and send JSON data to the front-end over HTTP, or send XML to the front-end, and let the front-end JavaScript convert it to JSON. I choose to convert it on the server as JSON is more compact that XML, and by having the server send JSON data over the network will reduce bandwidth usage.
+I need to convert the rTorrent XML response to JSON as our front-end JavaScript library, AngularJS can only work with JSON objects. I had two options to convert this data - either convert it on the server and send JSON data to the front-end over HTTP, or send XML to the front-end, and let the front-end JavaScript convert it to JSON. I chose to convert it on the server as JSON is more compact than XML, and having the server send JSON data over the network will reduce bandwidth usage.
 
 Here I will go through all the steps in the front-end getting live torrent data from the server:
 
@@ -297,7 +297,7 @@ I created a number of API's that the front-end could call. Here are just some of
 
 
 \section{Front-end development}
-Once I have API's to retrieve torrent data from, I need to display this data in a meaningful way. The API data is potentially always changing, so these API's need to be polled at regular intervals so users get up-to-date information about their torrents. Since the main purpose of the front-end is to display torrent data to the user, I choose to use the AngularJS JavaScript framework to help me manage the task of keeping the view up-to-date. 
+Once I had created API's to retrieve torrent data from, I needed to display this data in a meaningful way. The API data is potentially always changing, so these API's need to be polled at regular intervals so users get up-to-date information about their torrents. Since the main purpose of the front-end is to display torrent data to the user, I chose to use the AngularJS JavaScript framework to help me manage the task of keeping the view up-to-date. 
 
 AngularJS has some neat features. I have already mentioned it's two-way data binding - which I use extensively in this project. This data binding allows me to poll the server API's continually with JavaScript code, and any changes in the data are automatically shown in the view. By using AngularJS I reduced the time taken to code the front-end by a significant amount. Angular takes care of a lot of the boilerplate code that is needed in updating data.
 
@@ -315,7 +315,7 @@ I decided to give the front-end a standard web-app layout:
 
 There is a navigation panel on the left-hand side so that users can easily find there way around the app at all times. This panel is responsive, and will be hidden by default on tablets and other smaller screen devices. 
 
-There are horizontal bars running across both the top and bottom of the app. These bars are fixed to the top and bottom of the screen, so that if you scroll the page up or down, the bars will remain in place. The top bar has a PiTorrent logo on the left-hand side and a dropdown menu on the right-hand side. The dropdown is typical of a dropdown one would expect to see on the top right corner of we a web-app - it contains a link to the settings page, and a logout link. 
+There are horizontal bars running across both the top and bottom of the app. These bars are fixed to the top and bottom of the screen, so that if you scroll the page up or down, the bars will remain in place. The top bar has a PiTorrent logo on the left-hand side and a dropdown menu on the right-hand side. The dropdown is typical of a dropdown one would expect to see on the top right corner of a web-app - it contains a link to the settings page, and a logout link. 
 
 The bottom bar has torrent speed and torrent throttle indicators, so that we can easily see what our upload and download speeds are at all times. A user can also click on the throttle indicators and be presented with a "popover" window where they can drag a slider to set upload or download throttle speeds. Here is what that popover looks like:
 
@@ -326,7 +326,7 @@ The bottom bar has torrent speed and torrent throttle indicators, so that we can
   \caption{Download throttle configuration}
 \end{figure}
 
-The main section of the app will display data to the user. I decided to use a "widget" theme with my data, where different data sections are partitioned across widgets. These widgets are then arranged in a grid format. The grid is collapsible, so if you are viewing the site on a smaller screened device the grid columns merge into one. 
+The main section of the app will display data to the user. I decided to use a "widget" theme with my data, where different data sections are partitioned across widgets. These widgets are then arranged in a grid format. The grid is collapsible, so if you are viewing the site on a device with a smaller screen the grid columns merge into one. 
 
 The default page when you log in is the "torrents overview" page. This page shows lists of currently uploading and download torrents (if any), along with graphs of upload and download speeds over the last five minutes. The overview page also has a "System Stats" and a "Add Torrents" widget.
 
@@ -334,7 +334,7 @@ The System Stats widget gives users information about the Raspberry Pi. Users ca
 
 Along the top of the main section, there is a set of tabs where users can view torrents in different states. States include: All, Stopped, Started, Seeding, Leeching, Currently Uploading and Currently Downloading. By clicking a tab, users can quickly see all the torrents in that state.
 
-Users can click on a torrent and see detailed information about that torrent. When a user clicks on a torrent AngularJS will intercept the event and change the main section of the view to another view where we can see detailed torrent information. When users are in the "detailed information" view, they have three sections that they can look at: Overview, Peer and Files. 
+Users can click on a torrent and see detailed information about that torrent. When a user clicks on a torrent AngularJS will intercept the event and change the main section of the view to another view where we can see detailed torrent information. When users are in the "detailed information" view, they have three sections that they can look at: Overview, Peers and Files. 
 
 The overview section displays general information about the torrent (upload/download speeds, amount of data uploaded/downloaded, etc.). The Peers section shows a list of all the peers we are connected to. The list contains information about each of the peers (IP address, the speeds we are uploading/downloading to/from the peer, etc.). Lastly, the Files section shows us a list of all the files in the torrent, and what percentage downloaded each file is. This can be handy for large downloads, where we wish to see if a specific part of the torrent has downloaded. Here is what the overview section looks like, notice the tabs to enter the other sections:
 

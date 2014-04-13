@@ -8,22 +8,7 @@ module.exports = {
 }
 
 var systemcontroller = require('../controllers/systemcontroller.js');
-var fs = require('fs');
-var path = require("path");
 var nconf = require('nconf').file('config/config.json');
-var map = {
-    'compressed': ['zip', 'rar', 'gz', '7z'],
-    'text': ['txt', 'md', ''],
-    'image': ['jpg', 'jpge', 'png', 'gif', 'bmp'],
-    'pdf': ['pdf'],
-    'css': ['css'],
-    'html': ['html'],
-    'word': ['doc', 'docx'],
-    'powerpoint': ['ppt', 'pptx'],
-    'movie': ['mkv', 'avi', 'rmvb'],
-};
-var cached = {};
-
 
 
 /**
@@ -98,51 +83,18 @@ function setSettings(req, res) {
 
 
 /**
- *
- * @param req
- * @param res
+ * A function to browse through the files on our device
+ * @param req The HTTP request
+ * @param res The HTTP response
  */
 function fileBrowser(req, res) {
-    var dir = path.join(nconf.get("downloadDir"), req.params[0]) ;
-
-    fs.readdir(dir, function (err, files) {
+    // Extract the file path from the URL
+    var path = req.params[0];
+    systemcontroller.fileBrowser(path, function(err, data) {
         if (err) {
-            res.send(405, "Invalid directory");
+            res.send(405, err);
         }
         else {
-            var data = {
-                "files": [],
-                "dirs": [],
-                "breadcrumb": ["/"]
-            };
-
-            if (req.params[0].length > 0) {
-                data.breadcrumb = data.breadcrumb.concat(req.params[0].split("/"))
-            }
-
-            for (var i=0; i<files.length; i++) {
-                if (fs.statSync(path.join(nconf.get("downloadDir"), req.params[0], files[i])).isFile()) {
-                    var ext = path.extname(files[i]).substr(1);
-                    var file = {};
-                    file.name = files[i];
-                    file.type = cached[ext];
-
-                    if (!file.type) {
-                        for (var key in map) {
-                            if (map[key].indexOf(ext) != -1) {
-                                cached[ext] = file.type = key;
-                                break;
-                            }
-                        }
-                        if (!file.type)
-                            file.type = 'blank';
-                    }
-                    data.files.push(file)
-                }
-                else {
-                    data.dirs.push(files[i])
-                }
-            }
             res.json(data);
         }
     });

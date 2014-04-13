@@ -230,7 +230,7 @@
 %-------------------------------------------------   
 \examiner{} % Your examiner's name - this is not currently used anywhere in the template, cite it with \examname if you want it
 %-------------------------------------------------   
-\degree{Computer Science \& Inforamtion Technology} % Your degree name - this is currently used in the title page and abstract
+\degree{Computer Science \& Information Technology} % Your degree name - this is currently used in the title page and abstract
 %-------------------------------------------------   
 \authors{Sean \textsc{Heffernan}} % Your name - this is used in the title page and abstract
 %-------------------------------------------------   
