@@ -1,14 +1,23 @@
 var routes = require('../routes/general');
 var torrents = require('../routes/torrentrestapi');
 var system = require('../routes/systemapi');
+var nconf = require('nconf').file('config/config.json');
 
 
 /**
  * This function defines the routes in our application
  * @param app The express app
  * @param passport The passport authentication middleware
+ * @param express Our Express app
  */
-module.exports = function(app, passport) {
+module.exports = function(app, passport, express) {
+
+    /**
+     * Authenticated static routes - for downloading content via the file browser
+     */
+    app.use('/download', ensureAuthenticated);
+    app.use('/download', express.static(nconf.get('downloadDir')));
+
 
     /**
      * View routes - routes that render or deal with views
@@ -53,7 +62,6 @@ module.exports = function(app, passport) {
     app.get('/set-up-throttle/:speed', ensureAuthenticated, torrents.setUpThrottle);
     app.post('/upload', ensureAuthenticated, torrents.upload);
     app.get('/file-browser/*', ensureAuthenticated, system.fileBrowser);
-
 
 
     /**

@@ -12,6 +12,8 @@ ul
     img(src="/img/icons/folder.png")
     .name {{folder}}
   li.file(ng-repeat="file in fileData.files")
+    //video(ng-if="file.type == 'movie'", width="320", height="240", controls)
+      source(ng-src="{{'/download'+ fileData.breadcrumb.join('/') + '/' + file.name}}", type="video/mp4")
     a(ng-href="/download{{fileData.breadcrumb.join('/') + '/' + file.name}}", target="_blank" )
       img(ng-src="/img/icons/{{file.type}}.png")
       .name {{file.name}}

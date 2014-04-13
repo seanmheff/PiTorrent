@@ -1,7 +1,8 @@
 module.exports = {
     getSystemInfo: getSystemInfo,
     uploadTorrent: uploadTorrent,
-    getTorrentFromURL: getTorrentFromURL
+    getTorrentFromURL: getTorrentFromURL,
+    fileBrowser: fileBrowser
 };
 
 var os = require("os");
@@ -12,6 +13,18 @@ var https = require('https');
 var http = require('http');
 var path = require('path');
 var nconf = require('nconf').file('config/config.json');
+var map = {
+    'compressed': ['zip', 'rar', 'gz', '7z'],
+    'text': ['txt', 'md', ''],
+    'image': ['jpg', 'jpge', 'png', 'gif', 'bmp'],
+    'pdf': ['pdf'],
+    'css': ['css'],
+    'html': ['html'],
+    'word': ['doc', 'docx'],
+    'powerpoint': ['ppt', 'pptx'],
+    'movie': ['mkv', 'avi', 'rmvb', 'mp4']
+};
+var cached = {};
 
 
 /**
@@ -104,4 +117,65 @@ function getTorrentFromURL(torrentURL, callback) {
             callback(res.statusCode);
         });
     }
+}
+
+
+/**
+ * A function to build a JSON representation of a directory
+ * @param filePath The path of the directory to browse
+ * @param callback The callback to execute when the function finishes
+ */
+function fileBrowser(filePath, callback) {
+    // Get the name of the directory to browse (download directory + user specified path)
+    var dir = path.join(nconf.get("downloadDir"), filePath);
+
+    // Read the directory
+    fs.readdir(dir, function (err, files) {
+        if (err) {
+            callback("Invalid directory");
+        }
+        else {
+            // Create the object that will act as our response
+            var data = {
+                "files": [],
+                "dirs": [],
+                "breadcrumb": ["/"]
+            };
+
+            // When not requesting the root directory - build the breadcrumb
+            if (filePath.length > 0) {
+                data.breadcrumb = data.breadcrumb.concat(filePath.split("/"))
+            }
+
+            // For each item in the directory
+            for (var i=0; i<files.length; i++) {
+                // Determine if item is a file or directory
+                if (fs.statSync(path.join(nconf.get("downloadDir"), filePath, files[i])).isFile()) {
+                    // Get the file extension
+                    var ext = path.extname(files[i]).substr(1);
+                    var file = {};
+                    file.name = files[i];
+                    file.type = cached[ext];
+
+                    // Check to see if the extension has been cached
+                    if (!file.type) {
+                        for (var key in map) {
+                            if (map[key].indexOf(ext) != -1) {
+                                cached[ext] = file.type = key;
+                                break;
+                            }
+                        }
+                        // If extension cannot be determined
+                        if (!file.type)
+                            file.type = 'blank';
+                    }
+                    data.files.push(file)
+                }
+                else {
+                    data.dirs.push(files[i])
+                }
+            }
+            callback(null, data);
+        }
+    });
 }

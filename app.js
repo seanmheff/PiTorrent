@@ -1,9 +1,7 @@
 var express = require('express')
   , flash = require('connect-flash')
   , passport = require('passport')
-  , http = require('http')
-  , path = require('path')
-  , nconf = require('nconf').file('config/config.json');
+  , http = require('http');
 
 var app = express();
 
@@ -21,8 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
-app.use('/download', express.static(nconf.get('downloadDir')));
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(__dirname + '/public'));
 
 
 // development only
@@ -33,7 +30,7 @@ if ('development' == app.get('env')) {
 
 // Set up our authentication middleware and routes
 require('./config/pass.js')(passport);
-require('./config/routes.js')(app, passport);
+require('./config/routes.js')(app, passport, express);
 
 
 http.createServer(app).listen(app.get('port'), function() {
