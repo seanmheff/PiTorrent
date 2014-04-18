@@ -217,17 +217,26 @@ app.controller('SettingsCtrl', function SettingsCtrl($scope, $http) {
 });
 
 
+/**
+ * A controller for the 'file browser' part of the app
+ */
 app.controller('FileBrowserController', function FileBrowserController($scope, $http) {
     $http.get(document.location.origin + '/file-browser/').success(function(fileData) {
+        fileData.breadcrumb[0] = "home";
         $scope.fileData = fileData;
     });
 
     $scope.browse = function(directory, index) {
+        if (directory === "home") {
+            directory = "/";
+        }
+        $scope.fileData.breadcrumb[0] = "/";
         var path = $scope.fileData.breadcrumb.slice(0, index).join("/") + "/";
         var url = document.location.origin + '/file-browser/' + path + directory;
         url = url.replace(/([^:]\/)\/+/g, "$1");
 
         $http.get(url).success(function(fileData) {
+            fileData.breadcrumb[0] = "home";
             $scope.fileData = fileData;
             window.scrollTo(0,0);
         });
