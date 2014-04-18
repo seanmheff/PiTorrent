@@ -210,9 +210,27 @@ app.controller('DetailedFileCtrl', function DetailedFileCtrl($scope, $http, $rou
 /**
  * A controller for the 'settings' part of the app
  */
-app.controller('SettingsCtrl', function SettingsCtrl($scope, $http) {
+app.controller('SettingsCtrl', function SettingsCtrl($scope, $http, $interval) {
     $http.get(document.location.origin + '/settings').success(function(settings) {
         $scope.settings = settings;
+    });
+
+    var interval = $interval(function() {
+        $http.get(document.location.origin + '/rtorrent-daemon/status/').success(function(status) {
+            $scope.rtorrentDaemonStatus = status;
+        });
+    }, 2000);
+
+    $scope.stop = function() {
+        $http.post(document.location.origin + '/rtorrent-daemon/stop/');
+    }
+
+    $scope.start = function() {
+        $http.post(document.location.origin + '/rtorrent-daemon/start/');
+    }
+
+    $scope.$on('$destroy', function() {
+        $interval.cancel(interval);
     });
 });
 

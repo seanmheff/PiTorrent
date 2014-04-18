@@ -10,7 +10,10 @@ module.exports = {
     startTorrent: startTorrent,
     removeTorrent: removeTorrent,
     setDownThrottle: setDownThrottle,
-    setUpThrottle: setUpThrottle
+    setUpThrottle: setUpThrottle,
+    getRtorrentDaemonStatus: getRtorrentDaemonStatus,
+    stopRtorrentDaemon: stopRtorrentDaemon,
+    startRtorrentDaemon: startRtorrentDaemon
 };
 
 var rtorrentapi = require("../code/rtorrent/rtorrentapi");
@@ -621,4 +624,17 @@ function setUpThrottle(speed, callback) {
             callback(500, { error: err });
         }
     });
+}
+
+
+function getRtorrentDaemonStatus() {
+    return rtorrentapi.rtorrentDaemon.isRunning();
+}
+
+function stopRtorrentDaemon() {
+    return rtorrentapi.rtorrentDaemon.stop();
+}
+
+function startRtorrentDaemon() {
+    return rtorrentapi.rtorrentDaemon.start();
 }

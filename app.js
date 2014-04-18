@@ -1,7 +1,8 @@
 var express = require('express')
   , flash = require('connect-flash')
   , passport = require('passport')
-  , http = require('http');
+  , http = require('http')
+  , rtorrentAPI = require('./code/rtorrent/rtorrentapi.js');
 
 var app = express();
 
@@ -25,6 +26,23 @@ app.use(express.static(__dirname + '/public'));
 // development only
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
+}
+else {
+    // Start the daemon
+    rtorrentAPI.rtorrentDaemon.start();
+
+    process.on("uncaughtException", function() {
+        rtorrentAPI.rtorrentDaemon.stop;
+        process.exit(1);
+    });
+    process.on("SIGINT",  function() {
+        rtorrentAPI.rtorrentDaemon.stop;
+        process.exit(0);
+    });
+    process.on("SIGTERM",  function() {
+        rtorrentAPI.rtorrentDaemon.stop;
+        process.exit(0);
+    });
 }
 
 
