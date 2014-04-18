@@ -26,16 +26,22 @@
                     input#socket.form-control(type='text', name='rpcSocket', value="{{settings.rpcSocket}}")
                     span.help-block The location of the rTorrent socket (as specified in the ~/.rtorrent.rc file)
                 .form-group
-                  label.control-label.col-md-3(for='torrentDir') Torrent directory
+                  label.control-label.col-md-3(for='torrentDir') Torrent file directory
                   .col-md-8
                     input#torrentDir.form-control(type='text', name='torrentDir', value="{{settings.torrentDir}}")
                     span.help-block The directory that PiTorrent uploads .torrent files to.
                       | (Use the same directory as the 'watch_directory' in the ~/.rtorrent.rc file)
                 .form-group
+                  label.control-label.col-md-3(for='downloadDir') Torrent directory
+                  .col-md-8
+                    input#torrentDir.form-control(type='text', name='downloadDir', value="{{settings.downloadDir}}")
+                    span.help-block The directory that PiTorrent saves torrent data in.
+                      | (Use the same directory as the 'directory' variable in the ~/.rtorrent.rc file)
+                .form-group
                   label.control-label.col-md-3(for='fsroot') File System root
                   .col-md-8
                     input#fsroot.form-control(type='text', name='rootFileSystem', value="{{settings.rootFileSystem}}")
-                    span.help-block The location PiTorrent will monitor for free space on the 'overview' page
+                    span.help-block The file system that PiTorrent will monitor for free space on the 'overview' page
                 .form-group
                   .col-md-8.col-md-offset-3
                     button.btn.btn-success(type='submit') Update
