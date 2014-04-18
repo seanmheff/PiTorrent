@@ -9,14 +9,13 @@
     .clearfix
   .widget-content
     ul.project
-      li(ng-repeat="torrent in torrentResults.torrents | filter:downloading | orderBy:'downloadRate'")
+      li(ng-repeat="torrent in torrentResults.torrents | filter:downloading | orderBy:'name'")
         a(href="#/main/{{torrent.hash}}", ng-click="setName(torrent.name)")
           p
             b {{torrent.name}}
         p.p-meta
           span Downloaded : {{torrent.downloaded}}
           |  Download Speed: {{torrent.downloadRateHumanReadable}}
-        .progress(ng-class="{'1':'', '0':'progress-striped active'}[torrent.complete]")
-          .progress-bar(ng-class="{'1':'bar-success', '0':''}[torrent.complete]", style='width: {{torrent.percentDone}}%;') {{torrent.percentDone}}%
+        progressbar(value='torrent.percentDone') {{torrent.percentDone}}%
       li(ng-show='(torrentResults.torrents | filter:downloading).length == 0') No torrents
     .clearfix
