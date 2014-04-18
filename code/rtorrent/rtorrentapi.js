@@ -1,6 +1,41 @@
 var net = require('net');
 var nconf = require('nconf').file({ file: 'config/config.json' });
+var childProcess = require('child_process');
 
+
+/**
+ * A rTorrent daemon
+ */
+var rtorrentDaemon = (function() {
+    var rtorrent = {};
+
+    // A private function to determine if rTorrent is already running
+    var rtorrentRunning = function() {
+        if (typeof rtorrent.killed == 'undefined') {
+            return false;
+        }
+        else {
+            return !rtorrent.killed;
+        }
+    }
+
+    // The functions to return
+    return {
+        start: function() {
+            if (!rtorrentRunning()) {
+                console.log("not already running - starting rtorrent")
+                rtorrent = childProcess.spawn('rtorrent');
+            }
+        },
+        stop: function() {
+            if (rtorrentRunning()) {
+                console.log("running - killing rtorrent")
+                rtorrent.kill('SIGHUP');
+            }
+        },
+        isRunning: rtorrentRunning
+    }
+}());
 
 
 /**
@@ -45,11 +80,10 @@ function send(request, callback) {
 
 
 module.exports = {
-
-    execute : function (request, callback) {
+    execute: function (request, callback) {
         send(request, function(response) {
             callback(response);
         });
-    }
-
+    },
+    rtorrentDaemon: rtorrentDaemon
 };

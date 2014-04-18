@@ -62,6 +62,9 @@ module.exports = function(app, passport, express) {
     app.get('/set-up-throttle/:speed', ensureAuthenticated, torrents.setUpThrottle);
     app.post('/upload', ensureAuthenticated, torrents.upload);
     app.get('/file-browser/*', ensureAuthenticated, system.fileBrowser);
+    app.get('/rtorrent-daemon/status', ensureAuthenticated, torrents.getRtorrentDaemonStatus);
+    app.post('/rtorrent-daemon/stop', ensureAuthenticated, torrents.stopRtorrentDaemon);
+    app.post('/rtorrent-daemon/start', ensureAuthenticated, torrents.startRtorrentDaemon);
 
 
     /**
