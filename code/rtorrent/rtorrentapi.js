@@ -1,5 +1,5 @@
 var net = require('net');
-var nconf = require('nconf').file({ file: 'config/config.json' });
+var nconf = require('nconf');
 var childProcess = require('child_process');
 
 
@@ -17,7 +17,7 @@ var rtorrentDaemon = (function() {
         else {
             return !rtorrent.killed;
         }
-    }
+    };
 
     // The functions to return
     return {
@@ -29,8 +29,9 @@ var rtorrentDaemon = (function() {
         },
         stop: function() {
             if (rtorrentRunning()) {
-                console.log("running - killing rtorrent")
-                rtorrent.kill('SIGHUP');
+                console.log("running - killing rtorrent");
+                // SIGINT initiates normal shutdown with 5 seconds to send the stopped request to trackers - sweet
+                rtorrent.kill('SIGINT');
             }
         },
         isRunning: rtorrentRunning
@@ -44,7 +45,7 @@ var rtorrentDaemon = (function() {
  * @param callback {function} The callback that will be called when data is received or an error occurs
  */
 function send(request, callback) {
-    var socket = new net.Socket().connect(nconf.get('rpcSocket'));
+    var socket = new net.Socket().connect(nconf.get("rpcSocket"));
     var firstTime = true;
     var size;
     var response = "";

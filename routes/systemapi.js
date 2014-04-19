@@ -8,7 +8,7 @@ module.exports = {
 }
 
 var systemcontroller = require('../controllers/systemcontroller.js');
-var nconf = require('nconf').file('config/config.json');
+var nconf = require('nconf');
 
 
 /**
@@ -64,7 +64,7 @@ function addTorrentURL(req, res) {
  * @param res The HTTP response
  */
 function getSettings(req, res) {
-    res.json(nconf.file('config/config.json').load());
+    res.json(nconf.file("config").load());
 }
 
 

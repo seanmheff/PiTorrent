@@ -12,7 +12,7 @@ var url = require('url');
 var https = require('https');
 var http = require('http');
 var path = require('path');
-var nconf = require('nconf').file('config/config.json');
+var nconf = require('nconf');
 var map = {
     'compressed': ['zip', 'rar', 'gz', '7z'],
     'text': ['txt', 'md', ''],
