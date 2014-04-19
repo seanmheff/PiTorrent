@@ -1,7 +1,7 @@
 var routes = require('../routes/general');
 var torrents = require('../routes/torrentrestapi');
 var system = require('../routes/systemapi');
-var nconf = require('nconf').file('config/config.json');
+var nconf = require('nconf');
 
 
 /**
