@@ -64,7 +64,7 @@ function addTorrentURL(req, res) {
  * @param res The HTTP response
  */
 function getSettings(req, res) {
-    res.json(nconf.file("config").load());
+    res.json(nconf.load());
 }
 
 

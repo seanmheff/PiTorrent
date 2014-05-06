@@ -222,7 +222,9 @@ app.controller('SettingsCtrl', function SettingsCtrl($scope, $http, $interval) {
     }, 2000);
 
     $scope.stop = function() {
-        $http.post(document.location.origin + '/rtorrent-daemon/stop/');
+        $http.post(document.location.origin + '/rtorrent-daemon/stop/').success(function(status) {
+            console.log(status);
+        });
     }
 
     $scope.start = function() {
@@ -241,6 +243,9 @@ app.controller('SettingsCtrl', function SettingsCtrl($scope, $http, $interval) {
 app.controller('FileBrowserController', function FileBrowserController($scope, $http) {
     $http.get(document.location.origin + '/file-browser/').success(function(fileData) {
         fileData.breadcrumb[0] = "home";
+        // Insert text breaks
+        createViewFriendlyText(fileData.files, "name", "displayName");
+        createViewFriendlyText(fileData.dirs, "name", "displayName");
         $scope.fileData = fileData;
     });
 
@@ -255,6 +260,8 @@ app.controller('FileBrowserController', function FileBrowserController($scope, $
 
         $http.get(url).success(function(fileData) {
             fileData.breadcrumb[0] = "home";
+            createViewFriendlyText(fileData.files, "name", "displayName");
+            createViewFriendlyText(fileData.dirs, "name", "displayName");
             $scope.fileData = fileData;
             window.scrollTo(0,0);
         });
@@ -583,7 +590,28 @@ function pushUploadSpeed($scope, speed) {
 }
 
 
+/**
+ * A helper function to create view friendly file-browser strings.
+ * Inserts Zero Width Space (ZWSP) non printable unicode character after full stop characters
+ * @param arrayOfObjects {array} An array of objects
+ * @param propertyName {string} The name of the property on the object we wish to work with
+ * @param newPropertyName {string} The name that will be given to the new, view friendly property
+ */
+function createViewFriendlyText(arrayOfObjects, propertyName, newPropertyName) {
+    // Insert text breaks
+    for (var i=0; i<arrayOfObjects.length; i++) {
+        var str = arrayOfObjects[i][propertyName];
+        var res = str.replace(/\./g, ".\u200b");
+        arrayOfObjects[i][newPropertyName] = res;
+    }
+}
 
+
+/**
+ * A helper function to convert seconds to time
+ * @param seconds
+ * @returns {string}
+ */
 function secondsToTime(seconds) {
     var sec_num = parseInt(seconds, 10);
     var hours   = Math.floor(sec_num / 3600);

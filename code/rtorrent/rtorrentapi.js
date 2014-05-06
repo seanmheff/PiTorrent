@@ -4,7 +4,8 @@ var childProcess = require('child_process');
 
 
 /**
- * A rTorrent daemon
+ * An rTorrent daemon
+ * Note: if running this code with an IDE, the daemon may not work - just run rTorrent natively
  */
 var rtorrentDaemon = (function() {
     var rtorrent = {};
@@ -27,11 +28,18 @@ var rtorrentDaemon = (function() {
                 rtorrent = childProcess.spawn('rtorrent');
             }
         },
-        stop: function() {
+        stop: function(callback) {
             if (rtorrentRunning()) {
                 console.log("running - killing rtorrent");
-                // SIGINT initiates normal shutdown with 5 seconds to send the stopped request to trackers - sweet
+                // Attach an exit listener so we can return the exit code once rTorrent has stopped
+                rtorrent.on('exit', function(code) {
+                    callback(code);
+                });
+                // SIGINT initiates a normal shutdown with 5 seconds to send the stopped request to trackers - sweet
                 rtorrent.kill('SIGINT');
+            }
+            else {
+                callback("Already stopped");
             }
         },
         isRunning: rtorrentRunning

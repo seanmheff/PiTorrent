@@ -556,9 +556,9 @@ function removeTorrent(hash, callback) {
 
 
 /**
- *
- * @param speed
- * @param callback
+ * This function sets rTorrent's download throttle
+ * @param speed The speed in kB
+ * @param callback The callback to execute when the data has returned from the rtorrent API
  */
 function setDownThrottle(speed, callback) {
     var request = createrequest.createRequest([rtorrentconstants.GLOBAL_SET_DOWNLOAD_SPEED_LIMIT, speed]);
@@ -592,9 +592,9 @@ function setDownThrottle(speed, callback) {
 
 
 /**
- *
- * @param speed
- * @param callback
+ * This function sets rTorrent's upload throttle
+ * @param speed The speed in kB
+ * @param callback The callback to execute when the data has returned from the rtorrent API
  */
 function setUpThrottle(speed, callback) {
     var request = createrequest.createRequest([rtorrentconstants.GLOBAL_SET_UPLOAD_SPEED_LIMIT, speed]);
@@ -627,14 +627,30 @@ function setUpThrottle(speed, callback) {
 }
 
 
+/**
+ * This function gets the status of out rTorrent daemon
+ * @returns {boolean} A boolean value that denotes whether rTorrent is running
+ */
 function getRtorrentDaemonStatus() {
     return rtorrentapi.rtorrentDaemon.isRunning();
 }
 
-function stopRtorrentDaemon() {
-    return rtorrentapi.rtorrentDaemon.stop();
+
+/**
+ * This function stops the rTorrent daemon
+ * @param callback The callback to execute when rTorrent has successfully stopped
+ */
+function stopRtorrentDaemon(callback) {
+    rtorrentapi.rtorrentDaemon.stop(function(status) {
+        callback(status);
+    });
 }
 
+
+/**
+ * This function starts the rTorrent daemon
+ * @returns {*}
+ */
 function startRtorrentDaemon() {
     return rtorrentapi.rtorrentDaemon.start();
 }

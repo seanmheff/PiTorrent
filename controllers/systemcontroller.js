@@ -172,7 +172,7 @@ function fileBrowser(filePath, callback) {
                     data.files.push(file)
                 }
                 else {
-                    data.dirs.push(files[i])
+                    data.dirs.push({name: files[i]})
                 }
             }
             callback(null, data);
