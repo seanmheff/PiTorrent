@@ -8,10 +8,10 @@ ol.breadcrumb
   li.directory(ng-repeat="dir in fileData.breadcrumb", ng-click="browse(dir, $index)") {{dir}}
 
 ul(style="padding-left: 20px")
-  li.file(ng-repeat="folder in fileData.dirs", ng-click="browse(folder)")
+  li.file(ng-repeat="folder in fileData.dirs", ng-click="browse(folder.name)")
     img(src="/img/icons/folder.png")
-    .name {{folder}}
+    .name {{folder.displayName}}
   li.file(ng-repeat="file in fileData.files")
-    a(ng-href="/download{{fileData.breadcrumb.join('/') + '/' + file.name}}", target="_blank" )
+    a(ng-href="/download{{fileData.breadcrumb.join('/').substring(4) + '/' + file.name}}", target="_blank" )
       img(ng-src="/img/icons/{{file.type}}.png")
-      .name {{file.name}}
+      .name {{file.displayName}}
