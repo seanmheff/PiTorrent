@@ -2,5 +2,6 @@
   "rpcSocket": "/tmp/rpc.socket",
   "rootFileSystem": "/",
   "torrentDir": "/home/sean/Desktop/Torrents/",
-  "downloadDir": "/home/sean/Media"
+  "downloadDir": "/home/sean/Media",
+  "rtorrent.rc": "/config/rtorrent.rc"
 }

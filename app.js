@@ -1,7 +1,10 @@
 var express = require('express')
   , flash = require('connect-flash')
   , passport = require('passport')
-  , http = require('http');
+  , http = require('http')
+  , rtorrentAPI = require('./code/rtorrent/rtorrentapi.js')
+  , nconf = require('nconf');
+
 
 var app = express();
 
@@ -20,6 +23,7 @@ app.use(express.urlencoded());
 app.use(express.methodOverride());
 app.use(app.router);
 app.use(express.static(__dirname + '/public'));
+nconf.use('config', { type: "file", file: __dirname  + '/config/config.json' });
 
 
 // development only

@@ -553,9 +553,9 @@ function removeTorrent(hash, callback) {
 
 
 /**
- *
- * @param speed
- * @param callback
+ * This function sets rTorrent's download throttle
+ * @param speed The speed in kB
+ * @param callback The callback to execute when the data has returned from the rtorrent API
  */
 function setDownThrottle(speed, callback) {
     var request = createrequest.createRequest([rtorrentconstants.GLOBAL_SET_DOWNLOAD_SPEED_LIMIT, speed]);
@@ -589,9 +589,9 @@ function setDownThrottle(speed, callback) {
 
 
 /**
- *
- * @param speed
- * @param callback
+ * This function sets rTorrent's upload throttle
+ * @param speed The speed in kB
+ * @param callback The callback to execute when the data has returned from the rtorrent API
  */
 function setUpThrottle(speed, callback) {
     var request = createrequest.createRequest([rtorrentconstants.GLOBAL_SET_UPLOAD_SPEED_LIMIT, speed]);
