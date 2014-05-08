@@ -17,17 +17,7 @@
 #download_rate = 0
 #upload_rate = 0
 
-# Default directory to save the downloaded torrents.
-directory = {{}}
-
-# Default session directory. Make sure you don't run multiple instance
-# of rtorrent using the same session directory. Perhaps using a
-# relative path?
-session = {{}}
-
-# Watch a directory for new torrents, and stop those that have been
-# deleted.
-schedule = watch_directory,5,5,load_start={{}}*.torrent
+# Watch a directory for new torrents, and stop those that have been deleted.
 #schedule = untied_directory,5,5,stop_untied=
 
 # Close torrents when diskspace is low.
@@ -106,3 +96,4 @@ schedule = chmod,0,0,"execute=chmod,777,/tmp/rpc.socket"
 #log.add_output = "connection_debug", "connection.log"
 #log.add_output = "socket_debug", "socket.log"
 #log.add_output = "storage_debug", "storage.log"
+
