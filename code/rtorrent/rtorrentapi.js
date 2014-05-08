@@ -1,50 +1,5 @@
 var net = require('net');
 var nconf = require('nconf');
-var childProcess = require('child_process');
-
-
-/**
- * An rTorrent daemon
- * Note: if running this code with an IDE, the daemon may not work - just run rTorrent natively
- */
-var rtorrentDaemon = (function() {
-    var rtorrent = {};
-
-    // A private function to determine if rTorrent is already running
-    var rtorrentRunning = function() {
-        if (typeof rtorrent.killed == 'undefined') {
-            return false;
-        }
-        else {
-            return !rtorrent.killed;
-        }
-    };
-
-    // The functions to return
-    return {
-        start: function() {
-            if (!rtorrentRunning()) {
-                console.log("not already running - starting rtorrent")
-                rtorrent = childProcess.spawn('rtorrent');
-            }
-        },
-        stop: function(callback) {
-            if (rtorrentRunning()) {
-                console.log("running - killing rtorrent");
-                // Attach an exit listener so we can return the exit code once rTorrent has stopped
-                rtorrent.on('exit', function(code) {
-                    callback(code);
-                });
-                // SIGINT initiates a normal shutdown with 5 seconds to send the stopped request to trackers - sweet
-                rtorrent.kill('SIGINT');
-            }
-            else {
-                callback("Already stopped");
-            }
-        },
-        isRunning: rtorrentRunning
-    }
-}());
 
 
 /**
@@ -78,7 +33,6 @@ function send(request, callback) {
             if (response.length > size) {
                 callback(response);
             }
-
         });
     });
 
@@ -93,6 +47,5 @@ module.exports = {
         send(request, function(response) {
             callback(response);
         });
-    },
-    rtorrentDaemon: rtorrentDaemon
+    }
 };

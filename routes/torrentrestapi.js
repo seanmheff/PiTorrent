@@ -10,10 +10,7 @@ module.exports = {
     removeTorrent: removeTorrent,
     setDownThrottle: setDownThrottle,
     setUpThrottle: setUpThrottle,
-    upload: upload,
-    getRtorrentDaemonStatus: getRtorrentDaemonStatus,
-    stopRtorrentDaemon: stopRtorrentDaemon,
-    startRtorrentDaemon: startRtorrentDaemon
+    upload: upload
 };
 
 var rtorrentcontroller = require('../controllers/rtorrentcontroller.js');
@@ -206,39 +203,4 @@ function upload(req, res) {
             });
         });
     });
-}
-
-
-/**
- * A function to get the rTorrent daemon status
- * @param req The HTTP request
- * @param res The HTTP responses
- */
-function getRtorrentDaemonStatus(req, res) {
-    res.json({
-        isRunning: rtorrentcontroller.getRtorrentDaemonStatus()
-    });
-}
-
-
-/**
- * A function to stop the rTorrent daemon
- * @param req The HTTP request
- * @param res The HTTP responses
- */
-function stopRtorrentDaemon(req, res) {
-    rtorrentcontroller.stopRtorrentDaemon(function(rtorrentStatus) {
-        res.json({ status: rtorrentStatus });
-    });
-}
-
-
-/**
- * A function to start the rTorrent daemon
- * @param req The HTTP request
- * @param res The HTTP responses
- */
-function startRtorrentDaemon(req, res) {
-    rtorrentcontroller.startRtorrentDaemon();
-    res.send(200);
 }
