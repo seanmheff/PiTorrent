@@ -12,7 +12,7 @@ script(id="downloadThrottle.html", type='text/ng-template')
 
 
 
-nav.navbar.navbar-inverse.navbar-fixed-bottom(role='navigation')
+nav.navbar.navbar-inverse.navbar-fixed-bottom(role='navigation', ng-show='!cantConnectToRtorrent')
   .container-fluid
     ul.navbar-right.list-inline.bottom-nav
       li.bottom-nav(style="margin: 0px 5px; padding-left: 30px;") Throttle:

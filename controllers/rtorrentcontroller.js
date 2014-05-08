@@ -10,10 +10,7 @@ module.exports = {
     startTorrent: startTorrent,
     removeTorrent: removeTorrent,
     setDownThrottle: setDownThrottle,
-    setUpThrottle: setUpThrottle,
-    getRtorrentDaemonStatus: getRtorrentDaemonStatus,
-    stopRtorrentDaemon: stopRtorrentDaemon,
-    startRtorrentDaemon: startRtorrentDaemon
+    setUpThrottle: setUpThrottle
 };
 
 var rtorrentapi = require("../code/rtorrent/rtorrentapi");
@@ -624,33 +621,4 @@ function setUpThrottle(speed, callback) {
             callback(500, { error: err });
         }
     });
-}
-
-
-/**
- * This function gets the status of out rTorrent daemon
- * @returns {boolean} A boolean value that denotes whether rTorrent is running
- */
-function getRtorrentDaemonStatus() {
-    return rtorrentapi.rtorrentDaemon.isRunning();
-}
-
-
-/**
- * This function stops the rTorrent daemon
- * @param callback The callback to execute when rTorrent has successfully stopped
- */
-function stopRtorrentDaemon(callback) {
-    rtorrentapi.rtorrentDaemon.stop(function(status) {
-        callback(status);
-    });
-}
-
-
-/**
- * This function starts the rTorrent daemon
- * @returns {*}
- */
-function startRtorrentDaemon() {
-    return rtorrentapi.rtorrentDaemon.start();
 }

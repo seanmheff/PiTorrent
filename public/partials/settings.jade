@@ -6,7 +6,7 @@
 
 .container
   .row
-    .col-md-6
+    .col-md-8
       .widget.wred
         .widget-head
           .pull-left rTorrent Settings
@@ -22,44 +22,28 @@
               form.form-horizontal(action="settings", method="post")
                 .form-group
                   label.col-md-3.control-label(for='socket') rTorrent socket
-                  .col-md-6
+                  .col-md-8
                     input#socket.form-control(type='text', name='rpcSocket', value="{{settings.rpcSocket}}")
                     span.help-block The location of the rTorrent socket (as specified in the ~/.rtorrent.rc file)
                 .form-group
                   label.control-label.col-md-3(for='torrentDir') Torrent file directory
-                  .col-md-6
+                  .col-md-8
                     input#torrentDir.form-control(type='text', name='torrentDir', value="{{settings.torrentDir}}")
                     span.help-block The directory that PiTorrent uploads .torrent files to.
                       | (Use the same directory as the 'watch_directory' in the ~/.rtorrent.rc file)
                 .form-group
                   label.control-label.col-md-3(for='downloadDir') Torrent directory
-                  .col-md-6
+                  .col-md-8
                     input#torrentDir.form-control(type='text', name='downloadDir', value="{{settings.downloadDir}}")
                     span.help-block The directory that PiTorrent saves torrent data in.
                       | (Use the same directory as the 'directory' variable in the ~/.rtorrent.rc file)
                 .form-group
                   label.control-label.col-md-3(for='fsroot') File System root
-                  .col-md-6
+                  .col-md-8
                     input#fsroot.form-control(type='text', name='rootFileSystem', value="{{settings.rootFileSystem}}")
                     span.help-block The file system that PiTorrent will monitor for free space on the 'overview' page
                 .form-group
                   .col-md-6.col-md-offset-3
                     button.btn.btn-success(type='submit') Update
                     button.btn.btn-default(type='reset') Reset
-
-    .col-md-6
-      .widget.wred
-        .widget-head
-          .pull-left rTorrent Daemon
-          .widget-icons.pull-right
-            a.wminimize(href='#')
-              i.icon-chevron-up
-            a.wclose(href='#')
-              i.icon-remove
-          .clearfix
-        .widget-content
-          .padd
-            p rTorrent running? {{rtorrentDaemonStatus}}
-            button(ng-click="stop()") Stop rTorrent
-            button(ng-click="start()") Start rTorrent
 

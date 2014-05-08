@@ -30,23 +30,6 @@ nconf.use('config', { type: "file", file: __dirname  + '/config/config.json' });
 if ('development' == app.get('env')) {
   app.use(express.errorHandler());
 }
-else {
-    // Start the daemon
-    rtorrentAPI.rtorrentDaemon.start();
-
-    process.on("uncaughtException", function() {
-        rtorrentAPI.rtorrentDaemon.stop;
-        process.exit(1);
-    });
-    process.on("SIGINT",  function() {
-        rtorrentAPI.rtorrentDaemon.stop;
-        process.exit(0);
-    });
-    process.on("SIGTERM",  function() {
-        rtorrentAPI.rtorrentDaemon.stop;
-        process.exit(0);
-    });
-}
 
 
 // Set up our authentication middleware and routes
