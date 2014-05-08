@@ -12,7 +12,7 @@ var url = require('url');
 var https = require('https');
 var http = require('http');
 var path = require('path');
-var nconf = require('nconf').file('config/config.json');
+var nconf = require('nconf');
 var map = {
     'compressed': ['zip', 'rar', 'gz', '7z'],
     'text': ['txt', 'md', ''],
@@ -172,7 +172,7 @@ function fileBrowser(filePath, callback) {
                     data.files.push(file)
                 }
                 else {
-                    data.dirs.push(files[i])
+                    data.dirs.push({name: files[i]})
                 }
             }
             callback(null, data);

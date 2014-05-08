@@ -1,6 +1,5 @@
 var net = require('net');
-var nconf = require('nconf').file({ file: 'config/config.json' });
-
+var nconf = require('nconf');
 
 
 /**
@@ -9,7 +8,7 @@ var nconf = require('nconf').file({ file: 'config/config.json' });
  * @param callback {function} The callback that will be called when data is received or an error occurs
  */
 function send(request, callback) {
-    var socket = new net.Socket().connect(nconf.get('rpcSocket'));
+    var socket = new net.Socket().connect(nconf.get("rpcSocket"));
     var firstTime = true;
     var size;
     var response = "";
@@ -34,7 +33,6 @@ function send(request, callback) {
             if (response.length > size) {
                 callback(response);
             }
-
         });
     });
 
@@ -45,11 +43,9 @@ function send(request, callback) {
 
 
 module.exports = {
-
-    execute : function (request, callback) {
+    execute: function (request, callback) {
         send(request, function(response) {
             callback(response);
         });
     }
-
 };
