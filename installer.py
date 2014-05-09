@@ -202,9 +202,13 @@ def moveRtorrentConfig(user, configFile):
 # Function to install PiTorrent node dependencies - i.e. node modules
 """
 def installNodeModules():
-	print "Installing node modules. This may take a while..."
-	rc = call(["npm", "install"])
-	validateReturnCode(rc)
+	npmLocataion = checkForProgram("npm")
+	if npmLocataion == None:
+		print "Could not install node modules, npm not found"
+	else:
+		print "Installing node modules. This may take a while..."
+		rc = call([npmLocataion, "install"])
+		validateReturnCode(rc)
 
 
 """
