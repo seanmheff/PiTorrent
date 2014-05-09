@@ -40,29 +40,12 @@ def checkForProgram(programName):
 
 
 """
-# Install rTorrent via APT
+# Install rTorrent and Screen via APT
 """
-def installRTorrent():
-	print("Checking to see if rTorrent is previously installed...")
-	if checkForProgram("rtorrent") == None:
-		print("rTorrent not found, installing...")
-		rc = call(["sudo", "apt-get", "install",  "rTorrent"])
-		validateReturnCode(rc)
-	else:
-		print("rTorrent already installed\n")
-
-
-"""
-# Install Screen via APT
-"""
-def installScreen():
-	print("Checking to see if Screen is previously installed...")
-	if checkForProgram("rtorrent") == None:
-		print("Screen not found, installing...")
-		rc = call(["sudo", "apt-get", "install",  "creen"])
-		validateReturnCode(rc)
-	else:
-		print("Screen already installed\n")
+def installDependenciesViaAPT():
+	print("Installing rTorrent and Screen...")
+	rc = call(["sudo", "apt-get", "install",  "rtorrent", "screen"])
+	validateReturnCode(rc)
 
 
 """
@@ -199,20 +182,7 @@ def moveRtorrentConfig(user, configFile):
 
 
 """
-# Function to install PiTorrent node dependencies - i.e. node modules
-"""
-def installNodeModules():
-	npmLocataion = checkForProgram("npm")
-	if npmLocataion == None:
-		print "Could not install node modules, npm not found"
-	else:
-		print "Installing node modules. This may take a while..."
-		rc = call([npmLocataion, "install"])
-		validateReturnCode(rc)
-
-
-"""
-#
+# A function to create the PiTorrent config file
 """
 def createPiTorrentConfigFile(user, configFile):
 	print "Creating PiTorrent config file... ",
@@ -231,11 +201,37 @@ def createPiTorrentConfigFile(user, configFile):
 	print "OK"
 
 
+"""
+# Function to install PiTorrent node dependencies - i.e. node modules
+"""
+def installNodeModules():
+	npmLocataion = checkForProgram("npm")
+	if npmLocataion == None:
+		print "Could not install node modules, npm not found"
+	else:
+		print "Installing node modules. This may take a while..."
+		rc = call([npmLocataion, "install"])
+		validateReturnCode(rc)
+
+
+
+"""
+# Function to install global PiTorrent node dependencies - i.e. global node modules
+"""
+def installNodeGlobalModules():
+	npmLocataion = checkForProgram("npm")
+	if npmLocataion == None:
+		print "Could not install node modules, npm not found"
+	else:
+		print "Installing global node modules. This may take a while..."
+		rc = call(["sudo", npmLocataion, "install", "-g", "forever"])
+		validateReturnCode(rc)
+
+
 
 user = os.environ["USER"]
 
-installRTorrent()
-installScreen()
+installDependenciesViaAPT()
 
 installRtorrentDaemon(user, "./config/daemons/rtorrent")
 installPiTorrentDaemon(user, "./config/daemons/pitorrent")
@@ -246,4 +242,4 @@ moveRtorrentConfig(user, "./config/rtorrent.rc")
 createPiTorrentConfigFile(user, "./config/config.json")
 
 installNodeModules()
-
+installNodeGlobalModules()
