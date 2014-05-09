@@ -2,10 +2,11 @@ from subprocess import call, Popen, PIPE
 import os
 import fileinput
 import sys
+import json
 
 
 """
-# Hepler function to validate a return code - exits if non 0
+# Hepler function to validate a return code - can exit if non 0
 """
 def validateReturnCode(rc, exit=True):
 	if rc != 0:
@@ -156,9 +157,9 @@ def installPiTorrentDaemon(user, daemonFileLocation):
 
 
 """
-# Configure rTorrent config file
+# Create some directories and configure the rTorrent config file
 """
-def configRtorrent(user, configFile):
+def configureRtorrent(user, configFile):
 	# Create some new directories that PiTorrent needs
 	downDir = "/home/" + user + "/PiTorrent.Downloads"
 	print "Creating download directory: " + downDir 
@@ -174,16 +175,16 @@ def configRtorrent(user, configFile):
 
 	# Append data to config
 	with open(configFile, "a") as f:
-		# Create PiTorrent download dir and add it to config
+		# Add the download directory to the config file
 		f.write("\n# Default directory to save the downloaded torrents.\n")
 		f.write("directory = /home/" + user + "/PiTorrent.Downloads\n")
     	
-    	# Create rTorrent session dir
+    	# Add the session directory to the config file
 		f.write("\n# Default session directory. Do NOT change or rTorrent daemon will fail!\n")
 		f.write("session = /home/" + user + "/.PiTorrent.session\n")
 
-    	# Create PiTorrent torrent dir and add it to config
-		f.write("\n# Default directory to save the downloaded torrents.\n")
+    	# Add the torrent watch directory to the config file
+		f.write("\n# Default directory to watch for .torrent files.\n")
 		f.write("schedule = watch_directory,5,5,load_start=/home/" + user + "/PiTorrent.Torrents/*.torrent\n")
     	
 
@@ -193,7 +194,7 @@ def configRtorrent(user, configFile):
 """
 def moveRtorrentConfig(user, configFile):
 	print "Moving rTorrent config file to /home/" + user + "/.rtorrent.rc ..."
-	rc = call(["sudo", "cp", configFile, "/home/" + user + "/.rtorrent.rc"])
+	rc = call(["cp", configFile, "/home/" + user + "/.rtorrent.rc"])
 	validateReturnCode(rc)    	
 
 
@@ -206,6 +207,26 @@ def installNodeModules():
 	validateReturnCode(rc)
 
 
+"""
+#
+"""
+def createPiTorrentConfigFile(user, configFile):
+	print "Creating PiTorrent config file... ",
+	
+	# Create the data needed
+	data = {}
+	data["rpcSocket"] = "/tmp/rpc.socket"
+	data["rootFileSystem"] = "/"
+	data["torrentDir"] = "/home/" + user + "/PiTorrent.Torrents"
+	data["downloadDir"] = "/home/" + user + "/PiTorrent.Downloads"
+
+	# Write to file
+	with open(configFile, 'w') as f:
+		json.dump(data, f, indent=4)
+	
+	print "OK"
+
+
 
 user = os.environ["USER"]
 
@@ -215,7 +236,10 @@ installScreen()
 installRtorrentDaemon(user, "./config/daemons/rtorrent")
 installPiTorrentDaemon(user, "./config/daemons/pitorrent")
 
-configRtorrent(user, "./config/rtorrent.rc")
+configureRtorrent(user, "./config/rtorrent.rc")
 moveRtorrentConfig(user, "./config/rtorrent.rc")
 
+createPiTorrentConfigFile(user, "./config/config.json")
+
 installNodeModules()
+
