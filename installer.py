@@ -108,7 +108,8 @@ def getSecondLastOccuranceOfChar(string, char):
 """
 def installPiTorrentDaemon(user, daemonFileLocation):
 	# Find our node binary directory
-	nodeBinDir = checkForProgram("node")
+	node = checkForProgram("node")
+	nodeBinDir = node[:node.rfind("/")]
 	
 	# Find our node global modules directoty - can be derived from 'nodeBinDir'
 	nodeGlobalModulesDir = nodeBinDir[:getSecondLastOccuranceOfChar(nodeBinDir, "/")] + "/lib/node_modules"
@@ -191,8 +192,8 @@ def createPiTorrentConfigFile(user, configFile):
 	data = {}
 	data["rpcSocket"] = "/tmp/rpc.socket"
 	data["rootFileSystem"] = "/"
-	data["torrentDir"] = "/home/" + user + "/PiTorrent.Torrents"
-	data["downloadDir"] = "/home/" + user + "/PiTorrent.Downloads"
+	data["torrentDir"] = "/home/" + user + "/PiTorrent.Torrents/"
+	data["downloadDir"] = "/home/" + user + "/PiTorrent.Downloads/"
 
 	# Write to file
 	with open(configFile, 'w') as f:
@@ -228,6 +229,25 @@ def installNodeGlobalModules():
 		validateReturnCode(rc)
 
 
+"""
+# A function to start the rTorrent daemon
+"""
+def startRtorrentDaemon():
+	print "Starting rTorrent daemon..."
+	rc = call(["sudo", "service", "rtorrent", "start"])
+	validateReturnCode(rc)
+
+
+"""
+# A function to start the PiTorrent daemon
+"""
+def startPiTorrentDaemon():
+	print "Starting PiTorrent daemon..."
+	rc = call(["sudo", "service", "pitorrent", "start"])
+	validateReturnCode(rc)
+	print "PiTorrent should be running on http://<ip address>:3000"
+
+
 
 user = os.environ["USER"]
 
@@ -243,3 +263,6 @@ createPiTorrentConfigFile(user, "./config/config.json")
 
 installNodeModules()
 installNodeGlobalModules()
+
+startRtorrentDaemon()
+startPiTorrentDaemon()
