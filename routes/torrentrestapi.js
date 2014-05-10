@@ -15,7 +15,7 @@ module.exports = {
 
 var rtorrentcontroller = require('../controllers/rtorrentcontroller.js');
 var nconf = require('nconf');
-var flow = require('../config/flow-node.js')(nconf.get('torrentDir'));
+var flow = require('../config/flow-node.js')(nconf.get('torrentDir') + "/");
 var formidable = require('formidable');
 
 

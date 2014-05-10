@@ -233,7 +233,6 @@ def installNodeGlobalModules():
 # A function to start the rTorrent daemon
 """
 def startRtorrentDaemon():
-	print "Starting rTorrent daemon..."
 	rc = call(["sudo", "service", "rtorrent", "start"])
 	validateReturnCode(rc)
 
@@ -242,7 +241,6 @@ def startRtorrentDaemon():
 # A function to start the PiTorrent daemon
 """
 def startPiTorrentDaemon():
-	print "Starting PiTorrent daemon..."
 	rc = call(["sudo", "service", "pitorrent", "start"])
 	validateReturnCode(rc)
 	print "PiTorrent should be running on http://<ip address>:3000"

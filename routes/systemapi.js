@@ -30,7 +30,7 @@ function getSystemStats(req, res) {
  */
 function addTorrent(req, res) {
     var tmpPath = req.files.file.path;
-    var targetPath = nconf.get("torrentDir") + req.files.file.name;
+    var targetPath = nconf.get("torrentDir") + "/" + req.files.file.name;
 
     systemcontroller.uploadTorrent(tmpPath, targetPath, function(msg, err){
         if (err) {
