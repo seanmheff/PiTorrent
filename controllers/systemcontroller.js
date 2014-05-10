@@ -93,7 +93,7 @@ function getTorrentFromURL(torrentURL, callback) {
         https.get(torrentURL.href, function(res) {
             if (res.statusCode == 200) {
                 try {
-                    var file = fs.createWriteStream(nconf.get('torrentDir') + path.basename(torrentURL.path));
+                    var file = fs.createWriteStream(nconf.get('torrentDir') + "/" + path.basename(torrentURL.path));
                     res.pipe(file);
                 } catch (err) {
                     callback(500);
@@ -107,7 +107,7 @@ function getTorrentFromURL(torrentURL, callback) {
         http.get(torrentURL.href, function(res) {
             if (res.statusCode == 200) {
                 try {
-                    var file = fs.createWriteStream(nconf.get('torrentDir') + path.basename(torrentURL.path));
+                    var file = fs.createWriteStream(nconf.get('torrentDir') + "/" + path.basename(torrentURL.path));
                     res.pipe(file);
                 } catch (err) {
                     callback(500);
@@ -127,7 +127,7 @@ function getTorrentFromURL(torrentURL, callback) {
  */
 function fileBrowser(filePath, callback) {
     // Get the name of the directory to browse (download directory + user specified path)
-    var dir = path.join(nconf.get("downloadDir"), filePath);
+    var dir = path.join(nconf.get("downloadDir"), "/", filePath);
 
     // Read the directory
     fs.readdir(dir, function (err, files) {
@@ -150,7 +150,7 @@ function fileBrowser(filePath, callback) {
             // For each item in the directory
             for (var i=0; i<files.length; i++) {
                 // Determine if item is a file or directory
-                if (fs.statSync(path.join(nconf.get("downloadDir"), filePath, files[i])).isFile()) {
+                if (fs.statSync(path.join(nconf.get("downloadDir"), "/", filePath, files[i])).isFile()) {
                     // Get the file extension
                     var ext = path.extname(files[i]).substr(1);
                     var file = {};
