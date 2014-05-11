@@ -44,8 +44,8 @@ The installer should configure your system and install two daemons that run on s
  * The rTorrent daemon - the underlying torrent client that PiTorrent relies on
  * The PiTorrent daemon - the PiTorrent node.js code 
 
-After running the installer, navigate to http://\<server ip address\>:3000 and login with
-username: pitorrent
+After running the installer, navigate to http://\<server ip address\>:3000 and login with  
+username: pitorrent  
 password: pitorrent
 
 #### Usage
