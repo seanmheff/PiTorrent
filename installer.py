@@ -163,11 +163,11 @@ def configureRtorrent(user, configFile):
 		f.write("\n# Default directory to save the downloaded torrents.\n")
 		f.write("directory = /home/" + user + "/PiTorrent.Downloads\n")
     	
-    	# Add the session directory to the config file
+		# Add the session directory to the config file
 		f.write("\n# Default session directory. Do NOT change or rTorrent daemon will fail!\n")
 		f.write("session = /home/" + user + "/.PiTorrent.session\n")
 
-    	# Add the torrent watch directory to the config file
+		# Add the torrent watch directory to the config file
 		f.write("\n# Default directory to watch for .torrent files.\n")
 		f.write("schedule = watch_directory,5,5,load_start=/home/" + user + "/PiTorrent.Torrents/*.torrent\n")
     	
@@ -194,6 +194,8 @@ def createPiTorrentConfigFile(user, configFile):
 	data["rootFileSystem"] = "/"
 	data["torrentDir"] = "/home/" + user + "/PiTorrent.Torrents/"
 	data["downloadDir"] = "/home/" + user + "/PiTorrent.Downloads/"
+	data["username"] = "pitorrent"
+	data["password"] = "pitorrent"
 
 	# Write to file
 	with open(configFile, 'w') as f:
