@@ -1,5 +1,10 @@
 #!/bin/bash
 #
+###
+# This script is largely based on the script found on this page:
+# https://www.exratione.com/2013/02/nodejs-and-forever-as-a-service-simple-upstart-and-init-scripts-for-ubuntu/
+###
+# 
 # An example init script for running a Node.js process as a service
 # using Forever as the process monitor. For more configuration options
 # associated with Forever, see: https://github.com/nodejitsu/forever
@@ -24,43 +29,7 @@
 # Short-Description:    PiTorrent
 # Description:          PiTorrent
 ### END INIT INFO
-#
-# Based on:
-# https://gist.github.com/3748766
-# https://github.com/hectorcorrea/hectorcorrea.com/blob/master/etc/forever-initd-hectorcorrea.sh
-# https://www.exratione.com/2011/07/running-a-nodejs-server-as-a-service-using-forever/
- 
-# Source function library. Note that this isn't used here, but remains to be
-# uncommented by those who want to edit this script to add more functionality.
-# Note that this is Ubuntu-specific. The scripts and script location are different on
-# RPM-based distributions.
-# . /lib/lsb/init-functions
- 
-# The example environment variables below assume that Node.js is 
-# installed into /home/node/local/node by building from source as outlined 
-# here:
-# https://www.exratione.com/2011/07/running-a-nodejs-server-as-a-service-using-forever/
-#
-# It should be easy enough to adapt to the paths to be appropriate to a 
-# package installation, but note that the packages available for Ubuntu in
-# the default repositories are far behind the times. Most users will be 
-# building from source to get a more recent Node.js version.
-#
-# An application name to display in echo text.
-# NAME="My Application"
-# The full path to the directory containing the node and forever binaries.
-# NODE_BIN_DIR=/home/node/local/node/bin
-# Set the NODE_PATH to the Node.js main node_modules directory.
-# NODE_PATH=/home/node/local/node/lib/node_modules
-# The directory containing the application start Javascript file.
-# APPLICATION_DIRECTORY=/home/node/my-application
-# The application start Javascript filename.
-# APPLICATION_START=start-my-application.js
-# Process ID file path.
-# PIDFILE=/var/run/my-application.pid
-# Log file path.
-# LOGFILE=/var/log/my-application.log
-#
+
 NAME="PiTorrent"
 NODE_BIN_DIR="{{}}"
 NODE_PATH="{{}}"
