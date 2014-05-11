@@ -36,6 +36,7 @@ git clone https://github.com/seanmheff/PiTorrent.git
 
 then run the automated installer:
 ```bash
+cd PiTorrent
 python installer.py
 ```
 
