@@ -1,6 +1,7 @@
 # PiTorrent
 
 A GUI for rTorrent written in Node.js, built for use on a Raspberry Pi (but should run on any Linux distribution) 
+![alt tag](https://raw.githubusercontent.com/seanmheff/PiTorrent/master/public/img/view.png)
 
 Tested with the following distributions:
  
@@ -22,19 +23,13 @@ PiTorrent runs as a Linux service and will run automatically on system startup.
   ```bash 
   wget http://node-arm.herokuapp.com/node_latest_armhf.deb
   sudo dpkg -i node_latest_armhf.deb
-
   ```
   For other distro's, your on your own!
 
 #### Installing
 To install, clone or download the repository:
 ```bash
-git clone <repo>
-```
-or
-
-```bash
-wget <repo>
+git clone https://github.com/seanmheff/PiTorrent.git
 ```
 
 then run the automated installer:
