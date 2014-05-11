@@ -32,11 +32,14 @@ PiTorrent runs as a Linux service and will run automatically on system startup.
 To install, clone or download the repository:
 ```bash
 git clone https://github.com/seanmheff/PiTorrent.git
+<<<<<<< HEAD
 ```
 
 then run the automated installer:
 ```bash
 python installer.py
+=======
+>>>>>>> b1ba77137724b4b4918ff16db255ce51604439bc
 ```
 
 The installer should configure your system and install two daemons that run on system startup:
