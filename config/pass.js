@@ -1,4 +1,5 @@
 var LocalStrategy = require('passport-local').Strategy;
+var nconf = require('nconf');
 
 
 /**
@@ -9,7 +10,7 @@ module.exports = function(passport) {
 
     // Our user(s)
     var users = [
-        { id:1, username: 'sean', password: 'spades' }
+        { id:1, username: nconf.get('username'), password: nconf.get('password') }
     ];
 
 
