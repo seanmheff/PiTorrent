@@ -19,7 +19,8 @@ PiTorrent runs as a Linux service and will run automatically on system startup.
  * Python 2.7 - needed to run the installer 
  * Node.js - install on Raspbian with:
 
-  ```bash 
+  ```bash
+  cd /tmp
   wget http://node-arm.herokuapp.com/node_latest_armhf.deb
   sudo dpkg -i node_latest_armhf.deb
 
@@ -41,6 +42,26 @@ then run the automated installer:
 ```bash
 python installer.py
 ```
+
+#### Usage
+PiTorrent can be started, stopped, etc with:
+```bash
+sudo service pitorrent {start|stop|status|restart}
+```
+
+
+The underlying torrent client, rTorrent is also daemonized and can be configured with:  
+```bash
+sudo service rtorrent {start|stop|restart|force-reload}
+```
+
+The rTorrent daemon depends on the "screen" utility, and if you wish to attach rTorrent to a terminal, from where you can use it as normal, you can use the following command:
+```bash
+screen -dr rtorrent
+```
+
+Use Ctrl-A Ctrl-D to detach it again
+
 
 #### Note
 PiTorrent is still under heavy development and is a work-in-progress

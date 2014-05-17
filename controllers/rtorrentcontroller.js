@@ -178,7 +178,6 @@ function getTrackerData(hash, callback) {
 
 /**
  * This function gets file data for a specific torrent.
- * The data returned must be in a specific format so it can be used by the 'jstree' library in the frontend
  * @param hash The hash that identifies the torrent that we are querying
  * @param callback The callback to execute when the data has returned from the rtorrent API
  */
@@ -194,15 +193,7 @@ function getFileData(hash, callback) {
             // Remove the header
             response = parseresponse.removeResponseHeader(response);
             var dataToReturn = {
-                "children": [
-                    {
-                        "children": [],
-                        "text": "/",
-                        "state": {
-                            "opened": true
-                        }
-                    }
-                ]
+                "files": []
             };
 
             // Check for errors (invalid hash used as an input)
@@ -233,49 +224,35 @@ function getFileData(hash, callback) {
                     var directories = torrentData[0].split("/");
 
                     // We need to keep track of the current directory we are in
-                    var currentDirectory = dataToReturn.children[0];
+                    var currentDirectory = dataToReturn;
 
-                    // The next few lines check to see if the directories exist
+                    // Check to see if the directories exist in the JSON object to return
                     // If not - create them
-                    for (var i=0; i< directories.length; i++) {
-                        var exists = false;
-                        var index = -1;
-
-                        // Loop through all the directories children
-                        for (var j=0; j<currentDirectory.children.length; j++) {
-                            index += 1;
-
-                            // Check if the directory/file exists already exists
-                            if (currentDirectory.children[j].text === directories[i]) {
-                                exists = true;
-                                break;
-                            }
-                        }
-
-                        if (exists) {
-                            currentDirectory = currentDirectory.children[index];
+                    for (var i=0; i<directories.length-1; i++) {
+                        if (currentDirectory[directories[i]] === undefined) {
+                            currentDirectory[directories[i]] = { "files": [] };
+                            currentDirectory = currentDirectory[directories[i]];
                         }
                         else {
-                            // Create an object to hold that file/directories data
-                            currentDirectory.children.push({
-                                "text": directories[i],
-                                "children": []
-                            });
-                            currentDirectory = currentDirectory.children[currentDirectory.children.length - 1];
+                            currentDirectory = currentDirectory[directories[i]];
                         }
                     }
 
-                    currentDirectory["sizeBytes"] = torrentData[1];
-                    currentDirectory["sizeChunks"] = torrentData[2];
-                    currentDirectory["chunksComplete"] = torrentData[3];
-                    currentDirectory["priority"] = torrentData[4];
+                    var tmp = { };
+                    tmp["name"] = directories[directories.length-1];
+                    tmp["sizeBytes"] = torrentData[1];
+                    tmp["sizeChunks"] = torrentData[2];
+                    tmp["chunksComplete"] = torrentData[3];
+                    tmp["priority"] = torrentData[4];
+
+                    // Push the data into the "files" array in the correct directory in the JSON object we will return
+                    currentDirectory.files.push(tmp);
                 });
             }
             catch (err) {
                 console.log(err.toString());
-                console.log(err.stack);
                 console.log(dataToReturn);
-                callback({children:[]});
+                callback({files:[]});
                 return;
             }
 

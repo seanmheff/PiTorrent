@@ -14,7 +14,11 @@ ul.nav.nav-tabs
 
 .container
   .row
-    .col-md-6
-      include file-tree
-    .col-md-6
-      include file-info
+    .col-md-12
+      ul(style="padding-left: 20px")
+        li.file(ng-repeat="(key, folder) in selectedFolder track by key", ng-if="key != 'files' && key != 'percentDone'", ng-click="selectDirectory(key)")
+          knob(knob-data="folder.percentDone", knob-options="knobOptions", readonly, style="border: 0px !important", getcolour)
+          .name {{cleanString(key)}}
+        li.file(ng-repeat="file in selectedFolder.files track by file.name | orderBy:'name'", style="cursor:auto;")
+          knob(knob-data="file.percentDone", knob-options="knobOptions", readonly, style="border: 0px !important")
+          .name {{cleanString(file.name)}}

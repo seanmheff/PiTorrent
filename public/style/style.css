@@ -30,7 +30,6 @@ html {
     padding: 6px 2px
 }
 
-
 .files {
     padding: 0;
     margin: 0;
@@ -103,13 +102,6 @@ form *{
 
 b.big-or {
     margin: 0px 10px;
-}
-
-.jstree {
-    max-width:100%;
-    overflow:auto;
-    padding:10px;
-    border-radius:5px;
 }
 
 .list-group-item-danger {

@@ -43,67 +43,15 @@ app.directive('chart', function() {
 
 
 /**
- * An Angular directive that plots a 'jstree' tree
+ * An Angular directive that changes a jQuery knob colour to green if the knobs value is 100
  */
-app.directive('jstree', function() {
+app.directive('getcolour', function() {
     return {
         restrict: 'A',
-
         link: function(scope, element, attrs) {
-
-            scope.$watch(attrs.data, function(v) {
-
-                if (v === undefined) {
-                    return;
-                }
-
-                $(element).jstree({
-                    'core': {
-                        "data": v.children,
-                        "themes": {
-                            "dots": false,
-                            "responsive": true
-                        }
-                    },
-                    "plugins": ["sort", "themes"]
-                }, false).bind("select_node.jstree", function (event, data) {
-                        scope.fileSelected = getObjects(v, '', data.node.text)[0];
-                        scope.$digest();
-                    });
-            });
+            if (scope.knob == 100) {
+                element.attr("data-fgColor", "#66CC66");
+            }
         }
     };
 });
-
-
-/**
- * A helper function to return an array of objects according to key, value, or key and value matching specific inputs
- * @param obj The object to search through
- * @param key The key to search for
- * @param val The value to search for
- * @returns {Array} An array containing all the matching objects
- */
-function getObjects(obj, key, val) {
-    var objects = [];
-
-    for (var i in obj) {
-        if (!obj.hasOwnProperty(i)) {
-            continue;
-        }
-        if (typeof obj[i] == 'object') {
-            objects = objects.concat(getObjects(obj[i], key, val));
-        }
-        else {
-            if (i == key && obj[i] == val || i == key && val == '') {
-                objects.push(obj);
-            }
-            else if (obj[i] == val && key == '') {
-                //only add if the object is not already in the array
-                if (objects.lastIndexOf(obj) == -1){
-                    objects.push(obj);
-                }
-            }
-        }
-    }
-    return objects;
-}

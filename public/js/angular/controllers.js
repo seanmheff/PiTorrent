@@ -2,7 +2,7 @@
  * This module contains our angular controllers
  * We define the module and inject its dependencies
  */
-var app = angular.module('myApp.controllers', ['flow', 'ngAnimate', 'ajoslin.promise-tracker', 'cgBusy', 'tableSort']);
+var app = angular.module('myApp.controllers', ['flow', 'ngAnimate', 'ajoslin.promise-tracker', 'cgBusy', 'tableSort', 'ui.knob']);
 
 app.value('cgBusyTemplateName','../../style/loading-template.html');
 
@@ -22,7 +22,6 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
     $scope.leeching = app.leechingFilter;
     $scope.uploading = app.uploadingFilter;
     $scope.downloading = app.downloadingFilter;
-    $scope.jstree = {children:[]};
 
     // This is needed for selecting tabs from the overview widget
     $scope.tab = {
@@ -195,16 +194,82 @@ app.controller('DetailedPeerCtrl', function DetailedPeerCtrl($scope, $http, $rou
 /**
  * A controller for the 'detailed file info' route
  */
-app.controller('DetailedFileCtrl', function DetailedFileCtrl($scope, $http, $routeParams, sharedTorrentName) {
+app.controller('DetailedFileCtrl', function DetailedFileCtrl($scope, $http, $routeParams, sharedTorrentName, $interval) {
     var hash = $routeParams.torrentHash;
+    var selectedDir = undefined;
+
     $http.get(document.location.origin + '/files/' + hash, {tracker: 'files'}).success(function(detailedInfo) {
-        recursiveFileWalk(detailedInfo);
-        $scope.fileData = detailedInfo;
+        for (var key in detailedInfo) {
+            var obj = detailedInfo[key];
+            var percentDone = getPercentDone(obj);
+            detailedInfo[key]["percentDone"] = (percentDone.chunksComplete / percentDone.chunks) * 100;
+        }
+        $scope.selectedFolder = detailedInfo;
     });
+
+    var interval =  $interval(function() {
+        $http.get(document.location.origin + '/files/' + hash, {tracker: 'files'}).success(function(detailedInfo) {
+            getPercentDone(detailedInfo);
+            $scope.selectedFolder = detailedInfo[selectedDir] || detailedInfo;
+        });
+    }, 2000);
+
+    $scope.$on('$destroy', function() {
+        $interval.cancel(interval);
+    });
+
+    // Function to change torrent directory in view
+    $scope.selectDirectory = function(dir) {
+        selectedDir = dir;
+        $scope.selectedFolder = $scope.selectedFolder[dir];
+        console.log(selectedDir)
+    };
+
+    // Add jQuery knob options to scope
+    $scope.knobOptions = {
+        'width': 60,
+        'height': 60,
+        'displayInput': true
+    };
 
     $scope.hash = $routeParams.torrentHash;
     $scope.name = sharedTorrentName.getName();
+    $scope.cleanString = cleanString;
 });
+
+
+/**
+ * A helper function to walk the JSON object produced by the "/files" API
+ * and calculate download percentages for all files and folders.
+ * The function calls itself recursively
+ * @param obj The JSON object to walk
+ * @returns {{chunks: number, chunksComplete: number}} Returns the number of chunks in the torrent,
+ * and the number of chunks we have downloaded so far
+ */
+function getPercentDone(obj) {
+    var data = {
+        chunks: 0,
+        chunksComplete: 0
+    };
+
+    // Base case
+    if (Array.isArray(obj)) {
+        for (var i=0; i<obj.length; i++) {
+            data.chunks = data.chunks + parseInt(obj[i].sizeChunks);
+            data.chunksComplete = data.chunksComplete + parseInt(obj[i].chunksComplete);
+            obj[i]["percentDone"] = (obj[i].chunksComplete / obj[i].sizeChunks) * 100;
+        }
+    }
+    else {
+        for (var key in obj) {
+            var folder = getPercentDone(obj[key]);
+            data.chunks = data.chunks + folder.chunks;
+            data.chunksComplete = data.chunksComplete + folder.chunksComplete;
+            obj[key]["percentDone"] = (folder.chunksComplete / folder.chunks) * 100;
+        }
+    }
+    return data;
+}
 
 
 /**
@@ -584,6 +649,11 @@ function createViewFriendlyText(arrayOfObjects, propertyName, newPropertyName) {
         var res = str.replace(/\./g, ".\u200b");
         arrayOfObjects[i][newPropertyName] = res;
     }
+}
+
+
+function cleanString(str) {
+    return str.replace(/\./g, ".\u200b");
 }
 
 

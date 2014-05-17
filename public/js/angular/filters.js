@@ -10,8 +10,8 @@ var app = angular.module('myApp.filters', [])
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is stopped
  */
-app.stoppedFilter = function (torrent) {
-    return torrent.active == 0
+app.stoppedFilter = function(torrent) {
+    return torrent.active == 0;
 };
 
 
@@ -20,8 +20,8 @@ app.stoppedFilter = function (torrent) {
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is started
  */
-app.startedFilter = function (torrent) {
-    return torrent.active == 1
+app.startedFilter = function(torrent) {
+    return torrent.active == 1;
 };
 
 
@@ -30,8 +30,8 @@ app.startedFilter = function (torrent) {
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is seeding
  */
-app.seedingFilter = function (torrent) {
-    return torrent.complete == 1
+app.seedingFilter = function(torrent) {
+    return torrent.complete == 1;
 };
 
 
@@ -40,8 +40,8 @@ app.seedingFilter = function (torrent) {
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is leeching
  */
-app.leechingFilter = function (torrent) {
-    return torrent.complete == 0
+app.leechingFilter = function(torrent) {
+    return torrent.complete == 0;
 };
 
 
@@ -50,8 +50,8 @@ app.leechingFilter = function (torrent) {
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is currently uploading
  */
-app.uploadingFilter = function (torrent) {
-    return torrent.uploadRate > 0
+app.uploadingFilter = function(torrent) {
+    return torrent.uploadRate > 0;
 };
 
 
@@ -60,6 +60,6 @@ app.uploadingFilter = function (torrent) {
  * @param torrent The torrent to evaluate
  * @returns {boolean} Returns a boolean to denote if the torrent is currently downloading
  */
-app.downloadingFilter = function (torrent) {
-    return torrent.downloadRate > 0
+app.downloadingFilter = function(torrent) {
+    return torrent.downloadRate > 0;
 };
