@@ -196,21 +196,44 @@ app.controller('DetailedPeerCtrl', function DetailedPeerCtrl($scope, $http, $rou
  */
 app.controller('DetailedFileCtrl', function DetailedFileCtrl($scope, $http, $routeParams, sharedTorrentName, $interval) {
     var hash = $routeParams.torrentHash;
-    var selectedDir = undefined;
+    var data;
+    var selectedDir = (function() {
+        var currentDir = [];
+        return {
+            goTo: function(dir) {
+                currentDir.push(dir);
+            },
+            upLevel: function(level) {
+                for (var i=0; i<level; i++) {
+                    currentDir.pop();
+                }
+            },
+            getCurentDir: function() {
+                return currentDir;
+            },
+            getLevel: function() {
+                return currentDir.length;
+            }
+        };
+    }());
 
     $http.get(document.location.origin + '/files/' + hash, {tracker: 'files'}).success(function(detailedInfo) {
-        for (var key in detailedInfo) {
-            var obj = detailedInfo[key];
-            var percentDone = getPercentDone(obj);
-            detailedInfo[key]["percentDone"] = (percentDone.chunksComplete / percentDone.chunks) * 100;
-        }
+        getPercentDone(detailedInfo);
+        data = detailedInfo;
         $scope.selectedFolder = detailedInfo;
     });
 
     var interval =  $interval(function() {
         $http.get(document.location.origin + '/files/' + hash, {tracker: 'files'}).success(function(detailedInfo) {
             getPercentDone(detailedInfo);
-            $scope.selectedFolder = detailedInfo[selectedDir] || detailedInfo;
+            data = detailedInfo;
+
+            // Loop to select the correct directory to display in the view
+            var location = data;
+            for (var i=0; i<selectedDir.getCurentDir().length; i++) {
+                location = location[selectedDir.getCurentDir()[i]];
+            }
+            $scope.selectedFolder = location || detailedInfo;
         });
     }, 2000);
 
@@ -220,10 +243,20 @@ app.controller('DetailedFileCtrl', function DetailedFileCtrl($scope, $http, $rou
 
     // Function to change torrent directory in view
     $scope.selectDirectory = function(dir) {
-        selectedDir = dir;
-        $scope.selectedFolder = $scope.selectedFolder[dir];
-        console.log(selectedDir)
+        selectedDir.goTo(dir);
+
+        // Loop to select the correct directory to display in the view
+        var location = data;
+        for (var i=0; i<selectedDir.getCurentDir().length; i++) {
+            location = location[selectedDir.getCurentDir()[i]];
+        }
+        $scope.selectedFolder = location
     };
+
+    $scope.goToLevel = function(desiredLevel) {
+        var level = selectedDir.getLevel() - desiredLevel;
+        selectedDir.upLevel(level);
+    }
 
     // Add jQuery knob options to scope
     $scope.knobOptions = {
@@ -235,6 +268,7 @@ app.controller('DetailedFileCtrl', function DetailedFileCtrl($scope, $http, $rou
     $scope.hash = $routeParams.torrentHash;
     $scope.name = sharedTorrentName.getName();
     $scope.cleanString = cleanString;
+    $scope.breadcrumb = selectedDir.getCurentDir();
 });
 
 
