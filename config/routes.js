@@ -1,6 +1,7 @@
 var routes = require('../routes/general');
 var torrents = require('../routes/torrentrestapi');
 var system = require('../routes/systemapi');
+var rss = require('../routes/rssapi');
 var nconf = require('nconf');
 
 
@@ -62,6 +63,7 @@ module.exports = function(app, passport, express) {
     app.get('/set-up-throttle/:speed', ensureAuthenticated, torrents.setUpThrottle);
     app.post('/upload', ensureAuthenticated, torrents.upload);
     app.get('/file-browser/*', ensureAuthenticated, system.fileBrowser);
+    app.get('/rss-feeds', ensureAuthenticated, rss.getRssFeeds);
 
 
     /**

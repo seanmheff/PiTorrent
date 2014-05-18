@@ -15,6 +15,7 @@
         "xmldoc": "*",
         "diskspace": "*",
         "nconf": "*",
-        "formidable": "*"
+        "formidable": "*",
+        "request": "*"
     }
 }

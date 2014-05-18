@@ -2,7 +2,6 @@ var express = require('express')
   , flash = require('connect-flash')
   , passport = require('passport')
   , http = require('http')
-  , rtorrentAPI = require('./code/rtorrent/rtorrentapi.js')
   , nconf = require('nconf');
 
 
