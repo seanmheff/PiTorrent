@@ -29,6 +29,10 @@
             a(href='#', ng-click="tab.currUpTab = true") Currently Uploading
           li(ng-class="{active: tab.currDownTab}")
             a(href='#', ng-click="tab.currDownTab = true") Currently Downloading
+      li.norange(ng-class="navClass('rss')")
+        a(href='#/rss')
+          i.icon-rss
+          |  RSS Feeds
       li.nviolet(ng-class="navClass('fileBrowser')")
         a(href='#/fileBrowser')
           i.icon-folder-open

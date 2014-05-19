@@ -16,7 +16,7 @@
         p.p-meta
           span Uploaded : {{torrent.uploaded}}
           |  Upload Speed: {{torrent.uploadRateHumanReadable}}
-        .progress(ng-class="{'progress-success progress-striped active': (torrent.complete == 1)}")
+        .progress(ng-class="{'progress-success': (torrent.complete == 1)}")
           .progress-bar(ng-class="{'progress-bar-success': (torrent.complete == 1)}", style='width: {{torrent.percentDone}}%')
             | {{torrent.percentDone}}%
       li(ng-show='(torrentResults.torrents | filter:uploading).length == 0') No torrents

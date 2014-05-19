@@ -1,5 +1,6 @@
 module.exports = {
-    viewFeeds: viewFeeds
+    viewFeeds: viewFeeds,
+    updateFeeds: updateFeeds
 };
 
 
@@ -7,11 +8,12 @@ var xmldoc = require('xmldoc');
 var request = require('request');
 var nconf = require('nconf');
 var systemcontroller = require('./systemcontroller');
+var newestTorrent = null;
 
 
 /**
  * A function to get the RSS feeds from the config file
- * @returns {Array} Returns an array containing the RSS feeds (URL strings)
+ * @returns {Array} Returns an array of objects containing the RSS feeds
  */
 function viewFeeds() {
     return nconf.get("feeds");
@@ -19,20 +21,33 @@ function viewFeeds() {
 
 
 /**
- * A function to GET RSS feeds. Uses the 'request' module to avoid any http/https issues
- * @param feeds An array of RSS feed URL's
- * @param queries An array of regular expressions that can match the torrents in the RSS feeds
+ * A function to update our RSS feeds
+ * @param feeds The RSS feeds as an array of objects
+ * @returns {*} Returns the saved RSS feeds as an array of objects
  */
-function getFeeds(feeds, queries) {
+function updateFeeds(feeds) {
+    nconf.set("feeds", feeds);
+    nconf.save();
+    return nconf.get("feeds");
+}
+
+
+/**
+ * A function to GET RSS feeds. Uses the 'request' module to avoid any http/https issues
+ * @param feeds An array of objects. Each object it an RSS feed
+ */
+function getFeeds(feeds) {
     for (var i=0; i<feeds.length; i++) {
+        var queries = feeds[i].queries;
+
         // GET the feed
-        request(feeds[i], function (error, response, body) {
+        request(feeds[i].url, function (error, response, body) {
         	if (!error && response.statusCode == 200) {
              	parseRssFeed(body, queries);
            	}
             else {
                 // Error handling code
-                console.log("Error getting RSS feed " + feeds[i]);
+                console.log("Error getting RSS feed " + feeds[i].url);
                 if (error) {
                     console.log(error);
                 }
@@ -58,6 +73,11 @@ function parseRssFeed(xml, queries) {
         // Get the title
         var title = torrents[i].childNamed("title").val;
 
+        // When we start to see "old" torrents (ones we have seen already) - stop parsing
+        if (title === newestTorrent) {
+            break;
+        }
+
         // Check to see if the torrent matches a query string
         for (var j=0; j<queries.length; j++) {
             if (title.match(queries[j])) {
@@ -74,23 +94,20 @@ function parseRssFeed(xml, queries) {
             }
         }
     }
+    // Reset "newestTorrent" variable
+    newestTorrent = torrents[0].childNamed("title").val;
 }
 
 
-// Auto start this function
+/**
+ * A daemon function that controls downloading our RSS feeds
+ */
 (function rssDaemon() {
-
-    return;
     console.log("Running RSS daemon");
 
     // Initially grab our feeds
     var feeds = nconf.get("feeds");
-    var queries = nconf.get("queries");
-    getFeeds(feeds, queries);
-
-    // Multiply to get milliseconds
-    var intervalTime = nconf.get("rssInterval") * 60000;
-    var interval = setInterval(myFunction, intervalTime);
+    getFeeds(feeds);
 
     // Time function allows us to use a changeable interval
     var myFunction = function() {
@@ -98,11 +115,14 @@ function parseRssFeed(xml, queries) {
 
         // Grab our feeds!
         feeds = nconf.get("feeds");
-        queries = nconf.get("queries");
-        getFeeds(feeds, queries);
+        getFeeds(feeds);
 
         // Setup the next interval
         intervalTime = nconf.get("rssInterval") * 60000;
         interval = setInterval(myFunction, intervalTime);
     }
+
+    // Multiply to get milliseconds
+    var intervalTime = nconf.get("rssInterval") * 60000;
+    var interval = setInterval(myFunction, intervalTime);
 }());

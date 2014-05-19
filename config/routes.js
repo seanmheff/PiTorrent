@@ -64,6 +64,7 @@ module.exports = function(app, passport, express) {
     app.post('/upload', ensureAuthenticated, torrents.upload);
     app.get('/file-browser/*', ensureAuthenticated, system.fileBrowser);
     app.get('/rss-feeds', ensureAuthenticated, rss.getRssFeeds);
+    app.put('/rss-feeds', ensureAuthenticated, rss.updateRssFeeds);
 
 
     /**

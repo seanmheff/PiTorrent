@@ -197,7 +197,6 @@ def createPiTorrentConfigFile(user, configFile):
 	data["username"] = "pitorrent"
 	data["password"] = "pitorrent"
 	data["feeds"] = []
-	data["queries"] = []
 	data["rssInterval"] = 30
 
 	# Write to file

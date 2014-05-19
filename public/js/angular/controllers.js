@@ -36,7 +36,7 @@ app.controller('TorrentCtrl', function TorrentCtrl($scope, $http, sharedTorrentN
     };
 
     // Function to highlight the 'Torrents' sidebar item, if the url contains 'main'
-    $scope.navClass = function (page) {
+    $scope.navClass = function(page) {
         var currentRoute = $location.path().substring(1) || 'main';
         if (currentRoute.substring(0,4) === "main") {
             currentRoute = "main";
@@ -313,6 +313,44 @@ app.controller('SettingsCtrl', function SettingsCtrl($scope, $http) {
     $http.get(document.location.origin + '/settings').success(function(settings) {
         $scope.settings = settings;
     });
+});
+
+
+/**
+ * A controller for the 'RSS Feeds' part of the app
+ */
+app.controller('RssCtrl', function RssCtrl($scope, $http, $route) {
+    $http.get(document.location.origin + '/rss-feeds').success(function(feeds) {
+        $scope.feeds = feeds;
+    });
+
+    // Function to remove a RSS feed
+    $scope.remove = function(queries, query) {
+        var index = queries.indexOf(query);
+        if (index > -1) {
+            queries.splice(index, 1);
+        }
+    };
+
+    // Function to add a new query term
+    $scope.addNewQuery = function(queries) {
+        queries.push("");
+    };
+
+    // Function to add an RSS feed
+    $scope.addFeed = function() {
+        $scope.feeds.push({
+            url: "",
+            queries: []
+        })
+    };
+
+    // Function to submit our changes
+    $scope.submit = function() {
+        $http.put(document.location.origin + '/rss-feeds', $scope.feeds).success(function() {
+            $route.reload();
+        });
+    };
 });
 
 

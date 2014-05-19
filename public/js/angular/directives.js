@@ -55,3 +55,35 @@ app.directive('getcolour', function() {
         }
     };
 });
+
+
+/**
+ * A directive to update scope query terms when the cursor leaves the corresponding input box
+ * It's a bit of a hack really... I think :P
+ */
+app.directive('updatequeries', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.bind('blur', function() {
+                scope.feeds[attrs.updatequeries].queries[scope.$index] = element[0].value;
+            });
+        }
+    };
+});
+
+
+/**
+ * A directive to update the scope url term when the cursor leaves the corresponding input box
+ * As above, it's a bit of a hack really... I think :P
+ */
+app.directive('updateurl', function() {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            element.bind('blur', function() {
+                scope.feeds[attrs.updateurl].url = element[0].value;
+            });
+        }
+    };
+});

@@ -1,0 +1,51 @@
+.page-head
+  h2.pull-left
+    | RSS Feeds
+    span.page-meta Manage torrent RSS feeds
+  .clearfix
+
+.container
+  .row
+    .col-md-12
+      .widget.wred
+        .widget-head
+          .pull-left RSS Feeds
+          .widget-icons.pull-right
+            a.wminimize(href='#')
+              i.icon-chevron-up
+            a.wclose(href='#')
+              i.icon-remove
+          .clearfix
+        .widget-content
+          .padd
+            .form.profile
+              form.form-horizontal(action="rss-feeds", method="post")
+                input(type='hidden', name='_method', value='put')
+                p(ng-if="feeds.length === 0") There are currently no RSS feeds.
+
+                .form-group(ng-repeat="feed in feeds", style="border-bottom:1px solid #ddd; padding-bottom:25px;")
+                  .col-sm-8
+                    p
+                      strong URL:
+                    input.form-control(type='text', name='url', value="{{feed.url}}", updateurl="{{$index}}")
+                    span.help-block The URL of the RSS feed
+
+                    button.btn.btn-default(type="button", style="margin-top: 10px", ng-click="remove(feeds, feed)")
+                      i.icon-trash  Delete this feed
+
+                  .col-sm-4
+                    p
+                      strong Search terms:
+                    .input-group(ng-repeat="query in feed.queries track by $index", style="margin-bottom: 2px;")
+                      input.form-control(type='text', name="query", ng-value="query", updatequeries="{{$parent.$index}}")
+                      span.input-group-btn
+                        button.btn.btn-default(type='button', ng-click="remove(feed.queries, query)")
+                          i.icon-remove
+
+                    button.btn.btn-default.btn-block(type='button', ng-click="addNewQuery(feed.queries)")
+                      i.icon-plus  Add search term
+
+
+                button.btn(type="button", ng-click="addFeed()") Add new RSS Feed
+                button.btn.btn-success.pull-right(ng-if="feeds.length > 0", ng-click="submit()", type="button") Update
+

@@ -35,6 +35,10 @@ app.config(['$routeProvider', function($routeProvider) {
             templateUrl: 'partials/settings',
             controller: 'SettingsCtrl'
         }).
+        when('/rss', {
+            templateUrl: 'partials/rss',
+            controller: 'RssCtrl'
+        }).
         when('/fileBrowser', {
             templateUrl: 'partials/file_browser',
             controller: 'FileBrowserController'
