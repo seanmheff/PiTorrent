@@ -121,7 +121,7 @@ function parseRssFeed(xml, url, queries) {
         // Grab our feeds - need to check for new feeds in our config and add "newestTorrent" variable for it
         feeds = nconf.get("feeds");
         for (var i=0; i<feeds.length; i++) {
-            if (!feeds[i].url in newestTorrents) {
+            if (!(feeds[i].url in newestTorrents)) {
                 newestTorrents[feeds[i].url] = {"newestTorrent": null};
             }
         }
