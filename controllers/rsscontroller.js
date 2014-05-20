@@ -8,7 +8,7 @@ var xmldoc = require('xmldoc');
 var request = require('request');
 var nconf = require('nconf');
 var systemcontroller = require('./systemcontroller');
-var newestTorrent = null;
+var newestTorrents = {};
 
 
 /**
@@ -39,15 +39,16 @@ function updateFeeds(feeds) {
 function getFeeds(feeds) {
     for (var i=0; i<feeds.length; i++) {
         var queries = feeds[i].queries;
+        var url = feeds[i].url;
 
         // GET the feed
-        request(feeds[i].url, function (error, response, body) {
+        request(url, function (error, response, body) {
         	if (!error && response.statusCode == 200) {
-             	parseRssFeed(body, queries);
+             	parseRssFeed(body, url, queries);
            	}
             else {
                 // Error handling code
-                console.log("Error getting RSS feed " + feeds[i].url);
+                console.log("Error getting RSS feed " + url);
                 if (error) {
                     console.log(error);
                 }
@@ -62,9 +63,10 @@ function getFeeds(feeds) {
  * A function to parse torrent RSS feeds.
  * Assuming the feeds all use the format outlined here: http://www.bittorrent.org/beps/bep_0036.html
  * @param xml The RSS feed XML
+ * @param url The URL of the RSS feed, Needed for performing lookups on the "newestTorrents" object
  * @param queries An array of regular expressions that can match the torrents in the RSS feeds
  */
-function parseRssFeed(xml, queries) {
+function parseRssFeed(xml, url, queries) {
     var data = new xmldoc.XmlDocument(xml).childNamed("channel");
     var torrents = data.childrenNamed("item");
 
@@ -74,7 +76,7 @@ function parseRssFeed(xml, queries) {
         var title = torrents[i].childNamed("title").val;
 
         // When we start to see "old" torrents (ones we have seen already) - stop parsing
-        if (title === newestTorrent) {
+        if (title === newestTorrents[url].newestTorrent) {
             break;
         }
 
@@ -94,8 +96,8 @@ function parseRssFeed(xml, queries) {
             }
         }
     }
-    // Reset "newestTorrent" variable
-    newestTorrent = torrents[0].childNamed("title").val;
+    // Reset "newestTorrents" variable
+    newestTorrents[url].newestTorrent = torrents[0].childNamed("title").val;
 }
 
 
@@ -107,14 +109,22 @@ function parseRssFeed(xml, queries) {
 
     // Initially grab our feeds
     var feeds = nconf.get("feeds");
+    for (var i=0; i<feeds.length; i++) {
+        newestTorrents[feeds[i].url] = {"newestTorrent": null};
+    }
     getFeeds(feeds);
 
     // Time function allows us to use a changeable interval
     var myFunction = function() {
         clearInterval(interval);
 
-        // Grab our feeds!
+        // Grab our feeds - need to check for new feeds in our config and add "newestTorrent" variable for it
         feeds = nconf.get("feeds");
+        for (var i=0; i<feeds.length; i++) {
+            if (!feeds[i].url in newestTorrents) {
+                newestTorrents[feeds[i].url] = {"newestTorrent": null};
+            }
+        }
         getFeeds(feeds);
 
         // Setup the next interval
