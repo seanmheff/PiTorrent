@@ -533,7 +533,7 @@ form label{
 /* Dropdown menu */
 
 .dropdown-big .dropdown-menu{
-	min-width: 250px;
+	min-width: 300px;
 	padding:8px 10px;
 	background: #fff;
 }

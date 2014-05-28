@@ -2,7 +2,8 @@ var express = require('express')
   , flash = require('connect-flash')
   , passport = require('passport')
   , http = require('http')
-  , nconf = require('nconf');
+  , nconf = require('nconf')
+  , engine = require('engine.io');
 
 
 var app = express();
@@ -32,10 +33,18 @@ if ('development' == app.get('env')) {
 
 
 // Set up our authentication middleware and routes
-require('./config/pass.js')(passport);
-require('./config/routes.js')(app, passport, express);
+require('./config/pass')(passport);
+require('./config/routes')(app, passport, express);
 
 
-http.createServer(app).listen(app.get('port'), function() {
+var http = http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
+
+var server = engine.attach(http);
+require('./config/websocket')(server);
+
+setInterval(function() {
+    var ws = require('./config/websocket');
+    ws.sendRssTorrentAddedMessage("Sure I don't know!");
+}, 10000);

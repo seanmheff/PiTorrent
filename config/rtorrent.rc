@@ -97,3 +97,111 @@ schedule = chmod,0,0,"execute=chmod,777,/tmp/rpc.socket"
 #log.add_output = "socket_debug", "socket.log"
 #log.add_output = "storage_debug", "storage.log"
 
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent
+
+# Default directory to save the downloaded torrents.
+directory = /home/sean/PiTorrent.Downloads
+
+# Default session directory. Do NOT change or rTorrent daemon will fail!
+session = /home/sean/.PiTorrent.session
+
+# Default directory to watch for .torrent files.
+schedule = watch_directory,5,5,load_start=/home/sean/PiTorrent.Torrents/*.torrent

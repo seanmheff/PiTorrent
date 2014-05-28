@@ -31,13 +31,13 @@
 ### END INIT INFO
 
 NAME="PiTorrent"
-NODE_BIN_DIR="{{}}"
-NODE_PATH="{{}}"
-APPLICATION_DIRECTORY="{{}}"
-APPLICATION_START="{{}}"
-PIDFILE="{{}}"
-LOGFILE="{{}}"
-USER="{{}}"
+NODE_BIN_DIR="/usr/bin"
+NODE_PATH="/lib/node_modules"
+APPLICATION_DIRECTORY="/home/sean/Projects/PiTorrent"
+APPLICATION_START="app.js"
+PIDFILE="/home/sean/Projects/PiTorrent/PiTorrent.pid"
+LOGFILE="/home/sean/Projects/PiTorrent/PiTorrent.log"
+USER="sean"
 
 # Add node to the path for situations in which the environment is passed.
 PATH=$NODE_BIN_DIR:$PATH

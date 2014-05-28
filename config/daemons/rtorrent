@@ -31,7 +31,7 @@
 # user = user 
 # will not work
 # system user to run as
-user="{{}}"
+user="sean"
 
 # the system group to run as, not implemented, see d_start for beginning implementation
 # group=`id -ng "$user"`

@@ -1,4 +1,4 @@
-.navbar.navbar-inverse.navbar-fixed-top.bs-docs-nav(role='banner')
+.navbar.navbar-inverse.navbar-fixed-top.bs-docs-nav(role='banner', ng-controller="NavCtrl")
   .container
     .navbar-header
       button.navbar-toggle(ng-init='navCollapsed = true', ng-click='navCollapsed = !navCollapsed')
@@ -12,6 +12,23 @@
 
     nav.collapse.navbar-collapse.bs-navbar-collapse(collapse='navCollapsed')
       ul.nav.navbar-nav.navbar-right
+        li.dropdown.dropdown-big
+          a.dropdown-toggle(href='#', data-toggle='dropdown') Notifications
+            span.badge.badge-info {{notifications.length}}
+          ul.dropdown-menu
+            li(ng-repeat="notification in notifications | limitTo:5")
+              a(href='#') {{notification.prettyType}}
+              span.label.label-warning.pull-right {{notification.date | date:'shortTime'}}
+              p {{notification.msg}}
+              hr
+            li(ng-if="notifications.length > 0")
+              div.drop-foot
+                a(href='#')
+                  p(ng-if="notifications.length > 5") And {{notifications.length - 5}} more
+                  p View All
+            li(ng-if="notifications.length === 0")
+              div.drop-foot No notifications
+
         li.dropdown
           a.dropdown-toggle(data-toggle='dropdown', href='#')
             | Admin

@@ -10,6 +10,36 @@ String.prototype.endsWith = function(suffix) {
     return this.indexOf(suffix, this.length - suffix.length) !== -1;
 };
 
+app.controller('NavCtrl', function NavCtrl($scope) {
+    $scope.notifications = [];
+
+    var socket = new eio.Socket('ws://localhost/');
+    socket.on('open', function() {
+        console.log("Websocket connected established");
+
+        socket.on('message', function(msg) {
+            console.log(msg);
+            var deserializedMsg = angular.fromJson(msg);
+            if (deserializedMsg.type === "rssTorrentAdded") {
+                deserializedMsg.prettyType = "New RSS download starting."
+            }
+            else if (deserializedMsg.type === "getRssFailed") {
+                deserializedMsg.prettyType = "Could not fetch RSS feed."
+            }
+            else if (deserializedMsg.type === "getTorrentFailed") {
+                deserializedMsg.prettyType = "Could not get torrent."
+            }
+            $scope.notifications.unshift(deserializedMsg);
+        });
+        socket.on('close', function() {
+            console.log("connection closed");
+        });
+    });
+
+
+});
+
+
 /**
  * This is the controller for the torrents
  */

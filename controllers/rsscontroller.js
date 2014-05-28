@@ -52,7 +52,13 @@ function getFeeds(feeds) {
                 if (error) {
                     console.log(error);
                 }
-                console.log("HTTP status code: " + response.statusCode);
+                if (response) {
+                    console.log("HTTP status code: " + response.statusCode);
+                }
+
+                // Push a notification to the clients
+                var ws = require('../config/websocket');
+                ws.sendGetRssFeedFailedMessage(url, error);
             }
         });
     }
@@ -91,6 +97,10 @@ function parseRssFeed(xml, url, queries) {
                 systemcontroller.getTorrentFromURL(link, function(statusCode) {
                     if (statusCode !== 200) {
                         console.log("Could not GET torrent: " + statusCode);
+
+                        // Push a notification to the clients
+                        var ws = require('../config/websocket');
+                        ws.sendGetTorrentFailedMessage(link, statusCode);
                     }
                 });
             }
@@ -105,6 +115,11 @@ function parseRssFeed(xml, url, queries) {
  * A daemon function that controls downloading our RSS feeds
  */
 (function rssDaemon() {
+    // Do not run the daemon in non production environments
+    if (process.env.NODE_ENV !== "production") {
+        return;
+    }
+
     console.log("Running RSS daemon");
 
     // Initially grab our feeds
