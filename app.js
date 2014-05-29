@@ -37,14 +37,9 @@ require('./config/pass')(passport);
 require('./config/routes')(app, passport, express);
 
 
-var http = http.createServer(app).listen(app.get('port'), function() {
+var httpServer = http.createServer(app).listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
 
-var server = engine.attach(http);
+var server = engine.attach(httpServer);
 require('./config/websocket')(server);
-
-setInterval(function() {
-    var ws = require('./config/websocket');
-    ws.sendRssTorrentAddedMessage("Sure I don't know!");
-}, 10000);
