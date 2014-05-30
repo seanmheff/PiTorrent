@@ -50,7 +50,7 @@ module.exports = function(server) {
 
     /**
      * A private function to send unsent messages to a client.
-     * This function should be called once a client connects, and there are unsent messages waiting to be sent.
+     * This function should be called once a client connects, and if there are unsent messages waiting to be sent.
      * This function also clears the unsent messages array, once the messages have been sent.
      * @param client The client object - an instance of an engine.io Socket
      */
