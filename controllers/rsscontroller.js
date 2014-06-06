@@ -41,6 +41,8 @@ function getFeeds(feeds) {
         var queries = feeds[i].queries;
         var url = feeds[i].url;
 
+        console.log("Getting RSS feed: " + url);
+
         // GET the feed
         request(url, function (error, response, body) {
         	if (!error && response.statusCode == 200) {
@@ -101,6 +103,11 @@ function parseRssFeed(xml, url, queries) {
                         // Push a notification to the clients
                         var ws = require('../config/websocket');
                         ws.sendGetTorrentFailedMessage(link, statusCode);
+                    }
+                    else {
+                        // Push a notification to the clients
+                        var ws = require('../config/websocket');
+                        ws.sendRssTorrentAddedMessage(title);  
                     }
                 });
             }
